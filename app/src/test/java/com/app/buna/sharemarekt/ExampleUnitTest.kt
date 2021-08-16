@@ -1,4 +1,4 @@
-package com.app.buna.echoplus
+package com.app.buna.sharemarekt
 
 import org.junit.Test
 

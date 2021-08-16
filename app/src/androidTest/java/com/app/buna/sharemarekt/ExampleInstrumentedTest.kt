@@ -1,4 +1,4 @@
-package com.app.buna.echoplus
+package com.app.buna.sharemarekt
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4
