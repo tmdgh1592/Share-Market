@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "5809431872",
+    "project_id": "share-market-50c77",
+    "storage_bucket": "share-market-50c77.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:5809431872:android:ff4e4e8c4fb1de0a7446a5",
+        "android_client_info": {
+          "package_name": "com.app.buna.sharemarket"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "5809431872-dnghss8n6ovt56favtv85urhemnvcd09.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.app.buna.sharemarket",
+            "certificate_hash": "6a2cc1de179ad29ab90dba57e9a5b6c46383f215"
+          }
+        },
+        {
+          "client_id": "5809431872-hp5keil8tqaamhsh3fu8fet7dijvb4r8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDtnfaV9ho10dQCQmW3pwDDCgs3zUT2l10"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "5809431872-hp5keil8tqaamhsh3fu8fet7dijvb4r8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

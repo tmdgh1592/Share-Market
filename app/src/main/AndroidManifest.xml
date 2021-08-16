@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.app.buna.sharemarekt">
+    package="com.app.buna.sharemarket">
 
     <application
         android:allowBackup="true"
@@ -9,14 +9,14 @@
         android:roundIcon="@drawable/app_icon"
         android:supportsRtl="true"
         android:theme="@style/Theme.ShareMarket">
-        <activity android:name="com.app.buna.sharemarekt.view.LoginActivity"></activity>
-        <activity android:name="com.app.buna.sharemarekt.Splash">
+        <activity android:name="com.app.buna.sharemarket.view.InitialActivity"></activity>
+        <activity android:name="com.app.buna.sharemarket.Splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.app.buna.sharemarekt.view.MainActivity" />
+        <activity android:name="com.app.buna.sharemarket.view.MainActivity" />
     </application>
 
 </manifest>

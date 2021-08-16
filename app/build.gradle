@@ -7,8 +7,10 @@ plugins {
 android {
     compileSdkVersion 29
 
+    dataBinding{ enabled = true }
+
     defaultConfig {
-        applicationId "com.app.buna.echoplus"
+        applicationId "com.app.buna.sharemarket"
         minSdkVersion 21
         targetSdkVersion 29
         versionCode 1
@@ -32,7 +34,16 @@ android {
     }
 }
 
+apply plugin: 'com.google.gms.google-services'
+apply plugin: 'com.android.application'
+
 dependencies {
+
+/* firebase */
+    implementation platform('com.google.firebase:firebase-bom:28.3.1')
+    implementation 'com.google.firebase:firebase-analytics-ktx'
+    implementation 'com.google.firebase:firebase-auth'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
 
 /* Room library */
     def room_version = "2.3.0"

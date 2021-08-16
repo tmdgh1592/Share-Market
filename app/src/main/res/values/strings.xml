@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">쉐어마켓</string>
+    <string name="app_description_title">무료로 나누어 드려요</string>
+    <string name="app_description_content">사용하지 않는 물건들을 버리지 마세요.\n나눔을 통해 환경을 개선해봅시다!</string>
+    <string name="set_my_local">내 지역 설정하기</string>
 </resources>
