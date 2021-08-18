@@ -1,10 +1,11 @@
-package com.app.buna.sharemarket
+package com.app.buna.sharemarket.view
 
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import androidx.appcompat.app.AppCompatActivity
-import com.app.buna.sharemarket.view.InitialActivity
+import com.app.buna.sharemarket.CONST
+import com.app.buna.sharemarket.R
 
 class Splash : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
