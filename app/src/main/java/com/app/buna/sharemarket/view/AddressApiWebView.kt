@@ -16,10 +16,6 @@ class AddressApiWebView : AppCompatActivity() {
 
     private lateinit var context: Context
 
-    companion object {
-        const val ADDRESS_REQUEST_CODE = 2928
-    }
-
     @SuppressLint("SetJavaScriptEnabled")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,7 +31,6 @@ class AddressApiWebView : AppCompatActivity() {
                 webView.loadUrl("javascript:execKakaoPostcode();")
             }
         }
-
         // Kakao에서 https를 허용하지 않아서 https -> http로 바꿔야 동작함 (중요!!)
         webView.loadUrl("http://tmdgh1592.dothome.co.kr/daum.html")
     }
