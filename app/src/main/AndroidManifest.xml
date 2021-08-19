@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.app.buna.sharemarket">
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.app.buna.sharingmarket">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
@@ -8,7 +9,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
-        android:name=".koin.MyApp"
+        android:name="com.app.buna.sharingmarket.koin.MyApp"
         android:allowBackup="true"
         android:icon="@drawable/app_icon"
         android:label="@string/app_name"
@@ -17,16 +18,16 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ShareMarket"
         android:usesCleartextTraffic="true">
-        <activity android:name=".view.AddressApiWebView"/>
-        <activity android:name=".view.InitialActivity">
+        <activity android:name="com.app.buna.sharingmarket.view.AddressApiWebView"/>
+        <activity android:name="com.app.buna.sharingmarket.view.InitialActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".view.Splash" />
-        <activity android:name=".view.MainActivity" />
+        <activity android:name="com.app.buna.sharingmarket.view.Splash" />
+        <activity android:name="com.app.buna.sharingmarket.view.MainActivity" />
     </application>
 
 </manifest>

@@ -75,7 +75,7 @@
                 android:layout_height="44dp"
                 android:layout_marginLeft="12dp"
                 android:layout_marginRight="12dp"
-                android:background="@drawable/green_rectangle_btn"
+                android:background="@drawable/btn_green_rectangle"
                 android:clickable="true"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"

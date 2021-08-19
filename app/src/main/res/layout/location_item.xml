@@ -3,12 +3,14 @@
     <data>
         <variable
             name="locationModel"
-            type="com.app.buna.sharemarket.model.LocationItem" />
+            type="com.app.buna.sharingmarket.model.LocationItem" /> />
     </data>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/item_layout"
         android:layout_width="match_parent"
-        android:layout_height="40dp">
+        android:layout_height="40dp"
+        android:clickable="true">
 
         <TextView
             android:id="@+id/location_text_view"

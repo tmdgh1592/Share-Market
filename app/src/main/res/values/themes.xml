@@ -6,7 +6,7 @@
         <item name="colorPrimaryVariant">@color/app_green</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/teal_200</item>
+        <item name="colorSecondary">@color/app_green</item>
         <item name="colorSecondaryVariant">@color/teal_700</item>
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
@@ -23,4 +23,6 @@
     <style name="Theme.ShareMarket.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="Theme.ShareMarket.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+
 </resources>

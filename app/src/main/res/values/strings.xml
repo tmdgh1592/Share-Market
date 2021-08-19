@@ -3,12 +3,20 @@
     <string name="app_description_title">무료로 나누어 드려요</string>
     <string name="app_description_content">사용하지 않는 물건들을 버리지 마세요.\n나눔을 통해 환경을 개선해봅시다!</string>
     <string name="set_my_location">내 지역 설정하기</string>
-    <string name="search_location">내 주소(동, 읍, 면)를 검색해주세요</string>
+    <string name="search_location">예) 판교역로 235, 분당 준공, 삼평동 681</string>
     <string name="no_location_result">찾으시는 결과가 없습니다.\n주소를 다시 한 번 확인해주세요!</string>
     <string name="search_now_location">현재 위치로 검색</string>
     <string name="require_location_permission">"앱을 실행하려면 위치 접근 권한이 필요합니다."</string>
     <string name="gps_check">"GPS가 켜져있는지 확인해주세요!"</string>
     <string name="internet_check">인터넷 연결을 확인해주세요!</string>
+    <string name="account_vertification">회원 가입</string>
+    <string name="phone_vertification_information">간단히 클릭만으로 <b>쉐어마켓의 나눔꾼</b>이 되어보세요! 아래에 버튼을 클릭하여 가입해보세요.</string>
+    <string name="enter_phone_number">휴대폰 번호를 입력해주세요</string>
+    <string name="enter_code_number">인증번호를 입력해주세요</string>
+    <string name="code_submit">인증번호 확인</string>
+    <string name="code_repeat">인증번호 재전송</string>
+    <string name="ok">확인</string>
+    <string name="cancel">취소</string>
 
     <string name="title_activity_ka_kao_web_view">KaKaoWebView</string>
 
