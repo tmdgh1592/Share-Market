@@ -1,8 +1,13 @@
 package com.app.buna.sharingmarket.view
 
+import android.app.ActivityOptions
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
+import android.transition.Slide
 import android.util.Log
+import android.view.Gravity
+import android.view.Window
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -21,10 +26,11 @@ import org.koin.android.ext.android.get
 
 class InitialActivity : AppCompatActivity() {
 
-    private var auth : FirebaseAuth? = null
-    lateinit var callbackManager: CallbackManager
+    private var auth: FirebaseAuth? = null
+    var callbackManager: CallbackManager? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_initial)
 
@@ -38,21 +44,27 @@ class InitialActivity : AppCompatActivity() {
         val fragmentTransaction = supportFragmentManager.beginTransaction()
 
         fragmentTransaction
-            .setCustomAnimations(R.anim.anim_fade_in, R.anim.anim_fade_out) // 프래그먼트 전환시 보여질 애니메이션 설정
+            .setCustomAnimations(
+                R.anim.anim_fade_in,
+                R.anim.anim_fade_out
+            ) // 프래그먼트 전환시 보여질 애니메이션 설정
             .replace(R.id.initial_frame_layout, fragment).commit() // 해당 프래그먼트 실행
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        
+
         // facebook login 화면 닫힐 때 들어오는 콜백
-        Log.d("RESULT", callbackManager.toString())
-        callbackManager?.onActivityResult(requestCode, resultCode, data)
-        
+
+
+        if(callbackManager != null) {
+            Log.d("RESULT", callbackManager?.toString())
+            callbackManager?.onActivityResult(requestCode, resultCode, data)
+        }
         // 다음 주소에서 주소 선택했을 때 :: AddressApiWebView
         if (requestCode == CONST.API_COMPLETED_FINISH) {
             replaceFragment(ThirdInitialFragment())
-        }else if(requestCode == CONST.RC_SIGN_IN) {
+        } else if (requestCode == CONST.RC_SIGN_IN) {
             val task = GoogleSignIn.getSignedInAccountFromIntent(data)
 
             try {
@@ -65,6 +77,7 @@ class InitialActivity : AppCompatActivity() {
                 Log.w("InitialActivty", "Google sign in failed", e)
             }
         }
+
     }
 
     // 구글 로그인 후 메인 액티비티로 이동
@@ -87,10 +100,11 @@ class InitialActivity : AppCompatActivity() {
     }
 
     // 유저정보 넘겨주고 메인 액티비티 호출
-    fun moveMainPage(user: FirebaseUser?){
-        if(user!= null){
-            startActivity(Intent(this,MainActivity::class.java))
+    fun moveMainPage(user: FirebaseUser?) {
+        if (user != null) {
+            startActivity(Intent(this, MainActivity::class.java), ActivityOptions.makeSceneTransitionAnimation(this).toBundle())
             finish()
+            overridePendingTransition(R.anim.slide_in_down, R.anim.slide_out_down);
         }
     }
 

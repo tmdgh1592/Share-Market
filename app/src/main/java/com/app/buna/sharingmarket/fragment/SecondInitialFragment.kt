@@ -55,8 +55,7 @@ class SecondInitialFragment : Fragment() {
             // 인터넷이 연결되어 있다면
             if (status == NetworkStatus.TYPE_MOBILE || status == NetworkStatus.TYPE_WIFI) {
                 val intent = Intent(context, AddressApiWebView::class.java).apply {
-                    addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-                    addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
+                    addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
                 }
                 activity?.startActivityForResult(intent, API_COMPLETED_FINISH) // 주소 검색 액티비티 실행
             } else {

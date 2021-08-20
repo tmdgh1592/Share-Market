@@ -17,8 +17,9 @@
     <string name="code_repeat">인증번호 재전송</string>
     <string name="ok">확인</string>
     <string name="cancel">취소</string>
-    <string name="login_with_google">구글 계정으로 로그인</string>
-    <string name="login_with_facebook">페이스북으로 로그인</string>
+    <string name="login_with_google">구글 로그인</string>
+    <string name="login_with_facebook">페이스북 로그인</string>
+    <string name="login_with_kakao">카카오 로그인</string>
 
 
     <string name="title_activity_ka_kao_web_view">KaKaoWebView</string>
@@ -27,6 +28,8 @@
     <!--facebook login-->
     <string name="facebook_app_id">1183791935429922</string> <string name="fb_login_protocol_scheme">fb1183791935429922</string>
 
+    <!--kakao login-->
+    <string name="kakao_app_key">50431e61e927759909b150e64f67ff83</string>
 
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>

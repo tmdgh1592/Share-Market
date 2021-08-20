@@ -17,5 +17,7 @@
     <color name="app_pressed_green">#8AC886</color>
     <color name="facebook_login">#027DFA</color>
     <color name="facebook_login_pressed">#0075EC</color>
+    <color name="kakao_login">#FEE339</color>
+    <color name="kakao_login_pressed">#F8DD31</color>
 
 </resources>

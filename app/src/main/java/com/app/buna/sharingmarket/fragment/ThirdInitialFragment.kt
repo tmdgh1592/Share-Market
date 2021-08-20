@@ -17,6 +17,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth
 import org.koin.android.ext.android.get
 import org.koin.android.ext.android.get
+import com.kakao.sdk.common.model.AuthErrorCause.*
 
 class ThirdInitialFragment : Fragment() {
 
