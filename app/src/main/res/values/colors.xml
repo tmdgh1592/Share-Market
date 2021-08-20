@@ -15,4 +15,7 @@
     <!--my color-->
     <color name="app_green">#FF9ACE97</color>
     <color name="app_pressed_green">#8AC886</color>
+    <color name="facebook_login">#027DFA</color>
+    <color name="facebook_login_pressed">#0075EC</color>
+
 </resources>

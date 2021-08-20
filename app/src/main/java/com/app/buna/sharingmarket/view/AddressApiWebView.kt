@@ -10,7 +10,7 @@ import android.webkit.WebViewClient
 import androidx.appcompat.app.AppCompatActivity
 import com.app.buna.sharingmarket.CONST
 import com.app.buna.sharingmarket.R
-import com.app.buna.sharingmarket.utils.PreferenceUtil
+import com.app.buna.sharingmarket.repository.PreferenceUtil
 
 class AddressApiWebView : AppCompatActivity() {
 

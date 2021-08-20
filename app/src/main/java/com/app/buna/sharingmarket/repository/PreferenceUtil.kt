@@ -1,4 +1,4 @@
-package com.app.buna.sharingmarket.utils
+package com.app.buna.sharingmarket.repository
 
 import android.content.Context
 import android.content.Context.MODE_PRIVATE

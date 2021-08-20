@@ -11,7 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.app.buna.sharingmarket.fragment.ThirdInitialFragment
 import com.app.buna.sharingmarket.model.LocationItem
 import com.app.buna.sharingmarket.utils.LocationHelper
-import com.app.buna.sharingmarket.utils.PreferenceUtil
+import com.app.buna.sharingmarket.repository.PreferenceUtil
 import com.app.buna.sharingmarket.view.InitialActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.Default

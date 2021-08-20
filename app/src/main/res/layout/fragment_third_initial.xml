@@ -24,7 +24,7 @@
             android:layout_marginRight="12dp">
 
             <TextView
-                android:id="@+id/phone_vertification_text_view"
+                android:id="@+id/register_text_view"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_marginLeft="8dp"
@@ -35,6 +35,12 @@
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+            <View
+                android:id="@+id/divider"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/gray_20"
+                app:layout_constraintTop_toBottomOf="@+id/register_text_view"/>
 
             <LinearLayout
                 android:id="@+id/vertification_layout"
@@ -43,7 +49,7 @@
                 android:gravity="center"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/phone_vertification_text_view">
+                app:layout_constraintTop_toBottomOf="@+id/divider">
 
                 <com.airbnb.lottie.LottieAnimationView
                     android:id="@+id/main_lottie_image"
@@ -69,14 +75,64 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toBottomOf="@+id/vertification_layout"
-                android:layout_marginTop="30dp">
+                android:layout_marginTop="30dp"
+                android:orientation="vertical">
 
-                <!--구글 로그인-->
-                <com.google.android.gms.common.SignInButton
+                <!--구글 로그인 버튼-->
+                <LinearLayout
                     android:id="@+id/google_sign_in_btn"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
-                    android:onClick="@{()->viewModel.signIn()}"/>
+                    android:onClick="@{()->viewModel.signInGoogle()}"
+                    android:orientation="horizontal"
+                    android:clickable="true"
+                    android:background="@drawable/btn_google_login">
+
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:background="@drawable/google_logo"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="24dp"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text="@string/login_with_google"
+                        android:gravity="center"
+                        android:textColor="@color/gray"
+                        android:textStyle="bold"
+                        android:textSize="16sp" />
+                </LinearLayout>
+
+
+                <!--페이스북 로그인 버튼-->
+                <LinearLayout
+                    android:id="@+id/facebook_sign_in_btn"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="12dp"
+                    android:clickable="true"
+                    android:orientation="horizontal"
+                    android:background="@drawable/btn_facebook_login">
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="@drawable/facebook_logo"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="24dp"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text="@string/login_with_facebook"
+                        android:gravity="center"
+                        android:textColor="@color/white"
+                        android:textStyle="bold"
+                        android:textSize="16sp" />
+
+                </LinearLayout>
             </LinearLayout>
 
 

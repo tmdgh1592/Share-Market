@@ -6,24 +6,29 @@ import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import com.app.buna.sharingmarket.CONST
 import com.app.buna.sharingmarket.R
 import com.app.buna.sharingmarket.fragment.ThirdInitialFragment
+import com.app.buna.sharingmarket.viewmodel.ThirdInitialViewModel
+import com.facebook.CallbackManager
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
+import org.koin.android.ext.android.get
 
 class InitialActivity : AppCompatActivity() {
 
     private var auth : FirebaseAuth? = null
+    lateinit var callbackManager: CallbackManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_initial)
 
-        auth = FirebaseAuth.getInstance()
+        auth = FirebaseAuth.getInstance() // facebook auth 인스턴스 생성
         replaceFragment(ThirdInitialFragment()) // 처음 켰을 때 맨 처음 프래그먼트 화면 띄우기
 
     }
@@ -39,7 +44,11 @@ class InitialActivity : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-
+        
+        // facebook login 화면 닫힐 때 들어오는 콜백
+        Log.d("RESULT", callbackManager.toString())
+        callbackManager?.onActivityResult(requestCode, resultCode, data)
+        
         // 다음 주소에서 주소 선택했을 때 :: AddressApiWebView
         if (requestCode == CONST.API_COMPLETED_FINISH) {
             replaceFragment(ThirdInitialFragment())
@@ -87,8 +96,9 @@ class InitialActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-
         // 로그인 되어 있는 상태이면 바로 메인액티비티 이동
         moveMainPage(auth?.currentUser)
     }
+
+
 }

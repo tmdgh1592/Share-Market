@@ -16,12 +16,13 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth
 import org.koin.android.ext.android.get
+import org.koin.android.ext.android.get
 
 class ThirdInitialFragment : Fragment() {
 
     private var binding: FragmentThirdInitialBinding? = null
     private val vm by lazy {
-        ViewModelProvider(this, ThirdInitialViewModel.Factory(get(), requireContext(), this)).get(
+        ViewModelProvider(this, ThirdInitialViewModel.Factory(get(), requireContext(), (requireActivity() as InitialActivity))).get(
             ThirdInitialViewModel::class.java)
     }
 
@@ -39,7 +40,10 @@ class ThirdInitialFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding?.facebookSignInBtn?.setOnClickListener { vm.signInFacebook() } // facebook 로그인 버튼 클릭시 가입 or 로그인 진행
     }
+
+
 
 
 
