@@ -1,4 +1,4 @@
-package com.app.buna.sharingmarket.view
+package com.app.buna.sharingmarket.activity
 
 import android.os.Bundle
 import android.view.Menu
@@ -75,13 +75,8 @@ class MainActivity : AppCompatActivity() {
 
                         }
 
-                        // 3 : 나무
+                        // 3 : MY (개인 정보 설정)
                         3 -> {
-
-                        }
-
-                        // 4 : MY (개인 정보 설정)
-                        4 -> {
 
                         }
                     }

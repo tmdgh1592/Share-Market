@@ -12,6 +12,7 @@
     <color name="gray_70">#B3535353</color>
     <color name="gray_20">#33535353</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="black_transparent">#CC000000</color>
 
     <!--my color-->
     <color name="app_green">#FF9ACE97</color>

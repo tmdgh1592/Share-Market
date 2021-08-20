@@ -1,29 +1,22 @@
-package com.app.buna.sharingmarket.view
+package com.app.buna.sharingmarket.activity
 
 import android.app.ActivityOptions
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
-import android.transition.Slide
 import android.util.Log
-import android.view.Gravity
-import android.view.Window
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
-import com.app.buna.sharingmarket.CONST
+import com.app.buna.sharingmarket.CODE
 import com.app.buna.sharingmarket.R
 import com.app.buna.sharingmarket.fragment.FirstInitialFragment
+import com.app.buna.sharingmarket.fragment.FourthInitialFragment
 import com.app.buna.sharingmarket.fragment.ThirdInitialFragment
-import com.app.buna.sharingmarket.viewmodel.ThirdInitialViewModel
 import com.facebook.CallbackManager
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
-import org.koin.android.ext.android.get
 
 class InitialActivity : AppCompatActivity() {
 
@@ -52,6 +45,20 @@ class InitialActivity : AppCompatActivity() {
             .replace(R.id.initial_frame_layout, fragment).commit() // 해당 프래그먼트 실행
     }
 
+    @JvmOverloads
+    fun replaceFragment(fragment: Fragment, user:FirebaseUser){
+        if(user != null){
+            val fragmentTransaction = supportFragmentManager.beginTransaction()
+
+            fragmentTransaction
+                .setCustomAnimations(
+                    R.anim.anim_fade_in,
+                    R.anim.anim_fade_out
+                ) // 프래그먼트 전환시 보여질 애니메이션 설정
+                .replace(R.id.initial_frame_layout, fragment).commit() // 해당 프래그먼트 실행
+        }
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
@@ -59,13 +66,15 @@ class InitialActivity : AppCompatActivity() {
 
 
         if(callbackManager != null) {
+            // firebase realtimedb에 preferenceUtil의 "jibun" 등록해야함
+
             Log.d("RESULT", callbackManager?.toString())
             callbackManager?.onActivityResult(requestCode, resultCode, data)
         }
         // 다음 주소에서 주소 선택했을 때 :: AddressApiWebView
-        if (requestCode == CONST.API_COMPLETED_FINISH) {
+        if (requestCode == CODE.API_COMPLETED_FINISH) {
             replaceFragment(ThirdInitialFragment())
-        } else if (requestCode == CONST.RC_SIGN_IN) {
+        } else if (requestCode == CODE.RC_SIGN_IN) {
             val task = GoogleSignIn.getSignedInAccountFromIntent(data)
 
             try {
@@ -87,11 +96,12 @@ class InitialActivity : AppCompatActivity() {
         auth?.signInWithCredential(credential)
             ?.addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
+                    // firebase realtimedb에 preferenceUtil의 "jibun" 등록해야함
+
                     // Sign in success, update UI with the signed-in user's information
                     Log.d("InitialActivty", "signInWithCredential:success")
                     val user = auth?.currentUser
-                    moveMainPage(user)
-                    //updateUI(user)
+                    replaceFragment(FourthInitialFragment(), user!!)
                 } else {
                     // If sign in fails, display a message to the user.
                     Log.w("InitialActivty", "signInWithCredential:failure", task.exception)
@@ -111,8 +121,10 @@ class InitialActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        // 로그인 되어 있는 상태이면 바로 메인액티비티 이동
-        moveMainPage(auth?.currentUser)
+        // 로그인 되어 있는 상태이고 소속을 입력했다면 바로 메인액티비티 이동
+        //moveMainPage(auth?.currentUser)
+
+        replaceFragment(FourthInitialFragment())
     }
 
 

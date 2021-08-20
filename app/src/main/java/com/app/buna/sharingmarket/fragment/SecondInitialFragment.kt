@@ -11,13 +11,13 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.app.buna.sharingmarket.CONST.Companion.API_COMPLETED_FINISH
+import com.app.buna.sharingmarket.CODE.Companion.API_COMPLETED_FINISH
 import com.app.buna.sharingmarket.R
 import com.app.buna.sharingmarket.adapter.LocationRecyclerAdapter
 import com.app.buna.sharingmarket.databinding.FragmentSecondInitialBinding
 import com.app.buna.sharingmarket.utils.FancyChocoBar
 import com.app.buna.sharingmarket.utils.NetworkStatus
-import com.app.buna.sharingmarket.view.AddressApiWebView
+import com.app.buna.sharingmarket.activity.AddressApiWebView
 import com.app.buna.sharingmarket.viewmodel.InitialViewModel
 import org.koin.android.ext.android.get
 

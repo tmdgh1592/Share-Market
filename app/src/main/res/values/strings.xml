@@ -24,19 +24,25 @@
     <string name="tab_home">홈</string>
     <string name="tab_category">카테고리</string>
     <string name="tab_chat">채팅</string>
-    <string name="tab_tree">나무</string>
-    <string name="tab_my">MY</string>
+    <string name="tab_my">My</string>
+    <string name="welcome_message">쉐어마켓에 오신 것을 환영합니다!\nnull님의 소속을 선택해주세요.</string>
+    <string name="register_ok">가입 완료</string>
+    <string name="sosock_check">회원님의 소속을 선택해주세요.</string>
 
     <string name="fab_shopping">쇼핑하기</string>
     <string name="fab_write">무료나눔</string>
-
+    
+    <string name="personal_information">개인이신가요?\n\n쓰지 않는 물건들을 버리지 말고 주변 이웃과 서로 나누어 보세요! 나눔을 통해 환경을 개선할 수 있으며, 회원님 또한 누군가의 나눔을 받을 수 있답니다.</string>
+    <string name="agency_information">기관이신가요?\n\n기관은 보육원, 요양원, 고아원 등 모든 복지 시설에 해당됩니다. 시설 운영에 필요한 물품들을 개인이나 기업에서 공유받을 수 있답니다.</string>
+    <string name="company_information">기업이신가요?\n\n기업은 기관이 필요한 물품들을 나누어줌으로써 사회 공헌과 더불어 기부금 영수증을 발급받을 수 있답니다! 기부금 영수증에 쓰여진 금액만큼 세금을 감면받을 수 있습니다.</string>
 
 
     <string name="title_activity_ka_kao_web_view">KaKaoWebView</string>
 
 
     <!--facebook login-->
-    <string name="facebook_app_id">1183791935429922</string> <string name="fb_login_protocol_scheme">fb1183791935429922</string>
+    <string name="facebook_app_id">1183791935429922</string>
+    <string name="fb_login_protocol_scheme">fb1183791935429922</string>
 
     <!--kakao login-->
     <string name="kakao_app_key">50431e61e927759909b150e64f67ff83</string>

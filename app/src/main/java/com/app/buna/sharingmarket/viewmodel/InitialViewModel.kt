@@ -8,11 +8,17 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.app.buna.sharingmarket.R
+import com.app.buna.sharingmarket.SOSOCK
 import com.app.buna.sharingmarket.fragment.ThirdInitialFragment
 import com.app.buna.sharingmarket.model.items.LocationItem
 import com.app.buna.sharingmarket.utils.LocationHelper
 import com.app.buna.sharingmarket.repository.PreferenceUtil
-import com.app.buna.sharingmarket.view.InitialActivity
+import com.app.buna.sharingmarket.activity.InitialActivity
+import com.app.buna.sharingmarket.utils.FancyChocoBar
+import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.Default
 import kotlinx.coroutines.launch
@@ -35,9 +41,11 @@ class InitialViewModel(application: Application, val context: Context, val view:
     val locationItems: MutableLiveData<List<LocationItem>> = MutableLiveData()
     val locationList = ArrayList<LocationItem>()
     val locationHelper = LocationHelper(view, context)
+    var mySoSock = MutableLiveData<String>()
 
     init {
         locationItems.value = locationList
+        mySoSock.value = ""
     }
 
     fun getLocationList() {
@@ -76,6 +84,34 @@ class InitialViewModel(application: Application, val context: Context, val view:
         (view.requireActivity() as InitialActivity).replaceFragment(ThirdInitialFragment())
     }
 
+    fun getUserName(): String{
+        val userName = FirebaseAuth.getInstance().currentUser?.displayName.toString()
+        Log.d("Firebase", userName)
+        return userName
+    }
 
+    // FourthInitialFragment :: 가입 완료 텍스트 버튼 클릭 수행 로직
+    fun register() {
+        if (mySoSock.value != "" || mySoSock.value != null) {
+            // firebase realtimedb에 소속 추가
+            PreferenceUtil.putString(context, "sosock", mySoSock.value!!) // SharedPreference에 저장
+            Log.d("InitialViewModel", PreferenceUtil.getString(context, "sosock", "")) // Log출력
+
+            // 가입 완료 버튼 누르고 문제 없으면 MainActivity 실행
+            (view.requireActivity() as InitialActivity).moveMainPage(FirebaseAuth.getInstance().currentUser)
+        }else{
+            FancyChocoBar(view.requireActivity()).showAlertSnackBar(context.getString(R.string.sosock_check))
+        }
+    }
+
+    // FourthInitialFragment :: 소속 이미지 클릭
+    // 소속 이미지 클릭시 소속 변경
+    fun changeSoSock(sosock: String) {
+        when(sosock) {
+            SOSOCK.PERSONAL -> mySoSock.value = SOSOCK.PERSONAL
+            SOSOCK.AGENCY -> mySoSock.value = SOSOCK.AGENCY
+            SOSOCK.COMPANY -> mySoSock.value = SOSOCK.COMPANY
+        }
+    }
 
 }

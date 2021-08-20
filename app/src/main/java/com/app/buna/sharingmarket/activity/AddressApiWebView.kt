@@ -1,4 +1,4 @@
-package com.app.buna.sharingmarket.view
+package com.app.buna.sharingmarket.activity
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -8,7 +8,7 @@ import android.webkit.JavascriptInterface
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.appcompat.app.AppCompatActivity
-import com.app.buna.sharingmarket.CONST
+import com.app.buna.sharingmarket.CODE
 import com.app.buna.sharingmarket.R
 import com.app.buna.sharingmarket.repository.PreferenceUtil
 
@@ -52,7 +52,7 @@ class AddressApiWebView : AppCompatActivity() {
             Log.d("AddressApiWebView", myAddress!!) // 서울 강서구 까치산로 4 (하이트맨션)
             Log.d("AddressApiWebView", jibun!!) // 경기 고양시 덕양구 행신동 633-36
 
-            setResult(CONST.API_COMPLETED_FINISH)
+            setResult(CODE.API_COMPLETED_FINISH)
             finish() // 주소 선택시 액티비티 종료
         }
     }

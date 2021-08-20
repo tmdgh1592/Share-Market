@@ -22,9 +22,9 @@ class MainViewModel(application: Application, val context: Context) : AndroidVie
     val productList = ArrayList<ProductItem>()
 
     init {
-        productList.add(ProductItem("","Test1","","행신동","1분 전", ArrayList(),"", 10))
-        productList.add(ProductItem("","Test2","","행신동","1일 전",ArrayList(),"", 5))
-        productList.add(ProductItem("","Test3","","행신동","5분 전",ArrayList(),"", 0))
+        productList.add(ProductItem("1", "","Test1","","행신동","1분 전", ArrayList(),"", "", 10))
+        productList.add(ProductItem("2", "","Test2","","행신동","1일 전",ArrayList(),"", "",5))
+        productList.add(ProductItem("3","","Test3","","행신동","5분 전",ArrayList(),"", "",0))
 
         productItems.value = productList
     }

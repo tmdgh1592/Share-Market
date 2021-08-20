@@ -1,14 +1,16 @@
 package com.app.buna.sharingmarket.model.items
 
 data class ProductItem(
+    val id: String, // 게시글 아이디
     val owner: String,  // 상품 주인
-    val name: String,   //
-    val type: String,
-    val location: String,
-    val time: String,
-    val uri: ArrayList<String>,
-    val content: String,
-    val likeCount: Int
+    val name: String,   // 상품명
+    val category: String, // 카테고리
+    val location: String, // 지역
+    val time: String, // 게시글 업로드 시간
+    val uri: ArrayList<String>, // 이미지들 uri
+    val title: String, // 게시글 제목
+    val content: String, // 게시글 내용
+    val likeCount: Int // 좋아요 개수
 ) {
 
     val likeCountStr: String

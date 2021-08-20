@@ -68,8 +68,7 @@
             android:layout_height="60dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:tabMode="fixed"
-            app:tabRippleColor="@null"
-            >
+            app:tabRippleColor="@null">
             <com.google.android.material.tabs.TabItem
                 android:id="@+id/tab_item_home"
                 android:layout_width="wrap_content"
@@ -88,12 +87,6 @@
                 android:layout_height="wrap_content"
                 android:text="@string/tab_chat"
                 android:icon="@drawable/tab_icon_chat"/>
-            <com.google.android.material.tabs.TabItem
-                android:id="@+id/tab_item_tree"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/tab_tree"
-                android:icon="@drawable/tab_icon_tree"/>
             <com.google.android.material.tabs.TabItem
                 android:id="@+id/tab_item_my"
                 android:layout_width="wrap_content"

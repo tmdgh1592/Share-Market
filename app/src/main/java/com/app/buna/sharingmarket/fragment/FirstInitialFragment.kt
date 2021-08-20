@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.app.buna.sharingmarket.R
 import com.app.buna.sharingmarket.databinding.FragmentFirstInitialBinding
-import com.app.buna.sharingmarket.view.InitialActivity
+import com.app.buna.sharingmarket.activity.InitialActivity
 
 class FirstInitialFragment : Fragment() {
 

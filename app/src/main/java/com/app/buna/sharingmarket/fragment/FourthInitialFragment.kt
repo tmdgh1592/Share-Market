@@ -1,0 +1,98 @@
+package com.app.buna.sharingmarket.fragment
+
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
+import android.graphics.Typeface
+import android.os.Bundle
+import android.text.Spannable
+import android.text.SpannableStringBuilder
+import android.text.style.StyleSpan
+import android.util.Log
+import androidx.fragment.app.Fragment
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.core.content.ContextCompat
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import com.app.buna.sharingmarket.R
+import com.app.buna.sharingmarket.SOSOCK
+import com.app.buna.sharingmarket.databinding.FragmentFourthInitialBinding
+import com.app.buna.sharingmarket.viewmodel.InitialViewModel
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
+import kotlinx.android.synthetic.main.fragment_fourth_initial.*
+import org.koin.android.ext.android.get
+
+class FourthInitialFragment : Fragment() {
+
+    private var binding: FragmentFourthInitialBinding? = null
+    val vm: InitialViewModel by lazy {
+        ViewModelProvider(this, InitialViewModel.FactoryWithFragment(get(), requireContext(), this)).get(
+            InitialViewModel::class.java
+        )
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        binding = FragmentFourthInitialBinding.inflate(inflater, container, false).apply {
+            lifecycleOwner = viewLifecycleOwner
+            viewModel = vm
+        }
+        return binding?.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initView()
+    }
+
+    fun initView(){
+
+        // lottie listener 등록
+        binding?.welcomeAnimationView?.addAnimatorListener(object: Animator.AnimatorListener{
+            override fun onAnimationStart(p0: Animator?) { return }
+            override fun onAnimationCancel(p0: Animator?) { return }
+            override fun onAnimationRepeat(p0: Animator?) { return }
+            override fun onAnimationEnd(p0: Animator?) {
+                // 애니메이션이 끝나면 view 제거
+                welcome_animation_view.animate().alpha(0.0f)
+                    .setDuration(300)
+                    .setListener(object: AnimatorListenerAdapter() {
+                        override fun onAnimationEnd(animation: Animator?) {
+                            super.onAnimationEnd(animation)
+                            welcome_animation_view.visibility = View.INVISIBLE
+                        }
+                    })
+            }
+        })
+
+        // welcome_message 텍스트 뷰에 닉네임 입력
+        SpannableStringBuilder().append("쉐어마켓에 오신 것을 환영합니다!\n ${vm.getUserName()}님의 소속을 선택해주세요.").let {
+            it.setSpan(StyleSpan(Typeface.BOLD), 20, 20+vm.getUserName().length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE) // "닉네임" <- Bold
+            it.setSpan(StyleSpan(Typeface.BOLD), 23+vm.getUserName().length, 25+vm.getUserName().length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE) // "소속" <- Bold
+            binding?.welcomeMessage?.text = it
+        }
+        Log.d("MainMain", String.format(getString(R.string.welcome_message), vm.getUserName()))
+
+
+        // 소속 선택시(즉, 값이 변경될 시) 가입 완료 버튼 활성화
+        vm.mySoSock.observe(viewLifecycleOwner, Observer {
+            binding?.registerBtn?.setTextColor(ContextCompat.getColor(requireContext(), R.color.app_green))
+
+            // 선택한 소속에 대한 설명
+            when(vm.mySoSock.value) {
+                SOSOCK.PERSONAL -> binding?.belongInformation?.text = context?.getString(R.string.personal_information)
+                SOSOCK.AGENCY -> binding?.belongInformation?.text = context?.getString(R.string.agency_information)
+                SOSOCK.COMPANY -> binding?.belongInformation?.text = context?.getString(R.string.company_information)
+                else -> {
+                    binding?.registerBtn?.setTextColor(ContextCompat.getColor(requireContext(), R.color.gray_50))
+                    binding?.belongInformation?.text = ""
+                }
+            }
+
+        })
+    }
+}

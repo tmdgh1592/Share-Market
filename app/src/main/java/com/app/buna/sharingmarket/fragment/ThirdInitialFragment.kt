@@ -6,18 +6,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.app.buna.sharingmarket.CONST
-import com.app.buna.sharingmarket.R
 import com.app.buna.sharingmarket.databinding.FragmentThirdInitialBinding
-import com.app.buna.sharingmarket.view.InitialActivity
+import com.app.buna.sharingmarket.activity.InitialActivity
 import com.app.buna.sharingmarket.viewmodel.ThirdInitialViewModel
-import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInClient
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.firebase.auth.FirebaseAuth
 import org.koin.android.ext.android.get
-import org.koin.android.ext.android.get
-import com.kakao.sdk.common.model.AuthErrorCause.*
 
 class ThirdInitialFragment : Fragment() {
 

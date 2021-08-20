@@ -1,20 +1,17 @@
 package com.app.buna.sharingmarket.viewmodel
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.app.Application
 import android.content.Context
 import android.content.Intent
-import android.os.SystemClock
-import android.os.TokenWatcher
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.app.buna.sharingmarket.CONST
+import com.app.buna.sharingmarket.CODE
 import com.app.buna.sharingmarket.R
-import com.app.buna.sharingmarket.fragment.ThirdInitialFragment
-import com.app.buna.sharingmarket.view.InitialActivity
+import com.app.buna.sharingmarket.activity.InitialActivity
+import com.app.buna.sharingmarket.fragment.FourthInitialFragment
 import com.facebook.AccessToken
 import com.facebook.CallbackManager
 import com.facebook.FacebookCallback
@@ -26,10 +23,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FacebookAuthProvider
 import com.google.firebase.auth.FirebaseAuth
-import com.kakao.sdk.auth.LoginClient
-import com.kakao.sdk.auth.model.OAuthToken
-import com.kakao.sdk.common.model.AuthErrorCause.*
-import com.kakao.sdk.user.UserApiClient
 
 class ThirdInitialViewModel(application: Application, val context: Context) :
     AndroidViewModel(application) {
@@ -82,7 +75,7 @@ class ThirdInitialViewModel(application: Application, val context: Context) :
 
         var signInIntent = googleSignInClient?.signInIntent
         signInIntent?.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP or Intent.FLAG_ACTIVITY_CLEAR_TOP)
-        view.startActivityForResult(signInIntent, CONST.RC_SIGN_IN)
+        view.startActivityForResult(signInIntent, CODE.RC_SIGN_IN)
     }
 
     // 페이스북 로그인 메소드
@@ -120,7 +113,7 @@ class ThirdInitialViewModel(application: Application, val context: Context) :
                 // 로그인 성공시 user 정보 가져오고
                 val user = auth!!.currentUser
                 Log.d(TAG, "로그인 성공 : ${user?.displayName}")
-                view.moveMainPage(user) // View에게 메인 액티비티로 이동하도록 요청
+                view.replaceFragment(FourthInitialFragment()) // View에게 다음 프래그먼트로 이동하도록 요청
             } else {
                 Log.w(TAG, "signInWithCredential:failure", task.exception)
             }
