@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.app.buna.sharingmarket.CONST
 import com.app.buna.sharingmarket.R
+import com.app.buna.sharingmarket.fragment.FirstInitialFragment
 import com.app.buna.sharingmarket.fragment.ThirdInitialFragment
 import com.app.buna.sharingmarket.viewmodel.ThirdInitialViewModel
 import com.facebook.CallbackManager
@@ -35,7 +36,7 @@ class InitialActivity : AppCompatActivity() {
         setContentView(R.layout.activity_initial)
 
         auth = FirebaseAuth.getInstance() // facebook auth 인스턴스 생성
-        replaceFragment(ThirdInitialFragment()) // 처음 켰을 때 맨 처음 프래그먼트 화면 띄우기
+        replaceFragment(FirstInitialFragment()) // 처음 켰을 때 맨 처음 프래그먼트 화면 띄우기
 
     }
 
@@ -104,7 +105,7 @@ class InitialActivity : AppCompatActivity() {
         if (user != null) {
             startActivity(Intent(this, MainActivity::class.java), ActivityOptions.makeSceneTransitionAnimation(this).toBundle())
             finish()
-            overridePendingTransition(R.anim.slide_in_down, R.anim.slide_out_down);
+            overridePendingTransition(R.anim.anim_fade_in, R.anim.anim_fade_out);
         }
     }
 

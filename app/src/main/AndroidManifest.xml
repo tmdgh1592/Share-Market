@@ -40,17 +40,23 @@
         <activity android:name="com.app.buna.sharingmarket.view.AddressApiWebView" />
         <activity android:name="com.app.buna.sharingmarket.view.InitialActivity">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:host="oauth"
+                <data
+                    android:host="oauth"
                     android:scheme="kakao50431e61e927759909b150e64f67ff83" />
             </intent-filter>
         </activity>
-        <activity android:name="com.app.buna.sharingmarket.view.Splash" />
-        <activity android:name="com.app.buna.sharingmarket.view.MainActivity" />
+        <activity android:name="com.app.buna.sharingmarket.view.Splash">
+        </activity>
+        <activity android:name="com.app.buna.sharingmarket.view.MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

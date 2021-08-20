@@ -3,7 +3,7 @@
     <data>
         <variable
             name="locationModel"
-            type="com.app.buna.sharingmarket.model.LocationItem" /> />
+            type="com.app.buna.sharingmarket.model.items.LocationItem" /> />
     </data>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"

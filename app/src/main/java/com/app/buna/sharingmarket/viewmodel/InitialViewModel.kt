@@ -9,7 +9,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.app.buna.sharingmarket.fragment.ThirdInitialFragment
-import com.app.buna.sharingmarket.model.LocationItem
+import com.app.buna.sharingmarket.model.items.LocationItem
 import com.app.buna.sharingmarket.utils.LocationHelper
 import com.app.buna.sharingmarket.repository.PreferenceUtil
 import com.app.buna.sharingmarket.view.InitialActivity

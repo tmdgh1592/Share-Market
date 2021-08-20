@@ -20,6 +20,16 @@
     <string name="login_with_google">구글 로그인</string>
     <string name="login_with_facebook">페이스북 로그인</string>
     <string name="login_with_kakao">카카오 로그인</string>
+    <string name="write">게시글 작성</string>
+    <string name="tab_home">홈</string>
+    <string name="tab_category">카테고리</string>
+    <string name="tab_chat">채팅</string>
+    <string name="tab_tree">나무</string>
+    <string name="tab_my">MY</string>
+
+    <string name="fab_shopping">쇼핑하기</string>
+    <string name="fab_write">무료나눔</string>
+
 
 
     <string name="title_activity_ka_kao_web_view">KaKaoWebView</string>
