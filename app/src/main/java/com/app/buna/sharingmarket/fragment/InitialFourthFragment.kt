@@ -18,6 +18,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.app.buna.sharingmarket.R
 import com.app.buna.sharingmarket.SOSOCK
 import com.app.buna.sharingmarket.databinding.FragmentFourthInitialBinding
+import com.app.buna.sharingmarket.repository.PreferenceUtil
 import com.app.buna.sharingmarket.viewmodel.InitialViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -40,12 +41,14 @@ class InitialFourthFragment : Fragment() {
         binding = FragmentFourthInitialBinding.inflate(inflater, container, false).apply {
             lifecycleOwner = viewLifecycleOwner
             viewModel = vm
+            context = requireContext()
         }
         return binding?.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        PreferenceUtil.putInt(requireContext(), "fragment_page", 3) // 현재까지 진행한 fragment_page 저장
         initView()
     }
 
@@ -64,6 +67,8 @@ class InitialFourthFragment : Fragment() {
                         override fun onAnimationEnd(animation: Animator?) {
                             super.onAnimationEnd(animation)
                             welcome_animation_view.visibility = View.INVISIBLE
+                            sosock_scroll_view.visibility = View.VISIBLE
+                            register_btn.visibility = View.VISIBLE
                         }
                     })
             }

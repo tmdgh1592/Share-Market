@@ -12,6 +12,8 @@ import com.app.buna.sharingmarket.CODE
 import com.app.buna.sharingmarket.R
 import com.app.buna.sharingmarket.activity.InitialActivity
 import com.app.buna.sharingmarket.fragment.InitialFourthFragment
+import com.app.buna.sharingmarket.utils.FancyChocoBar
+import com.app.buna.sharingmarket.utils.NetworkStatus
 import com.facebook.AccessToken
 import com.facebook.CallbackManager
 import com.facebook.FacebookCallback
@@ -65,6 +67,12 @@ class ThirdInitialViewModel(application: Application, val context: Context) :
 
     // 구글 로그인 메소드
     fun signInGoogle() {
+        // 인터넷 연결 상태 체크
+        if(!NetworkStatus.isConnectedInternet(context)){
+            FancyChocoBar(view).showSnackBar(context.getString(R.string.internet_check)) // 인터넷 사용 문구 스낵바 출력
+            return // 미연결시 아무런 로직 수행하지 않음
+        }
+
         // Configure Google Sign In
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(context.getString(R.string.default_web_client_id))
@@ -81,7 +89,12 @@ class ThirdInitialViewModel(application: Application, val context: Context) :
     // 페이스북 로그인 메소드
     @SuppressLint("LongLogTag")
     fun signInFacebook() {
-        /* 중복 클릭 방지 */
+        // 인터넷 연결 상태 체크
+        if(!NetworkStatus.isConnectedInternet(context)){
+            FancyChocoBar(view).showSnackBar(context.getString(R.string.internet_check)) // 인터넷 사용 문구 스낵바 출력
+            return // 미연결시 아무런 로직 수행하지 않음
+        }
+        
         callbackManager = CallbackManager.Factory.create()
         view.callbackManager = callbackManager!! // view(InitialActivty)로 callback manager 전달
         Log.d("ThirdInitialViewModel -> callbackManager Id", callbackManager.toString())

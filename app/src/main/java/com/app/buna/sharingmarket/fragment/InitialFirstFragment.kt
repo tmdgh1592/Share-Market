@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import com.app.buna.sharingmarket.R
 import com.app.buna.sharingmarket.databinding.FragmentFirstInitialBinding
 import com.app.buna.sharingmarket.activity.InitialActivity
+import com.app.buna.sharingmarket.repository.PreferenceUtil
 
 class InitialFirstFragment : Fragment() {
 
@@ -23,7 +24,11 @@ class InitialFirstFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentFirstInitialBinding.bind(view)
+        PreferenceUtil.putInt(requireContext(), "fragment_page", 0) // 현재까지 진행한 fragment_page 저장
+        initView() // view 초기화
+    }
 
+    private fun initView() {
         binding!!.locateSettingBtn.setOnClickListener {
             (activity as InitialActivity).replaceFragment(InitialSecondFragment()) // 위치 설정을 위한 다음 프래그먼트 실행
         }

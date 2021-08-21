@@ -6,23 +6,30 @@ import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import com.app.buna.sharingmarket.CODE
 import com.app.buna.sharingmarket.R
 import com.app.buna.sharingmarket.fragment.InitialFirstFragment
 import com.app.buna.sharingmarket.fragment.InitialFourthFragment
 import com.app.buna.sharingmarket.fragment.InitialThirdFragment
+import com.app.buna.sharingmarket.repository.FirebaseRepository
 import com.app.buna.sharingmarket.repository.PreferenceUtil
+import com.app.buna.sharingmarket.viewmodel.InitialViewModel
 import com.facebook.CallbackManager
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
+import org.koin.android.ext.android.get
 
 class InitialActivity : AppCompatActivity() {
 
     private var auth: FirebaseAuth? = null
     var callbackManager: CallbackManager? = null
+    private val viewModel: InitialViewModel by lazy {
+        ViewModelProvider(this, InitialViewModel.Factory(get())).get(InitialViewModel::class.java)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -30,7 +37,7 @@ class InitialActivity : AppCompatActivity() {
         setContentView(R.layout.activity_initial)
 
         auth = FirebaseAuth.getInstance() // facebook auth 인스턴스 생성
-        replaceFragment(InitialFirstFragment()) // 처음 켰을 때 맨 처음 프래그먼트 화면 띄우기
+        startLastestProgressFragment() // 가장 마지막까지 진행한 프래그먼트 띄우기
 
     }
 
@@ -66,13 +73,18 @@ class InitialActivity : AppCompatActivity() {
         // facebook login 화면 닫힐 때 들어오는 콜백
         if(callbackManager != null) {
             // firebase realtimedb에 preferenceUtil의 "jibun" 등록해야함
+            viewModel.saveUserInfo(this, key = "jibun", value = "jibun", isInPref = true)
 
             Log.d("RESULT", callbackManager?.toString())
             callbackManager?.onActivityResult(requestCode, resultCode, data)
         }
         // 다음 주소에서 주소 선택했을 때 :: AddressApiWebView
         if (requestCode == CODE.API_COMPLETED_FINISH) {
-            replaceFragment(InitialThirdFragment())
+            var jibun: String? = data?.getStringExtra("jibun")
+
+            if (jibun != null && jibun != "") {
+                replaceFragment(InitialThirdFragment())
+            }
         } else if (requestCode == CODE.RC_SIGN_IN) {
             val task = GoogleSignIn.getSignedInAccountFromIntent(data)
 
@@ -97,7 +109,8 @@ class InitialActivity : AppCompatActivity() {
                 if (task.isSuccessful) {
                     // firebase realtimedb에 preferenceUtil의 "jibun" 등록해야함
 
-                    // Sign in success, update UI with the signed-in user's information
+                    viewModel.saveUserInfo(this, key = "jibun", value = "jibun", isInPref = true)
+
                     Log.d("InitialActivty", "signInWithCredential:success")
                     val user = auth?.currentUser
                     replaceFragment(InitialFourthFragment(), user!!)
@@ -123,11 +136,20 @@ class InitialActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        // 로그인 되어 있는 상태이고 소속을 입력했다면 바로 메인액티비티 이동
+        // 로그인 되어 있는 상태이고 소속을 입력했다면 바로 메인 액티비티로 이동
         moveMainPage(auth?.currentUser)
 
         //replaceFragment(InitialFirstFragment())
     }
 
+    fun startLastestProgressFragment() {
+        val fragmentPage = PreferenceUtil.getInt(this, "fragment_page")
+        when (fragmentPage) {
+            0, 1 -> replaceFragment(InitialFirstFragment()) // 위치 설정 이전 까지 진행한 경우
+            2 -> replaceFragment(InitialThirdFragment()) // 로그인&회원가입 까지 진행한 경우
+            3 -> replaceFragment(InitialFourthFragment()) // 소속 정하는 곳 까지 진행한 경우
+            else -> replaceFragment(InitialFirstFragment()) // 그렇지 않은 경우 처음부터 시작
+        }
+    }
 
 }

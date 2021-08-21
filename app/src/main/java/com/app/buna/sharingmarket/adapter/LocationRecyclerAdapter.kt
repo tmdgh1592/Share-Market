@@ -1,5 +1,6 @@
 package com.app.buna.sharingmarket.adapter
 
+import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -9,7 +10,7 @@ import com.app.buna.sharingmarket.databinding.LocationItemBinding
 import com.app.buna.sharingmarket.model.items.LocationItem
 import com.app.buna.sharingmarket.viewmodel.InitialViewModel
 
-class LocationRecyclerAdapter(val locationList : MutableLiveData<List<LocationItem>>, val viewModel: InitialViewModel)
+class LocationRecyclerAdapter(val locationList : MutableLiveData<List<LocationItem>>, val viewModel: InitialViewModel, val context: Context)
     : RecyclerView.Adapter<LocationRecyclerAdapter.MyViewHolder>(){
 
 
@@ -17,7 +18,7 @@ class LocationRecyclerAdapter(val locationList : MutableLiveData<List<LocationIt
         fun bind(item: LocationItem){
             binding.locationModel = item
             binding.itemLayout.setOnClickListener {
-                viewModel.startNextFragmentWithSaving(item)
+                viewModel.startNextFragmentWithSaving(context, item)
             }
         }
     }

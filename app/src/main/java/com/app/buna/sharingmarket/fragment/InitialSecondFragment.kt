@@ -18,6 +18,7 @@ import com.app.buna.sharingmarket.databinding.FragmentSecondInitialBinding
 import com.app.buna.sharingmarket.utils.FancyChocoBar
 import com.app.buna.sharingmarket.utils.NetworkStatus
 import com.app.buna.sharingmarket.activity.AddressApiWebView
+import com.app.buna.sharingmarket.repository.PreferenceUtil
 import com.app.buna.sharingmarket.viewmodel.InitialViewModel
 import org.koin.android.ext.android.get
 
@@ -44,9 +45,14 @@ class InitialSecondFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        PreferenceUtil.putInt(requireContext(), "fragment_page", 1) // 현재까지 진행한 fragment_page 저장
+
+        /*
+        *  View 초기화
+        * */
         // 현재 위치로 검색 버튼
         binding?.searchNowLocationBtn?.setOnClickListener {
-            vm.getLocationList()
+            vm.getLocationList(requireContext())
         }
 
         // 다음 주소 API 액티비티 실행
@@ -64,7 +70,7 @@ class InitialSecondFragment : Fragment() {
             }
         }
 
-        recyclerAdapter = LocationRecyclerAdapter(vm?.locationItems!!, vm)
+        recyclerAdapter = LocationRecyclerAdapter(vm?.locationItems!!, vm, requireContext())
 
         with(binding) {
             this?.locationRecyclerView?.adapter = recyclerAdapter

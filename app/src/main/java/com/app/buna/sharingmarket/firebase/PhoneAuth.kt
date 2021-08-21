@@ -10,7 +10,6 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import java.util.concurrent.TimeUnit
 
-
 class PhoneAuth(val editTextCode: EditText, val mAuth: FirebaseAuth, val callback: () -> Unit, val activity: Activity) {
 
     lateinit var mVerificationId: String

@@ -83,6 +83,7 @@ dependencies {
     implementation 'com.airbnb.android:lottie:3.0.7'
     implementation 'androidx.navigation:navigation-fragment-ktx:2.2.2'
     implementation 'androidx.navigation:navigation-ui-ktx:2.2.2'
+    implementation 'com.google.firebase:firebase-database:19.2.1'
 
     /* Room library */
     def room_version = "2.3.0"

@@ -2,6 +2,7 @@ package com.app.buna.sharingmarket.activity
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.webkit.JavascriptInterface
@@ -52,7 +53,8 @@ class AddressApiWebView : AppCompatActivity() {
             Log.d("AddressApiWebView", myAddress!!) // 서울 강서구 까치산로 4 (하이트맨션)
             Log.d("AddressApiWebView", jibun!!) // 경기 고양시 덕양구 행신동 633-36
 
-            setResult(CODE.API_COMPLETED_FINISH)
+
+            setResult(CODE.API_COMPLETED_FINISH, Intent().putExtra("jibun", jibun))
             finish() // 주소 선택시 액티비티 종료
         }
     }
