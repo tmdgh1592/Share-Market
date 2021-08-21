@@ -17,7 +17,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".fragment.FourthInitialFragment">
+        tools:context=".fragment.InitialFourthFragment">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -64,6 +64,7 @@
                         android:layout_width="120dp"
                         android:layout_height="120dp"
                         android:src="@drawable/personal"
+                        android:clickable="true"
                         android:layout_marginLeft="20dp"
                         android:layout_marginRight="20dp"
                         android:onClick="@{() -> viewModel.changeSoSock(sosock.PERSONAL)}"/>
@@ -73,6 +74,7 @@
                         android:layout_width="120dp"
                         android:layout_height="120dp"
                         android:src="@drawable/agency"
+                        android:clickable="true"
                         android:layout_marginLeft="20dp"
                         android:layout_marginRight="20dp"
                         android:onClick="@{() -> viewModel.changeSoSock(sosock.AGENCY)}"/>
@@ -82,6 +84,7 @@
                         android:layout_width="120dp"
                         android:layout_height="120dp"
                         android:src="@drawable/company"
+                        android:clickable="true"
                         android:layout_marginLeft="20dp"
                         android:layout_marginRight="20dp"
                         android:onClick="@{() -> viewModel.changeSoSock(sosock.COMPANY)}"/>

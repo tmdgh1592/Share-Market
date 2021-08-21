@@ -9,7 +9,7 @@ import com.app.buna.sharingmarket.R
 import com.app.buna.sharingmarket.databinding.FragmentFirstInitialBinding
 import com.app.buna.sharingmarket.activity.InitialActivity
 
-class FirstInitialFragment : Fragment() {
+class InitialFirstFragment : Fragment() {
 
     var binding: FragmentFirstInitialBinding? = null
 
@@ -25,7 +25,7 @@ class FirstInitialFragment : Fragment() {
         binding = FragmentFirstInitialBinding.bind(view)
 
         binding!!.locateSettingBtn.setOnClickListener {
-            (activity as InitialActivity).replaceFragment(SecondInitialFragment()) // 위치 설정을 위한 다음 프래그먼트 실행
+            (activity as InitialActivity).replaceFragment(InitialSecondFragment()) // 위치 설정을 위한 다음 프래그먼트 실행
         }
     }
 

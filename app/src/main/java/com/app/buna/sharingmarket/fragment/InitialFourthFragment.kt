@@ -24,7 +24,7 @@ import com.google.firebase.auth.FirebaseUser
 import kotlinx.android.synthetic.main.fragment_fourth_initial.*
 import org.koin.android.ext.android.get
 
-class FourthInitialFragment : Fragment() {
+class InitialFourthFragment : Fragment() {
 
     private var binding: FragmentFourthInitialBinding? = null
     val vm: InitialViewModel by lazy {
@@ -84,9 +84,12 @@ class FourthInitialFragment : Fragment() {
 
             // 선택한 소속에 대한 설명
             when(vm.mySoSock.value) {
+                // 제대로 된 소속을 선택한 경우
                 SOSOCK.PERSONAL -> binding?.belongInformation?.text = context?.getString(R.string.personal_information)
                 SOSOCK.AGENCY -> binding?.belongInformation?.text = context?.getString(R.string.agency_information)
                 SOSOCK.COMPANY -> binding?.belongInformation?.text = context?.getString(R.string.company_information)
+
+                //예외 처리
                 else -> {
                     binding?.registerBtn?.setTextColor(ContextCompat.getColor(requireContext(), R.color.gray_50))
                     binding?.belongInformation?.text = ""

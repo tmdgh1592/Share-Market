@@ -21,7 +21,7 @@ import com.app.buna.sharingmarket.activity.AddressApiWebView
 import com.app.buna.sharingmarket.viewmodel.InitialViewModel
 import org.koin.android.ext.android.get
 
-class SecondInitialFragment : Fragment() {
+class InitialSecondFragment : Fragment() {
 
     private var binding: FragmentSecondInitialBinding? = null
     private val vm: InitialViewModel by lazy {

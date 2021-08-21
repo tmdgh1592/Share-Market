@@ -11,7 +11,7 @@ import com.app.buna.sharingmarket.activity.InitialActivity
 import com.app.buna.sharingmarket.viewmodel.ThirdInitialViewModel
 import org.koin.android.ext.android.get
 
-class ThirdInitialFragment : Fragment() {
+class InitialThirdFragment : Fragment() {
 
     private var binding: FragmentThirdInitialBinding? = null
     private val vm by lazy {
@@ -35,10 +35,4 @@ class ThirdInitialFragment : Fragment() {
 
         binding?.facebookSignInBtn?.setOnClickListener { vm.signInFacebook() } // facebook 로그인 버튼 클릭시 가입 or 로그인 진행
     }
-
-
-
-
-
-
 }
