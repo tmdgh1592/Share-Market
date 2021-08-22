@@ -1,26 +1,18 @@
 package com.app.buna.sharingmarket.activity
 
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.app.buna.sharingmarket.R
-import com.app.buna.sharingmarket.adapter.ProductRecyclerAdapter
 import com.app.buna.sharingmarket.databinding.ActivityMainBinding
 import com.app.buna.sharingmarket.fragment.MainCategoryFragment
 import com.app.buna.sharingmarket.fragment.MainChatFragment
 import com.app.buna.sharingmarket.fragment.MainHomeFragment
 import com.app.buna.sharingmarket.fragment.MainMyFragment
 import com.app.buna.sharingmarket.viewmodel.MainViewModel
-import com.google.android.material.internal.NavigationMenu
-import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayout
-import io.github.yavski.fabspeeddial.FabSpeedDial
 import org.koin.android.ext.android.get
 
 class MainActivity : AppCompatActivity() {
@@ -89,6 +81,8 @@ class MainActivity : AppCompatActivity() {
                 }
             })
         }
+
+
     }
 
     // 프래그먼트 전환하는 메소드
@@ -97,6 +91,5 @@ class MainActivity : AppCompatActivity() {
         // tabLayout에서 클릭한 fragment 실행
         fragmentTransaction.replace(R.id.main_frame_layout, fragment).commit()
     }
-
 
 }

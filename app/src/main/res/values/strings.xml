@@ -32,6 +32,9 @@
     <string name="fab_shopping">쇼핑하기</string>
     <string name="fab_write">무료나눔</string>
 
+    <string name="upload_success">게시글을 성공적으로 등록하였습니다.</string>
+    <string name="upload_fail">알 수 없는 오류로 업로드에 실패하였습니다.</string>
+
     <!--  \&quot -> "  //  \&#160 -> white_space  -->
     <!--" 개인이신가요? "-->
     <string name="personal_information">\&quot; 개인이신가요? &#160;\&quot;&#160;\n\n쓰지 않는 물건들을 버리지 말고 주변 이웃과 서로 나누어 보세요! 나눔을 통해 환경을 개선할 수 있으며, 회원님 또한 누군가의 나눔을 받을 수 있답니다.</string>

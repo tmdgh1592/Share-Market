@@ -1,6 +1,8 @@
 package com.app.buna.sharingmarket.fragment
 
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
@@ -8,9 +10,11 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.app.buna.sharingmarket.R
 import com.app.buna.sharingmarket.activity.MainActivity
+import com.app.buna.sharingmarket.activity.WriteActivity
 import com.app.buna.sharingmarket.adapter.ProductRecyclerAdapter
-import com.app.buna.sharingmarket.databinding.ActivityMainBinding
+import com.app.buna.sharingmarket.callbacks.FirebaseRepositoryCallback
 import com.app.buna.sharingmarket.databinding.FragmentMainHomeBinding
+import com.app.buna.sharingmarket.utils.FancyChocoBar
 import com.app.buna.sharingmarket.viewmodel.MainViewModel
 import com.google.android.material.internal.NavigationMenu
 import com.google.android.material.snackbar.Snackbar
@@ -49,7 +53,9 @@ class MainHomeFragment : Fragment() {
             this?.productRecyclerView?.layoutManager = LinearLayoutManager(requireContext())
         }
 
+        
         // * 툴바 관련
+        setHasOptionsMenu(true)
         toolbar = binding?.toolBar!!.also { (requireActivity() as MainActivity).setSupportActionBar(it) } // 액션바 지정
         (requireActivity() as MainActivity).supportActionBar?.setDisplayShowTitleEnabled(false) // 타이틀 안보이게 하기
 
@@ -64,7 +70,11 @@ class MainHomeFragment : Fragment() {
             override fun onMenuItemSelected(menuItem: MenuItem?): Boolean {
                 when(menuItem?.itemId) {
                     R.id.action_write -> { // fab 무료나눔 버튼 클릭시
-                        Snackbar.make(toolbar,"무료나눔", Snackbar.LENGTH_SHORT).show()
+                        // 게시글 작성(WriteActivity) 실행을 위한 Intent
+                        val intent = Intent(context, WriteActivity::class.java).apply {
+                            addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP or Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                        }
+                        startActivity(intent) // 게시글 작성 액티비티 실행
                     }
                     R.id.action_shopping -> { // fab 쇼핑버튼 버튼 클릭시
                         Snackbar.make(toolbar,"쇼핑하기", Snackbar.LENGTH_SHORT).show()
@@ -80,8 +90,8 @@ class MainHomeFragment : Fragment() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_home_tool_bar, menu)
         super.onCreateOptionsMenu(menu, inflater)
-        inflater.inflate(R.menu.menu_main_home_tool_bar, menu)
     }
 
 
@@ -103,6 +113,7 @@ class MainHomeFragment : Fragment() {
     companion object {
         val instacne = MainHomeFragment()
     }
+
 
 
 }

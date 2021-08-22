@@ -149,12 +149,12 @@ class InitialViewModel(application: Application) :
     fun saveUserInfo(context: Context, key: String, value: String, isInPref: Boolean = false) {
         // preference에 저장된 key값의 value를 가져오는 경우
         if (isInPref) {
-            firebaseRepository.saveUserInfo(key, PreferenceUtil.getString(context, key, ""))
+            firebaseRepository.saveUserInfo(key, PreferenceUtil.getString(context, key, ""), true)
             return
         }
 
         // preference가 아닌 단순 key, value를 firebaseDB에 저장하는 경우
-        firebaseRepository.saveUserInfo(key, value)
+        firebaseRepository.saveUserInfo(key, value, true)
     }
 
 }

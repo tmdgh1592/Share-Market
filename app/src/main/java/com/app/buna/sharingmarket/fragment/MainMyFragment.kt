@@ -5,17 +5,11 @@ import android.view.*
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.app.buna.sharingmarket.R
 import com.app.buna.sharingmarket.activity.MainActivity
-import com.app.buna.sharingmarket.adapter.ProductRecyclerAdapter
-import com.app.buna.sharingmarket.databinding.ActivityMainBinding
 import com.app.buna.sharingmarket.databinding.FragmentMainCategoryBinding
-import com.app.buna.sharingmarket.databinding.FragmentMainHomeBinding
 import com.app.buna.sharingmarket.viewmodel.MainViewModel
-import com.google.android.material.internal.NavigationMenu
 import com.google.android.material.snackbar.Snackbar
-import io.github.yavski.fabspeeddial.FabSpeedDial
 import org.koin.android.ext.android.get
 
 class MainMyFragment : Fragment() {
@@ -55,7 +49,7 @@ class MainMyFragment : Fragment() {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
-        inflater.inflate(R.menu.menu_main_home_tool_bar, menu)
+        inflater.inflate(R.menu.menu_home_tool_bar, menu)
     }
 
 

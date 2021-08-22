@@ -10,7 +10,8 @@ data class ProductItem(
     val uri: ArrayList<String>, // 이미지들 uri
     val title: String, // 게시글 제목
     val content: String, // 게시글 내용
-    val likeCount: Int // 좋아요 개수
+    val likeCount: Int, // 좋아요 개수
+    val isComplete: Boolean
 ) {
 
     val likeCountStr: String
