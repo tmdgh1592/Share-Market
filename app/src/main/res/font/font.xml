@@ -3,4 +3,13 @@
     <font android:font="@font/binggrae_bold"
         android:fontStyle="normal"
         android:fontWeight="400"/>
+    <font android:font="@font/wemp_bold"
+        android:fontStyle="normal"
+        android:fontWeight="400" />
+    <font android:font="@font/wemef_semibold"
+        android:fontStyle="normal"
+        android:fontWeight="400" />
+    <font android:font="@font/wemep_regular"
+        android:fontStyle="normal"
+        android:fontWeight="400" />
 </font-family>

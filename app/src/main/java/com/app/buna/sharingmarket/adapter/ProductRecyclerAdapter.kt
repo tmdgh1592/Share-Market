@@ -16,7 +16,6 @@ class ProductRecyclerAdapter(var productItemList: MutableLiveData<List<ProductIt
     class ProductViewHolder(val binding: ProductItemBinding): RecyclerView.ViewHolder(binding.root){
         fun bind(item: ProductItem) {
             binding.model = item
-            Log.d("ProductRecyclerAdapter", item.locationAndTime)
         }
     }
 

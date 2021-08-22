@@ -2,7 +2,6 @@ package com.app.buna.sharingmarket.fragment
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
@@ -12,9 +11,7 @@ import com.app.buna.sharingmarket.R
 import com.app.buna.sharingmarket.activity.MainActivity
 import com.app.buna.sharingmarket.activity.WriteActivity
 import com.app.buna.sharingmarket.adapter.ProductRecyclerAdapter
-import com.app.buna.sharingmarket.callbacks.FirebaseRepositoryCallback
 import com.app.buna.sharingmarket.databinding.FragmentMainHomeBinding
-import com.app.buna.sharingmarket.utils.FancyChocoBar
 import com.app.buna.sharingmarket.viewmodel.MainViewModel
 import com.google.android.material.internal.NavigationMenu
 import com.google.android.material.snackbar.Snackbar
@@ -57,7 +54,8 @@ class MainHomeFragment : Fragment() {
         // * 툴바 관련
         setHasOptionsMenu(true)
         toolbar = binding?.toolBar!!.also { (requireActivity() as MainActivity).setSupportActionBar(it) } // 액션바 지정
-        (requireActivity() as MainActivity).supportActionBar?.setDisplayShowTitleEnabled(false) // 타이틀 안보이게 하기
+        (requireActivity() as MainActivity).supportActionBar?.setDisplayShowTitleEnabled(false) // 레이아웃에서 타이틀 직접 만들었으므로 이건 False
+        /*toolbar.setTitleTextAppearance(requireContext(), R.style.titleTextStyle) // 타이틀 font 지정*/
 
 
         /* Fab 버튼 관련 */

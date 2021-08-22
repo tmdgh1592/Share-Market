@@ -5,8 +5,7 @@ import com.app.buna.sharingmarket.callbacks.FirebaseRepositoryCallback
 import com.app.buna.sharingmarket.model.items.ProductItem
 import com.app.buna.sharingmarket.utils.FancyChocoBar
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.*
 import com.google.firebase.firestore.FirebaseFirestore
 
 class FirebaseRepository {
@@ -36,6 +35,29 @@ class FirebaseRepository {
                 .setValue(data)
 
         }
+    }
+
+
+    // 파이어베이스 DB는 비동기로 실행되기 때문에 infoData 변수가 초기화되지 않을 수도 있음
+    // 이 부분 수정해줘야 함
+    fun getUserInfo(uid: String, key: String): String? {
+
+        var infoData: String? = null
+
+        firebaseDatabaseinstance.getReference("users").child(uid).child(key).addListenerForSingleValueEvent(
+            object: ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val data = snapshot.getValue(String::class.java)
+                    Log.d("FirebaseRepository", data)
+                    infoData = data
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    Log.d("FirebaseRepository", "Canceled")
+                }
+            }
+        )
+        return infoData
     }
 
     // 파이어 스토어에 제품 게시글 등록

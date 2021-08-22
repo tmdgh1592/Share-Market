@@ -35,12 +35,40 @@
     <string name="upload_success">게시글을 성공적으로 등록하였습니다.</string>
     <string name="upload_fail">알 수 없는 오류로 업로드에 실패하였습니다.</string>
 
+    <string name="write_activity_toolbar_title">무료나눔 글쓰기</string>
+    <string name="done">완료</string>
+
+    <string name="title">제목</string>
+    <string name="category">카테고리</string>
+    <string name="content">나눔하실 물건에 대한 설명을 입력해주세요 :D\n\nEx) 안 쓰는 키보드 무료로 나눠드립니다!\n무료인 대신 택배는 착불입니다.\n채팅으로 연락주세요~^^</string>
+
+    <string name="give">드릴게요!</string>
+    <string name="need">필요해요!</string>
+
     <!--  \&quot -> "  //  \&#160 -> white_space  -->
     <!--" 개인이신가요? "-->
     <string name="personal_information">\&quot; 개인이신가요? &#160;\&quot;&#160;\n\n쓰지 않는 물건들을 버리지 말고 주변 이웃과 서로 나누어 보세요! 나눔을 통해 환경을 개선할 수 있으며, 회원님 또한 누군가의 나눔을 받을 수 있답니다.</string>
     <string name="agency_information">\&quot; 기관이신가요? &#160;\&quot;&#160;\n\n기관은 보육원, 요양원, 고아원 등 모든 복지 시설에 해당됩니다. 시설 운영에 필요한 물품들을 개인이나 기업에서 공유받을 수 있답니다.</string>
     <string name="company_information">\&quot; 기업이신가요? &#160;\&quot;&#160;\n\n기업은 기관이 필요한 물품들을 나누어줌으로써 사회 공헌과 더불어 기부금 영수증을 발급받을 수 있답니다! 기부금 영수증에 쓰여진 금액만큼 세금을 감면받을 수 있습니다.</string>
 
+    <string-array name="category">
+        <item>가전디지털</item>
+        <item>패션의류/잡화</item>
+        <item>출산/유아동</item>
+        <item>식품</item>
+        <item>뷰티</item>
+        <item>주방용품</item>
+        <item>생활용품</item>
+        <item>홈인테리어</item>
+        <item>스포츠/레저</item>
+        <item>자동차용품</item>
+        <item>도서/음반/DVD</item>
+        <item>완구/취미</item>
+        <item>문구/오피스</item>
+        <item>헬스</item>
+        <item>여행/티켓</item>
+        <item>기타 물품</item>
+    </string-array>
 
     <string name="title_activity_ka_kao_web_view">KaKaoWebView</string>
 

@@ -49,9 +49,10 @@ android {
 dependencies {
 
     /* Koin */
-    implementation "org.koin:koin-androidx-scope:2.1.5"
-    implementation "org.koin:koin-androidx-viewmodel:2.1.5"
-    implementation "org.koin:koin-androidx-fragment:2.1.5"
+    def koin_version = '2.2.0-alpha-1'
+    implementation "org.koin:koin-androidx-scope:$koin_version"
+    implementation "org.koin:koin-androidx-viewmodel:$koin_version"
+    implementation "org.koin:koin-androidx-fragment:$koin_version"
 
     /* Firebase */
     implementation 'com.google.firebase:firebase-analytics-ktx'
@@ -96,6 +97,11 @@ dependencies {
     /*Glide*/
     implementation 'com.github.bumptech.glide:glide:4.12.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.12.0'
+
+    /* Spinner Dialog */
+    implementation 'com.github.hamzaahmedkhan:SpinnerDialog:v1.0'
+
+    /* Gallery Photo Picker */
 
     /* Circle image view */
     implementation 'de.hdodenhof:circleimageview:3.1.0'

@@ -11,9 +11,9 @@
     <color name="gray_50">#80535353</color>
     <color name="gray_70">#B3535353</color>
     <color name="gray_20">#33535353</color>
-    <color name="white">#FFFFFFFF</color>
-    <color name="black_transparent">#CC000000</color>
 
+    <color name="white">#FFFFFFFF</color>
+    <color name="pressed_white">#F8F8F8</color>
     <!--my color-->
     <color name="app_green">#FF9ACE97</color>
     <color name="app_pressed_green">#8AC886</color>
@@ -21,5 +21,7 @@
     <color name="facebook_login_pressed">#0075EC</color>
     <color name="kakao_login">#FEE339</color>
     <color name="kakao_login_pressed">#F8DD31</color>
+    <color name="black_transparent">#CC000000</color>
+    <color name="control_hight_light">#0A535353</color>
 
 </resources>
