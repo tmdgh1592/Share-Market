@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="65dp"
+    android:layout_height="65dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/picked_photo_border"
+    android:layout_marginLeft="@dimen/layout_frame_horizontal_margin">
+
+
+    <ImageView
+        android:id="@+id/photo_image_view"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:background="@drawable/radius_shape"
+        android:clickable="true"
+        android:layout_centerInParent="true"
+        android:scaleType="fitXY"
+        android:src="@drawable/download" />
+    <ImageView
+        android:id="@+id/photo_delete_btn"
+        android:layout_width="18dp"
+        android:layout_height="18dp"
+        android:src="@drawable/close_icon"
+        android:layout_alignParentTop="true"
+        android:clickable="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="2dp"
+        android:layout_marginRight="2dp"/>
+
+</RelativeLayout>

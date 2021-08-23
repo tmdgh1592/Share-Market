@@ -11,7 +11,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.app.buna.sharingmarket.CODE.Companion.API_COMPLETED_FINISH
+import com.app.buna.sharingmarket.REQUEST_CODE.Companion.API_COMPLETED_FINISH
 import com.app.buna.sharingmarket.R
 import com.app.buna.sharingmarket.adapter.LocationRecyclerAdapter
 import com.app.buna.sharingmarket.databinding.FragmentSecondInitialBinding

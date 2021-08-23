@@ -1,26 +1,35 @@
 package com.app.buna.sharingmarket.activity
 
-import android.os.Bundle
+import android.content.Intent
+import android.os.*
+import android.util.Log
+import android.view.LayoutInflater
 import android.view.inputmethod.InputMethodManager
 import android.widget.RadioGroup
 import androidx.annotation.IdRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.app.buna.sharingmarket.R
+import com.app.buna.sharingmarket.REQUEST_CODE
 import com.app.buna.sharingmarket.callbacks.FirebaseRepositoryCallback
 import com.app.buna.sharingmarket.databinding.ActivityWriteBinding
 import com.app.buna.sharingmarket.model.items.ProductItem
+import com.app.buna.sharingmarket.repository.PreferenceUtil
 import com.app.buna.sharingmarket.utils.FancyChocoBar
+import com.app.buna.sharingmarket.utils.FancyToastUtil
+import com.app.buna.sharingmarket.utils.NetworkStatus
 import com.app.buna.sharingmarket.viewmodel.WriteViewModel
+import com.bumptech.glide.Glide
 import com.github.hamzaahmedkhan.spinnerdialog.OnSpinnerOKPressedListener
 import com.github.hamzaahmedkhan.spinnerdialog.SpinnerDialogFragment.Companion.newInstance
 import com.github.hamzaahmedkhan.spinnerdialog.SpinnerModel
-
+import com.opensooq.supernova.gligar.GligarPicker
+import kotlinx.android.synthetic.main.picked_photo_view.view.*
 
 private var binding: ActivityWriteBinding? = null
 private var vm: WriteViewModel? = null
-
 
 class WriteActivity : AppCompatActivity(), FirebaseRepositoryCallback {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -60,7 +69,15 @@ class WriteActivity : AppCompatActivity(), FirebaseRepositoryCallback {
         spinnerDialogFragment.buttonText = getString(R.string.done)
         spinnerDialogFragment.themeColorResId = R.color.app_green
 
-
+        /* 갤러리 포토 피커 */
+        binding?.photoAddBtn?.setOnClickListener {
+            GligarPicker()
+                .requestCode(REQUEST_CODE.IMAGE_PICKER_REQUEST_CODE)
+                .withActivity(this)
+                .cameraDirect(false) // 열자마자 바로 카메라로 이동할지 여부
+                .limit(5) // 이미지 선택 개수 제한
+                .show()
+        }
 
         // 카테고리 스피너 다이얼로그
         binding?.categorySpinner?.setOnClickListener {
@@ -75,43 +92,85 @@ class WriteActivity : AppCompatActivity(), FirebaseRepositoryCallback {
 
         // 완료 버튼 -> 게시글 업로드
         binding?.doneBtn?.setOnClickListener {
-            // ex) ProductItem("1", "","Test1","","행신동","1분 전", ArrayList(),"", "", 10, false)
             hideKeyBoard()
+
+            val location = PreferenceUtil.getString(this, "jibun", "null")
+            val title = binding?.titleEditText?.text.toString()
+            val content = binding?.contentEditText?.text.toString()
+
+            if (title.isEmpty()) { // 제목이 비어 있는 경우
+                FancyChocoBar(this).showOrangeSnackBar(getString(R.string.title_empty))
+                return@setOnClickListener
+            } else if (title.length < 2) { // 제목 길이가 2글자 미만인 경우
+                FancyChocoBar(this).showOrangeSnackBar(getString(R.string.title_not_enough))
+                return@setOnClickListener
+            } else if (content.isEmpty()) { // 내용이 비어 있는 경우
+                FancyChocoBar(this).showOrangeSnackBar(getString(R.string.content_empty))
+                return@setOnClickListener
+            } else if (content.length < 10) { // 내용이 충분하지 않은 경우
+                FancyChocoBar(this).showOrangeSnackBar(getString(R.string.content_not_enough))
+                return@setOnClickListener
+            } else if (vm?.category == null) { // 카테고리가 선택되지 않은 경우
+                FancyChocoBar(this).showOrangeSnackBar(getString(R.string.category_empty))
+                return@setOnClickListener
+            } else if (vm?.isGive == null) { // 라디오 버튼을 선택하지 않은 경우
+                FancyChocoBar(this).showOrangeSnackBar(getString(R.string.option_empty))
+                return@setOnClickListener
+            } else if (!NetworkStatus.isConnectedInternet(this)) { // 인터넷 연결이 되어있지 않은 경우
+                FancyChocoBar(this).showOrangeSnackBar(getString(R.string.internet_check))
+                return@setOnClickListener
+            } else if (location == null) { // 지역 데이터를 가져오지 못한 경우
+                FancyChocoBar(this).showAlertSnackBar(getString(R.string.upload_fail))
+                return@setOnClickListener
+            }
+
             val item = ProductItem(
                 owner = vm?.getUserName()!!,  // 상품 주인
                 category = vm?.category!!, // 카테고리
-                location = vm?.getUserInfo("jibun")!!, // 지역
-                time = System.currentTimeMillis().toString(), // 게시글 업로드 시간
-                uri = ArrayList(), // 이미지들 uri
-                title = binding?.titleEditText?.text.toString(), // 게시글 제목
-                content = binding?.contentEditText?.text.toString(), // 게시글 내용
+                location = location!!, // 지역
+                time = System.currentTimeMillis(), // 게시글 업로드 시간
+                uri = vm?.imagePaths!!, // 이미지 갤러리 path
+                title = title, // 게시글 제목
+                content = content, // 게시글 내용
                 likeCount = 0, // 좋아요 개수
                 isComplete = false, // 거래 완료된지 여부
-                isGive = vm?.isGive!! // 주는건지 받는건지
+                isGive = vm?.isGive!!, // 주는건지 받는건지
+                isExchange = false // 무료나눔 Activity이기 때문에 교환은 false 처리
             )
             vm?.uploadProduct(item, this)
+
         }
 
         // Radio Button (드릴게요!, 필요해요!)
-        binding?.typeRadioGroup?.setOnCheckedChangeListener(object : RadioGroup.OnCheckedChangeListener{
+        binding?.typeRadioGroup?.setOnCheckedChangeListener(object :
+            RadioGroup.OnCheckedChangeListener {
             override fun onCheckedChanged(group: RadioGroup?, @IdRes id: Int) {
                 hideKeyBoard()
-                when(id) {
+                when (id) {
                     R.id.radio_give -> vm?.isGive = true
                     R.id.radio_need -> vm?.isGive = false
                 }
             }
         })
+
+        /* 이미지 개수가 달라지면 옵저버가 감지하고 이미지 개수 뷰 갱신 */
+        vm?.imageCount?.observe(this, Observer {
+            binding?.photoCountText?.text = "${it}/5"
+        })
+
     }
 
     /* Firebase 업로드에 성공한 경우 callback 지정 */
-    override fun callbackForSuccessfulUploading() {
-        FancyChocoBar(this).showSnackBar(getString(R.string.upload_success))
+    override fun callbackForSuccessfulUploading(uid: String) {
+        vm?.saveProductImage(vm?.imagePaths!!, uid)
+        FancyToastUtil(this).showSuccess(getString(R.string.upload_success))
+        finish() // 업로드 성공시 작성 액티비티 종료
     }
 
     /* Firebase 업로드에 실패한 경우 callback 지정 */
     override fun callbackForFailureUploading() {
-        FancyChocoBar(this).showAlertSnackBar(getString(R.string.upload_fail))
+        FancyToastUtil(this).showFail(getString(R.string.upload_fail))
+        finish() // 업로드 성공시 작성 액티비티 종료
     }
 
     // 키보드 닫기
@@ -120,5 +179,57 @@ class WriteActivity : AppCompatActivity(), FirebaseRepositoryCallback {
             binding?.titleEditText?.windowToken,
             0
         )
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode != RESULT_OK) {
+            return
+        }
+
+        when (requestCode) {
+            REQUEST_CODE.IMAGE_PICKER_REQUEST_CODE -> { // 이미지 피커 :: 갤러리에서 사진을 가져온 경우
+                val newData = data?.extras?.getStringArray(GligarPicker.IMAGES_RESULT)!! // 선택한 새로운 이미지 가져오기
+                var totalSize: Int = vm?.imageCount?.value!! // 먼저 기존에 저장된 개수 가져오고 그 후에 가져온 개수만큼 더하기
+
+                val tempImgPath = ArrayList<String>() // 전달할 Image path(이미지 경로) arraylist
+                //// imgPath.addAll(newData) // image path 받아오기
+
+                for (data in newData) { // 새로운 데이터가 5개를 초과하는지 확인하면서 반복문을 돌림
+                    if ((totalSize + 1) > 5) {
+                        FancyToastUtil(this).showFail("이미지는 총 5개만 가져올 수 있어요!")
+                        break
+                    }
+                    totalSize += 1 // 전체 이미지에 개수 더하기
+                    tempImgPath.add(data) // 임시 경로 리스트에 추가
+                    vm?.imagePaths?.add(data) // 받아온 이미지 경로를 ViewModel의 imagePaths에 추가
+                }
+
+
+                if (!tempImgPath.isNullOrEmpty()) { // 이미지를 한개라도 고른 경우
+                    Log.d("WriteActivity", tempImgPath.size.toString())
+
+                    // 새로 추가된 이미지 개수만큼 View 추가
+                    tempImgPath.forEach { path ->
+                        // Photo View
+                        val photoView = LayoutInflater.from(this).inflate(R.layout.picked_photo_view, binding?.scrollInnerView, false)
+                        Glide.with(this).load(path).into(photoView.photo_image_view)
+                        photoView.photo_delete_btn.setOnClickListener {
+                            vm?.imagePaths?.remove(path) // ViewModel의 Image Array에서 해당 이미지 원소 제거
+                            vm?.imageCount?.postValue(vm?.imageCount?.value!! - 1) // ViewModel의 이미지 개수 값 변경
+                            binding?.scrollInnerView?.removeView(photoView) // View 제거
+
+                            // 삭제된 후 남은 이미지 개수 출력
+                            Log.d("WriteActivity", "Image count after delete : ${vm?.imagePaths?.size.toString()}")
+                        }
+                        binding?.scrollInnerView?.addView(photoView) // Scroll View에 photo view 추가
+                    }
+                }
+
+                vm?.imageCount?.postValue(totalSize) // 기존 이미지 개수와 새로 가져온 이미지 개수를 합침
+            }
+        }
+
+
     }
 }

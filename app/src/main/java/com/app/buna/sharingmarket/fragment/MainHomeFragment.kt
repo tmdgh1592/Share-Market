@@ -74,7 +74,7 @@ class MainHomeFragment : Fragment() {
                         }
                         startActivity(intent) // 게시글 작성 액티비티 실행
                     }
-                    R.id.action_shopping -> { // fab 쇼핑버튼 버튼 클릭시
+                    R.id.action_exchange -> { // fab 쇼핑버튼 버튼 클릭시
                         Snackbar.make(toolbar,"쇼핑하기", Snackbar.LENGTH_SHORT).show()
                     }
                 }

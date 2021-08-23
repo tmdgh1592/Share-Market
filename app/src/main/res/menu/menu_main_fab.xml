@@ -2,10 +2,10 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/action_shopping"
-        android:icon="@drawable/fab_shopping_icon"
+        android:id="@+id/action_exchange"
+        android:icon="@drawable/fab_exchange_icon"
         app:iconTint="@color/white"
-        android:title="@string/fab_shopping"/>
+        android:title="@string/fab_exchange"/>
     <item
         android:id="@+id/action_write"
         android:icon="@drawable/fab_write_icon"

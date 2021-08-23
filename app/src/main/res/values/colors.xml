@@ -14,6 +14,7 @@
 
     <color name="white">#FFFFFFFF</color>
     <color name="pressed_white">#F8F8F8</color>
+    <color name="enabled_white">#E1E1E1</color>
     <!--my color-->
     <color name="app_green">#FF9ACE97</color>
     <color name="app_pressed_green">#8AC886</color>
@@ -24,4 +25,10 @@
     <color name="black_transparent">#CC000000</color>
     <color name="control_hight_light">#0A535353</color>
 
+    <!--gallery image picker color-->
+    <color name="counter_bg">@color/app_green</color>
+    <color name="toolbar_bg">@color/app_green</color>
+    <color name="permission_alert_color">#ffffff</color>
+    <color name="permission_alert_bg">@color/app_green</color>
+    <color name="change_album_color">#ffffff</color>
 </resources>

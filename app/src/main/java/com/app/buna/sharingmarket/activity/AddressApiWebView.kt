@@ -9,7 +9,7 @@ import android.webkit.JavascriptInterface
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.appcompat.app.AppCompatActivity
-import com.app.buna.sharingmarket.CODE
+import com.app.buna.sharingmarket.REQUEST_CODE
 import com.app.buna.sharingmarket.R
 import com.app.buna.sharingmarket.repository.PreferenceUtil
 
@@ -54,7 +54,7 @@ class AddressApiWebView : AppCompatActivity() {
             Log.d("AddressApiWebView", jibun!!) // 경기 고양시 덕양구 행신동 633-36
 
 
-            setResult(CODE.API_COMPLETED_FINISH, Intent().putExtra("jibun", jibun))
+            setResult(REQUEST_CODE.API_COMPLETED_FINISH, Intent().putExtra("jibun", jibun))
             finish() // 주소 선택시 액티비티 종료
         }
     }

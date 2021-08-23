@@ -1,5 +1,6 @@
 package com.app.buna.sharingmarket.activity
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -92,4 +93,8 @@ class MainActivity : AppCompatActivity() {
         fragmentTransaction.replace(R.id.main_frame_layout, fragment).commit()
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+    }
 }

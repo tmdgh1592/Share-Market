@@ -7,12 +7,11 @@ import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.app.buna.sharingmarket.CODE
+import com.app.buna.sharingmarket.REQUEST_CODE
 import com.app.buna.sharingmarket.R
 import com.app.buna.sharingmarket.fragment.InitialFirstFragment
 import com.app.buna.sharingmarket.fragment.InitialFourthFragment
 import com.app.buna.sharingmarket.fragment.InitialThirdFragment
-import com.app.buna.sharingmarket.repository.FirebaseRepository
 import com.app.buna.sharingmarket.repository.PreferenceUtil
 import com.app.buna.sharingmarket.viewmodel.InitialViewModel
 import com.facebook.CallbackManager
@@ -78,13 +77,13 @@ class InitialActivity : AppCompatActivity() {
             callbackManager?.onActivityResult(requestCode, resultCode, data)
         }
         // 다음 주소에서 주소 선택했을 때 :: AddressApiWebView
-        if (requestCode == CODE.API_COMPLETED_FINISH) {
+        if (requestCode == REQUEST_CODE.API_COMPLETED_FINISH) {
             var jibun: String? = data?.getStringExtra("jibun")
 
             if (jibun != null && jibun != "") {
                 replaceFragment(InitialThirdFragment())
             }
-        } else if (requestCode == CODE.RC_SIGN_IN) {
+        } else if (requestCode == REQUEST_CODE.RC_SIGN_IN) {
             val task = GoogleSignIn.getSignedInAccountFromIntent(data)
 
             try {

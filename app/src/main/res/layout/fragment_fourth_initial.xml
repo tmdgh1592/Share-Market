@@ -58,7 +58,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="120dp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                android:visibility="gone">
+                android:visibility="gone"
+                android:scrollbars="none">
 
                 <LinearLayout
                     android:layout_width="wrap_content"
