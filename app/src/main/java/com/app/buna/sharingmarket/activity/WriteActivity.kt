@@ -1,5 +1,6 @@
 package com.app.buna.sharingmarket.activity
 
+import android.content.DialogInterface
 import android.content.Intent
 import android.os.*
 import android.util.Log
@@ -7,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.inputmethod.InputMethodManager
 import android.widget.RadioGroup
 import androidx.annotation.IdRes
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
@@ -129,7 +131,7 @@ class WriteActivity : AppCompatActivity(), FirebaseRepositoryCallback {
                 category = vm?.category!!, // 카테고리
                 location = location!!, // 지역
                 time = System.currentTimeMillis(), // 게시글 업로드 시간
-                uri = vm?.imagePaths!!, // 이미지 갤러리 path
+                //uri = vm?.imagePaths!!, // 이미지 갤러리 path
                 title = title, // 게시글 제목
                 content = content, // 게시글 내용
                 likeCount = 0, // 좋아요 개수
@@ -157,6 +159,10 @@ class WriteActivity : AppCompatActivity(), FirebaseRepositoryCallback {
         vm?.imageCount?.observe(this, Observer {
             binding?.photoCountText?.text = "${it}/5"
         })
+
+        binding?.backBtn?.setOnClickListener {
+            showExitDialog()
+        }
 
     }
 
@@ -189,7 +195,8 @@ class WriteActivity : AppCompatActivity(), FirebaseRepositoryCallback {
 
         when (requestCode) {
             REQUEST_CODE.IMAGE_PICKER_REQUEST_CODE -> { // 이미지 피커 :: 갤러리에서 사진을 가져온 경우
-                val newData = data?.extras?.getStringArray(GligarPicker.IMAGES_RESULT)!! // 선택한 새로운 이미지 가져오기
+                val newData =
+                    data?.extras?.getStringArray(GligarPicker.IMAGES_RESULT)!! // 선택한 새로운 이미지 가져오기
                 var totalSize: Int = vm?.imageCount?.value!! // 먼저 기존에 저장된 개수 가져오고 그 후에 가져온 개수만큼 더하기
 
                 val tempImgPath = ArrayList<String>() // 전달할 Image path(이미지 경로) arraylist
@@ -212,7 +219,8 @@ class WriteActivity : AppCompatActivity(), FirebaseRepositoryCallback {
                     // 새로 추가된 이미지 개수만큼 View 추가
                     tempImgPath.forEach { path ->
                         // Photo View
-                        val photoView = LayoutInflater.from(this).inflate(R.layout.picked_photo_view, binding?.scrollInnerView, false)
+                        val photoView = LayoutInflater.from(this)
+                            .inflate(R.layout.picked_photo_view, binding?.scrollInnerView, false)
                         Glide.with(this).load(path).into(photoView.photo_image_view)
                         photoView.photo_delete_btn.setOnClickListener {
                             vm?.imagePaths?.remove(path) // ViewModel의 Image Array에서 해당 이미지 원소 제거
@@ -220,7 +228,10 @@ class WriteActivity : AppCompatActivity(), FirebaseRepositoryCallback {
                             binding?.scrollInnerView?.removeView(photoView) // View 제거
 
                             // 삭제된 후 남은 이미지 개수 출력
-                            Log.d("WriteActivity", "Image count after delete : ${vm?.imagePaths?.size.toString()}")
+                            Log.d(
+                                "WriteActivity",
+                                "Image count after delete : ${vm?.imagePaths?.size.toString()}"
+                            )
                         }
                         binding?.scrollInnerView?.addView(photoView) // Scroll View에 photo view 추가
                     }
@@ -229,7 +240,22 @@ class WriteActivity : AppCompatActivity(), FirebaseRepositoryCallback {
                 vm?.imageCount?.postValue(totalSize) // 기존 이미지 개수와 새로 가져온 이미지 개수를 합침
             }
         }
+    }
 
+    fun showExitDialog() {
+        AlertDialog.Builder(this)
+            .setMessage(getString(R.string.write_dialog))
+            .setPositiveButton(
+                getString(R.string.ok), DialogInterface.OnClickListener { dialog, id ->
+                    finish()
+                })
+            .setNegativeButton(
+                getString(R.string.cancel), DialogInterface.OnClickListener { dialog, id -> })
+            .create().show()
+    }
 
+    override fun onBackPressed() {
+        showExitDialog()
     }
 }
+

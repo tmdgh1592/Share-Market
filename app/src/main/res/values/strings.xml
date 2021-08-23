@@ -88,6 +88,9 @@
 
     <string name="title_activity_ka_kao_web_view">KaKaoWebView</string>
 
+    <string name="back_press">한 번 더 누르면 쉐어마켓이 종료됩니다.</string>
+
+    <string name="write_dialog">글쓰기를 종료하시겠습니까?</string>
 
     <!--facebook login-->
     <string name="facebook_app_id">1183791935429922</string>

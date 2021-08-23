@@ -11,14 +11,16 @@ import com.app.buna.sharingmarket.R
 import com.app.buna.sharingmarket.activity.MainActivity
 import com.app.buna.sharingmarket.activity.WriteActivity
 import com.app.buna.sharingmarket.adapter.ProductRecyclerAdapter
+import com.app.buna.sharingmarket.callbacks.FirebaseGetStorageDataCallback
 import com.app.buna.sharingmarket.databinding.FragmentMainHomeBinding
+import com.app.buna.sharingmarket.model.items.ProductItem
 import com.app.buna.sharingmarket.viewmodel.MainViewModel
 import com.google.android.material.internal.NavigationMenu
 import com.google.android.material.snackbar.Snackbar
 import io.github.yavski.fabspeeddial.FabSpeedDial
 import org.koin.android.ext.android.get
 
-class MainHomeFragment : Fragment() {
+class MainHomeFragment : Fragment(){
 
     private var binding: FragmentMainHomeBinding? = null
     private val vm: MainViewModel by lazy {
@@ -46,8 +48,13 @@ class MainHomeFragment : Fragment() {
 
     fun initView() {
         with(binding) {
-            this?.productRecyclerView?.adapter = ProductRecyclerAdapter(vm.productItems, vm)
+            this?.productRecyclerView?.adapter = ProductRecyclerAdapter(vm)
             this?.productRecyclerView?.layoutManager = LinearLayoutManager(requireContext())
+            vm?.productList = vm?.getProductData(object : FirebaseGetStorageDataCallback {
+                override fun complete(data: ArrayList<ProductItem>) {
+                    (binding?.productRecyclerView?.adapter as ProductRecyclerAdapter).updateData(data)
+                }
+            })
         }
 
         
@@ -85,6 +92,8 @@ class MainHomeFragment : Fragment() {
                 return
             }
         })
+
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

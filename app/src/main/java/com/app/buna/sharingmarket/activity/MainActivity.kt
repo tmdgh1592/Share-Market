@@ -2,6 +2,7 @@ package com.app.buna.sharingmarket.activity
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -24,6 +25,7 @@ class MainActivity : AppCompatActivity() {
             .get(MainViewModel::class.java)
     }
     private lateinit var tabLayout: TabLayout
+    private var regTime = 0L
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -96,5 +98,15 @@ class MainActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
+    }
+
+    override fun onBackPressed() {
+        val curTime = System.currentTimeMillis()
+        if((curTime - regTime) > 2000) {
+            Toast.makeText(this, getString(R.string.back_press), Toast.LENGTH_SHORT).show()
+            regTime = curTime
+            return
+        }
+        finish()
     }
 }

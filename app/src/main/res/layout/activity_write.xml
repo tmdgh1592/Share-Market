@@ -25,6 +25,7 @@
             android:paddingLeft="@dimen/layout_frame_horizontal_margin"
             android:paddingRight="@dimen/layout_frame_horizontal_margin">
             <ImageView
+                android:id="@+id/back_btn"
                 android:layout_width="@dimen/toolbar_back_btn"
                 android:layout_height="@dimen/toolbar_back_btn"
                 android:clickable="true"

@@ -2,10 +2,9 @@ package com.app.buna.sharingmarket.repository
 
 import android.net.Uri
 import android.util.Log
+import com.app.buna.sharingmarket.callbacks.FirebaseGetStorageDataCallback
 import com.app.buna.sharingmarket.callbacks.FirebaseRepositoryCallback
 import com.app.buna.sharingmarket.model.items.ProductItem
-import com.app.buna.sharingmarket.utils.FancyChocoBar
-import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.google.firebase.firestore.FirebaseFirestore
@@ -26,7 +25,7 @@ class FirebaseRepository {
         val firebaseStoreInstance = FirebaseFirestore.getInstance()
 
         // Firebase Storage instacne 싱글톤 생성
-        val firebaseImgStorage = FirebaseStorage.getInstance()
+        val firebaseStorage = FirebaseStorage.getInstance()
     }
 
     // 유저 정보에 대한 데이터를 저장하는 메소드
@@ -84,17 +83,20 @@ class FirebaseRepository {
             }
     }
 
-    fun saveProductImg(imgPath: ArrayList<String>, boardUid: String) {
+    // Firebase Storage에 이미지 저장
+    fun saveProductImg(imgPath: ArrayList<String>, boardUid: String) { // boardUid는 FireStore의 랜덤 push값
         var num = 0
         val storageReference =
-            firebaseImgStorage.getReferenceFromUrl("gs://sharing-market.appspot.com")
-                .child("/product_images/${boardUid}/")
+            firebaseStorage.getReferenceFromUrl("gs://sharing-market.appspot.com")
+                .child("/product_images") // 파이어 스토리지의 상품 이미지 경로
 
         // 주의 사항 :: 맨 끝에 있는 child는 파일 명임
         imgPath.forEach { path ->
             val uri: Uri = Uri.fromFile(File(path))
             Log.d("FirebaseRepository", uri.toString())
-            val uploadTask: UploadTask = storageReference.child(num.toString()).putFile(uri) // 이미지 파일명을 num으로 지정
+            val uploadTask: UploadTask =
+                storageReference.child("/${boardUid}/").child(num.toString())
+                    .putFile(uri) // 이미지 파일명을 num으로 지정
 
             uploadTask.addOnSuccessListener { // 스토리지에 정상적으로 이미지를 저장한 경우
                 Log.d("FirebaseRepository", "Successful for uploading image")
@@ -104,6 +106,34 @@ class FirebaseRepository {
             num += 1
         }
 
+    }
+
+
+    // Firebase 스토리지에서 게시글 가져오기
+    fun getProductData(callback: FirebaseGetStorageDataCallback): ArrayList<ProductItem> {
+        val productList = ArrayList<ProductItem>()
+
+        firebaseStoreInstance.collection("Boards").get().addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                for (document in task.getResult()) { // 게시글 개수만큼 반복
+                    val item = document.toObject(ProductItem::class.java) // 가져온 Document를 ProductItem으로 캐스팅
+                    Log.d("Repository", item.category)
+                    // 이미지 경로 가져오기 :: error
+                    /*firebaseStorage.getReferenceFromUrl("gs://sharing-market.appspot.com")
+                        .child("/product_images/")
+                        .child(document.id)
+                        .downloadUrl.addOnCompleteListener {
+                            if (it.isSuccessful) {
+                                item.imgPath.add(it.result) // 가져온 이미지 Uri를 Data Class에 추가
+                                Log.d("FirebaseRepository", it.result.toString())
+                            }
+                        }*/
+                    productList.add(item) // 게시글 데이터 추가
+                }
+                callback.complete(productList)
+            }
+        }
+        return productList
     }
 
 }

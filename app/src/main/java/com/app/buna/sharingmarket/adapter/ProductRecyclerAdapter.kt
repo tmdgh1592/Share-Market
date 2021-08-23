@@ -11,7 +11,9 @@ import com.app.buna.sharingmarket.databinding.ProductItemBinding
 import com.app.buna.sharingmarket.model.items.ProductItem
 import com.app.buna.sharingmarket.viewmodel.MainViewModel
 
-class ProductRecyclerAdapter(var productItemList: MutableLiveData<List<ProductItem>>, var viewModel: MainViewModel) : RecyclerView.Adapter<ProductRecyclerAdapter.ProductViewHolder>(){
+class ProductRecyclerAdapter(var viewModel: MainViewModel) : RecyclerView.Adapter<ProductRecyclerAdapter.ProductViewHolder>(){
+
+    val productItemList = MutableLiveData<ArrayList<ProductItem>>(ArrayList())
 
     class ProductViewHolder(val binding: ProductItemBinding): RecyclerView.ViewHolder(binding.root){
         fun bind(item: ProductItem) {
@@ -33,7 +35,8 @@ class ProductRecyclerAdapter(var productItemList: MutableLiveData<List<ProductIt
         return productItemList?.value!!.size
     }
 
-    fun updateData() {
+    fun updateData(newList: ArrayList<ProductItem>) {
+        this.productItemList.value = newList
         notifyDataSetChanged()
     }
 
