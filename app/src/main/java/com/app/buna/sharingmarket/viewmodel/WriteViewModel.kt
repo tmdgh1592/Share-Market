@@ -41,7 +41,7 @@ class WriteViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun saveProductImage(imgPath: ArrayList<String>, boardUid: String) {
-        if(imgPath != null) {
+        if(imgPath != null && imgPath.size != 0) {
             FirebaseRepository.instance.saveProductImg(imgPath, boardUid)
         }
     }

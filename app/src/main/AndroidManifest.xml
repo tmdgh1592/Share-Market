@@ -59,7 +59,8 @@
         </activity>
         <activity android:name=".activity.Splash">
         </activity>
-        <activity android:name=".activity.MainActivity">
+        <activity android:name=".activity.MainActivity"
+            android:hardwareAccelerated="true">
         </activity>
     </application>
 

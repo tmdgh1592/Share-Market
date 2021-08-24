@@ -22,15 +22,12 @@ class MainViewModel(application: Application, val context: Context) : AndroidVie
         }
     }
 
-    val productItems = MutableLiveData<List<ProductItem>>()
-    var productList = ArrayList<ProductItem>()
+    val productItems = MutableLiveData<ArrayList<ProductItem>>(ArrayList())
 
-    init {
-        productItems.value = productList // MutableLiveData에 값 업데이트
-    }
 
-    fun getProductData(callback: FirebaseGetStorageDataCallback): ArrayList<ProductItem> {
-        return FirebaseRepository.instance.getProductData(callback)
+    // View Model의 product
+    fun getProductData(callback: FirebaseGetStorageDataCallback) {
+        FirebaseRepository.instance.getProductData(callback)
     }
 
 

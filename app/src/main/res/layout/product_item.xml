@@ -34,17 +34,17 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
-                <ImageView
+                <com.elyeproj.loaderviewlibrary.LoaderImageView
                     android:id="@+id/product_image_view"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:background="@drawable/radius_shape"
                     android:scaleType="fitXY"
-                    android:src="@drawable/download" />
+                    android:src="@drawable/no_image" />
             </androidx.cardview.widget.CardView>
 
             <!--제품 정보-->
-            <TextView
+            <com.elyeproj.loaderviewlibrary.LoaderTextView
                 android:id="@+id/item_name_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -52,7 +52,7 @@
                 android:layout_marginTop="4dp"
                 android:text="@{model.title}"
                 android:textColor="@color/black"
-                android:textSize="18sp"
+                android:textSize="17sp"
                 android:textStyle="bold"
                 android:maxLines="1"
                 android:ellipsize="end"
@@ -79,36 +79,40 @@
                     app:tint="@color/gray_20" />
 
                 <!--동네 및 등록 시간-->
-                <TextView
+                <com.elyeproj.loaderviewlibrary.LoaderTextView
                     android:id="@+id/location_and_time_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="4dp"
                     android:text="@{model.getLocationAndTime()}"
                     android:textColor="@color/gray_70"
+                    android:maxLines="1"
+                    android:ellipsize="end"
                     android:textSize="14sp" />
             </LinearLayout>
 
             <ImageView
                 android:id="@+id/heart_btn"
-                android:layout_width="18dp"
-                android:layout_height="18dp"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
                 android:layout_marginRight="3dp"
                 android:clickable="true"
                 android:heart_visible="@{model.likeCount}"
-                android:background="@drawable/like_heart"
+                android:src="@drawable/like_heart"
+                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintRight_toLeftOf="@+id/like_count"
-                 />
+                app:tint="@color/heart_color"/>
 
-            <TextView
+            <com.elyeproj.loaderviewlibrary.LoaderTextView
                 android:id="@+id/like_count"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:heart_count="@{model.likeCount}"
                 android:gravity="center"
                 android:textColor="@color/gray_70"
-                android:textSize="14sp"
+                android:textSize="13sp"
+                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintRight_toRightOf="parent"/>
 

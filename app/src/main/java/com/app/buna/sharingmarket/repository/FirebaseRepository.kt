@@ -1,5 +1,6 @@
 package com.app.buna.sharingmarket.repository
 
+import android.annotation.SuppressLint
 import android.net.Uri
 import android.util.Log
 import com.app.buna.sharingmarket.callbacks.FirebaseGetStorageDataCallback
@@ -9,7 +10,6 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.UploadTask
 import java.io.File
 
 class FirebaseRepository {
@@ -26,9 +26,12 @@ class FirebaseRepository {
 
         // Firebase Storage instacne 싱글톤 생성
         val firebaseStorage = FirebaseStorage.getInstance()
+        val productList = ArrayList<ProductItem>()
     }
 
-    // 유저 정보에 대한 데이터를 저장하는 메소드
+    var imgPathCnt = 0
+
+    // Realtime DB에 유저 정보 데이터를 저장하는 메소드
     fun saveUserInfo(key: String, data: String, update: Boolean) {
         // realtimeDB
         // 유저 정보 Reference
@@ -45,6 +48,25 @@ class FirebaseRepository {
                 .setValue(data)
 
         }
+    }
+
+    // Realtime DB에 상품 정보에 대한 데이터를 저장하는 메소드
+    @SuppressLint("LongLogTag")
+    fun saveImgPath(key: String, uri: Uri) {
+        // realtimeDB
+        // 상품 정보 Reference
+        firebaseDatabaseinstance.getReference("products") // product 정보
+            .child("img_path")
+            .child(key) // 게시글 Uid
+            .push()
+            .setValue(uri.toString()).addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    Log.d(
+                        "FirebaseRepository -> saveImgPath",
+                        "Successful Save ImgPath in 'img_path' Realtime Database\n${uri}"
+                    )
+                }
+            }
     }
 
 
@@ -77,31 +99,36 @@ class FirebaseRepository {
             .add(product)
             .addOnSuccessListener {
                 saveUserInfo("board_uid", it.id, false) // 성공시 realtimeDB의 유저 데이터 목록에 해당 게시글 id 저장
+                //saveImgPath(it.id, )
                 callback.callbackForSuccessfulUploading(it.id) // MainHomeFragment -> 성공 callback
             }.addOnFailureListener {
-                callback.callbackForFailureUploading() // MainHomeFragment -> 성공 callback
+                callback.callbackForFailureUploading() // MainHomeFragment -> 실패 callback
             }
     }
 
     // Firebase Storage에 이미지 저장
-    fun saveProductImg(imgPath: ArrayList<String>, boardUid: String) { // boardUid는 FireStore의 랜덤 push값
+    fun saveProductImg(
+        imgPath: ArrayList<String>,
+        boardUid: String
+    ) { // boardUid는 FireStore의 랜덤 push값
         var num = 0
         val storageReference =
             firebaseStorage.getReferenceFromUrl("gs://sharing-market.appspot.com")
-                .child("/product_images") // 파이어 스토리지의 상품 이미지 경로
+                .child("/product_images").child("/${boardUid}/")
+                .child(num.toString()) // 파이어 스토리지의 상품 이미지 경로
 
         // 주의 사항 :: 맨 끝에 있는 child는 파일 명임
         imgPath.forEach { path ->
             val uri: Uri = Uri.fromFile(File(path))
-            Log.d("FirebaseRepository", uri.toString())
-            val uploadTask: UploadTask =
-                storageReference.child("/${boardUid}/").child(num.toString())
-                    .putFile(uri) // 이미지 파일명을 num으로 지정
+            Log.d("FirebaseRepository", "local path : ${uri}") // 기기에 저장되어 있는 이미지 파일 경로
 
-            uploadTask.addOnSuccessListener { // 스토리지에 정상적으로 이미지를 저장한 경우
-                Log.d("FirebaseRepository", "Successful for uploading image")
-            }.addOnFailureListener { // 스토리지에 이미지 저장을 실패한 경우
-                Log.d("FirebaseRepository", "Failure for uploading image")
+
+            storageReference.putFile(uri).addOnCompleteListener { task ->
+                if (task.isSuccessful) { // Storage에 이미지를 성공적으로 저장했다면
+                    storageReference.downloadUrl.addOnSuccessListener { uri ->
+                        saveImgPath(boardUid, uri) // 이미지 uri를 RealtimeDB에도 저장 (빠르게 가져오기 위함)
+                    }
+                }
             }
             num += 1
         }
@@ -109,31 +136,65 @@ class FirebaseRepository {
     }
 
 
-    // Firebase 스토리지에서 게시글 가져오기
-    fun getProductData(callback: FirebaseGetStorageDataCallback): ArrayList<ProductItem> {
-        val productList = ArrayList<ProductItem>()
 
+
+
+    /*
+    * Logic ::
+    * - Firebase는 비동기로 데이터를 처리하기 때문에 Listner를 통해서 작업이 완료된 후에 complete 메소드를 호출해야 함.
+    * - Storage에 접근해서 이미지를 하나하나 가져오기엔 속도가 느려 데이터를 대부분 가져오지 못함.
+    * - 따라서, Realtime Database에 products/img_path/{board_uid}에 이미지 링크를 저장.
+    * - 제품 데이터를 가져올 때 getProductData(), 먼저 FireStore에 접근해서 게시글 데이터를 가져오고,
+    * - 데이터를 가져왔다면 (get().addOnCompleteListner -> task.isSuccessful), 게시글 개수만큼 반복문 수행
+    * - 반복할 때, Database에 저장되어 있는 자식 이미지 url들을 child(document.id).get()으로 가져옴.
+    * - OnSuccessfulListner가 실행되면 null 체크를 통해 이미지 url 유무 확인.
+    * - item의 HashMap 필드 변수에 urlMap 저장
+    * - 이미지를 다 가져오면 (boardCount == task.getResult().size()) = (가져온 게시글 개수 == 전체 게시글 개수) callback() 호출
+    * - MainHomeFragment의 RecyclerView와 ViewModel에 가져온 데이터로 업데이트
+    * */
+
+    // Firebase 스토리지에서 게시글을 가져오기
+    fun getProductData(callback: FirebaseGetStorageDataCallback) {
+        productList.clear()
+        var boardCount = 0 // 지금까지 가져온 게시글 개수를 파악하기 위한 변수!!
         firebaseStoreInstance.collection("Boards").get().addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 for (document in task.getResult()) { // 게시글 개수만큼 반복
-                    val item = document.toObject(ProductItem::class.java) // 가져온 Document를 ProductItem으로 캐스팅
-                    Log.d("Repository", item.category)
-                    // 이미지 경로 가져오기 :: error
-                    /*firebaseStorage.getReferenceFromUrl("gs://sharing-market.appspot.com")
-                        .child("/product_images/")
+                    val item =
+                        document.toObject(ProductItem::class.java) // 가져온 Document를 ProductItem으로 캐스팅
+                    Log.d("Repository", "Item : ${item}") // 가져온 Board 아이템 정보 출력
+
+                    firebaseDatabaseinstance
+                        .getReference("products")
+                        .child("img_path")
                         .child(document.id)
-                        .downloadUrl.addOnCompleteListener {
-                            if (it.isSuccessful) {
-                                item.imgPath.add(it.result) // 가져온 이미지 Uri를 Data Class에 추가
-                                Log.d("FirebaseRepository", it.result.toString())
+                        .get()
+                        .addOnSuccessListener {
+                            var urlMap: HashMap<String, String>?
+                            if (it.getValue() == null) { // 가져온 이미지가 없으면
+                                urlMap = HashMap() // 빈 hashmap 생성
+                            }else { // 이미지가 한개라도 있으면
+                                urlMap = it.getValue() as HashMap<String, String> // DataSnapshot에서 이미지 Url들을 HashMap 형태로 캐스팅해서 가져옴
                             }
-                        }*/
-                    productList.add(item) // 게시글 데이터 추가
+
+                            boardCount += 1 // position 1 증가시키기
+                            urlMap?.values?.forEach { url ->
+                                Log.d("My Uri" + boardCount, url)
+                            }
+                            item.imgPath = urlMap!!
+                            productList.add(item)
+
+                            // 이미지를 모두 가져왔다면 callback 함수로 list 전달
+                            if (boardCount == task.getResult().size()) {
+                                callback.complete(productList)
+                                Log.d("FirebaseRepository", "Complete : ${productList.size}")
+                            }
+                        }
                 }
-                callback.complete(productList)
+
             }
         }
-        return productList
     }
+
 
 }

@@ -24,6 +24,7 @@
     <color name="kakao_login_pressed">#F8DD31</color>
     <color name="black_transparent">#CC000000</color>
     <color name="control_hight_light">#0A535353</color>
+    <color name="heart_color">#FF6358</color>
 
     <!--gallery image picker color-->
     <color name="counter_bg">@color/app_green</color>

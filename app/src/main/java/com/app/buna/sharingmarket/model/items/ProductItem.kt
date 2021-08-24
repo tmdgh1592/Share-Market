@@ -15,7 +15,8 @@ data class ProductItem(
     val isComplete: Boolean = false, // 거래 완료된지 여부
     val isGive: Boolean = false, // 주는건지, 필요한건지
     val isExchange: Boolean = false, // 교환인지, 아닌지
-    var imgPath: ArrayList<Uri> = ArrayList() // FireStorage에 저장된 이미지 경로
+    @Exclude
+    var imgPath: HashMap<String, String> = HashMap() // FireStorage에 저장된 이미지 경로
 ) {
 
 

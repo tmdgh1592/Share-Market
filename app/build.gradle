@@ -110,6 +110,9 @@ dependencies {
     /* speed dial fab */
     implementation 'io.github.yavski:fab-speed-dial:1.0.6'
 
+    /* Loading View */
+    implementation 'io.github.elye:loaderviewlibrary:3.0.0'
+
 
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
     implementation 'androidx.lifecycle:lifecycle-extensions:2.1.0'
