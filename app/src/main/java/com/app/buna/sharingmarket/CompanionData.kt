@@ -17,6 +17,12 @@ class CONST {
     }
 }
 
+class TAGS {
+    companion object {
+        const val TAG: String = "TAG"
+    }
+}
+
 class SOSOCK {
     companion object {
         const val PERSONAL = "PERSONAL"

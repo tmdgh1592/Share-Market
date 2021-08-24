@@ -41,8 +41,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     /*view 초기화*/
-    fun initView() {
 
+    fun initView() {
         // 초기 실행 fragment
         replaceFragment(MainHomeFragment.instacne) // Home Fragment
 

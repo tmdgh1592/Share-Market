@@ -44,7 +44,11 @@
 
     <string name="give">드릴게요!</string>
     <string name="need">필요해요!</string>
-    <string name="change">교환해요!</string>
+    <string name="exchange">교환해요!</string>
+
+    <string name="give_text">나눔</string>
+    <string name="need_text">필요</string>
+    <string name="exchange_text">물물교환</string>
 
     <!--  \&quot -> "  //  \&#160 -> white_space  -->
     <!--" 개인이신가요? "-->
@@ -92,12 +96,19 @@
 
     <string name="write_dialog">글쓰기를 종료하시겠습니까?</string>
 
+    <string name="chatting">채팅</string>
+    <string name="one_to_one_chat">1:1 채팅하기</string>
+
     <!--facebook login-->
     <string name="facebook_app_id">1183791935429922</string>
     <string name="fb_login_protocol_scheme">fb1183791935429922</string>
 
+    <string name="share_friends">공유하기</string>
+
     <!--kakao login-->
-    <string name="kakao_app_key">50431e61e927759909b150e64f67ff83</string>
+    <string name="kakao_app_key">88e95ac2b0aa09e4bf047d1b0bd99e6f</string>
+    <string name="kakao_scheme">kakao88e95ac2b0aa09e4bf047d1b0bd99e6f</string>
+    <string name="kakao_link">kakaolink.com</string>
 
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>

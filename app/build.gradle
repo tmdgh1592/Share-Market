@@ -10,6 +10,12 @@ allprojects {
             url 'https://www.jitpack.io'
         }
     }
+    subprojects {
+        repositories {
+            mavenCentral()
+            maven { url 'http://devrepo.kakao.com:8088/nexus/content/groups/public/' }
+        }
+    }
 }
 
 android {
@@ -26,6 +32,7 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
+
 
     buildFeatures {
         viewBinding true
@@ -107,12 +114,24 @@ dependencies {
     /* Circle image view */
     implementation 'de.hdodenhof:circleimageview:3.1.0'
 
+    /* Image Slider */
+    implementation 'com.github.smarteist:autoimageslider:1.4.0-appcompat'
+
     /* speed dial fab */
     implementation 'io.github.yavski:fab-speed-dial:1.0.6'
 
     /* Loading View */
     implementation 'io.github.elye:loaderviewlibrary:3.0.0'
 
+    /* Sticky Scroll View */
+    implementation 'com.github.amarjain07:StickyScrollView:1.0.2'
+
+    /* Kakao link */
+    //implementation "com.kakao.sdk:v2-user:2.4.2" // 카카오 로그인
+    //implementation "com.kakao.sdk:v2-talk:2.4.2" // 친구, 메시지(카카오톡)
+    //implementation "com.kakao.sdk:v2-story:2.4.2" // 카카오스토리
+    //implementation "com.kakao.sdk:v2-navi:2.4.2" // 카카오내비
+    implementation "com.kakao.sdk:v2-link:2.4.2" // 메시지(카카오링크)
 
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
     implementation 'androidx.lifecycle:lifecycle-extensions:2.1.0'

@@ -1,13 +1,21 @@
 package com.app.buna.sharingmarket
 
+import android.app.Application
+import android.content.res.Resources
+import android.graphics.Color
+import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import androidx.databinding.BindingAdapter
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
 import com.app.buna.sharingmarket.adapter.ProductRecyclerAdapter
 import com.app.buna.sharingmarket.model.items.ProductItem
+import com.bumptech.glide.Glide
+import com.elyeproj.loaderviewlibrary.LoaderTextView
 import com.facebook.login.widget.LoginButton
 import com.google.android.gms.common.SignInButton
 
@@ -42,6 +50,15 @@ object BindingAdapters {
             else -> {
                 imageView.visibility = View.VISIBLE
             }
+        }
+    }
+
+
+    @BindingAdapter("background_url")
+    @JvmStatic
+    fun bindImage(imageView: ImageView, url: String) {
+        if (url != "null") {
+            Glide.with(imageView.context).load(url).centerCrop().into(imageView)
         }
     }
 }

@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.app.buna.sharingmarket.viewmodel.BoardViewModel" />
+    </data>
+
+    <!--Toolbar(Coordinator Layout)와 Image Slider(Relative Layout)를 겹치게 하기 위함-->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:context=".activity.BoardActivity">
+
+            <com.google.android.material.appbar.AppBarLayout
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="@color/white"
+                android:theme="@style/Theme.ShareMarket">
+
+                <com.google.android.material.appbar.CollapsingToolbarLayout
+                    android:id="@+id/ctlActivityMaterialDetail"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:contentScrim="@color/white"
+                    app:expandedTitleMarginEnd="64dp"
+                    app:expandedTitleMarginStart="24dp"
+                    app:layout_scrollFlags="scroll|enterAlways">
+
+                    <androidx.appcompat.widget.Toolbar
+                        android:id="@+id/tool_bar"
+                        android:layout_width="match_parent"
+                        android:layout_height="?attr/actionBarSize"
+                        app:layout_collapseMode="parallax">
+
+                        <ImageView
+                            android:layout_width="@dimen/toolbar_back_btn"
+                            android:layout_height="@dimen/toolbar_back_btn"
+                            android:layout_alignParentLeft="true"
+                            android:layout_alignParentTop="true"
+                            android:layout_margin="@dimen/toolbar_icon_margin"
+                            android:clickable="true"
+                            android:src="@drawable/back_icon"
+                            app:tint="@color/black" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:maxLength="20"
+                            android:maxLines="1"
+                            android:singleLine="true"
+                            android:text="@{viewModel.item.title}"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/toolbar_text_size"
+                            android:textStyle="bold" />
+                    </androidx.appcompat.widget.Toolbar>
+
+                </com.google.android.material.appbar.CollapsingToolbarLayout>
+            </com.google.android.material.appbar.AppBarLayout>
+
+            <com.amar.library.ui.StickyScrollView
+                android:id="@+id/nsvActivityMaterialDetail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                app:stickyHeader="@+id/title_layout">
+
+                <!-- Image Slider를 위한 RelativeLayout -->
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <RelativeLayout
+                        android:id="@+id/slider_relative_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="300dp"
+                        android:layout_marginTop="2dp"
+                        android:gravity="center"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <com.smarteist.autoimageslider.SliderView
+                            android:id="@+id/imageSlider"
+                            android:layout_width="match_parent"
+                            android:layout_height="300dp"
+                            app:sliderAnimationDuration="600"
+                            app:sliderAutoCycleDirection="back_and_forth"
+                            app:sliderAutoCycleEnabled="true"
+                            app:sliderIndicatorAnimationDuration="600"
+                            app:sliderIndicatorGravity="center_horizontal|bottom"
+                            app:sliderIndicatorMargin="15dp"
+                            app:sliderIndicatorOrientation="horizontal"
+                            app:sliderIndicatorPadding="3dp"
+                            app:sliderIndicatorRadius="2dp"
+                            app:sliderIndicatorSelectedColor="#FFF"
+                            app:sliderIndicatorUnselectedColor="#805A5A5A"
+                            app:sliderScrollTimeInSec="1" />
+
+                        <ImageView
+                            android:id="@+id/image_view"
+                            android:layout_width="150dp"
+                            android:layout_height="150dp"
+                            android:layout_centerInParent="true"
+                            android:background="@drawable/default_item"
+                            android:scaleType="center" />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_alignParentBottom="true"
+                            android:background="@color/gray_20" />
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/title_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/white"
+                        app:layout_constraintTop_toBottomOf="@+id/slider_relative_layout">
+
+                        <!-- 게시글 작성자 정보 Start -->
+
+                        <com.elyeproj.loaderviewlibrary.LoaderImageView
+                            android:id="@+id/profile_image_view"
+                            android:layout_width="45dp"
+                            android:layout_height="45dp"
+                            android:layout_marginVertical="@dimen/layout_frame_vertical_margin"
+                            android:layout_marginLeft="@dimen/layout_frame_horizontal_margin"
+                            android:src="@drawable/default_profile" />
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="16dp"
+                            android:layout_toRightOf="@+id/profile_image_view"
+                            android:orientation="vertical"
+                            android:layout_centerVertical="true">
+
+                            <com.elyeproj.loaderviewlibrary.LoaderTextView
+                                android:id="@+id/nickname"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:ellipsize="end"
+                                android:maxLength="10"
+                                android:maxLines="1"
+                                android:singleLine="true"
+                                android:text="@{viewModel.nickname}"
+                                android:layout_gravity="left"
+                                android:textColor="@color/black"
+                                android:textSize="18sp"
+                                android:textStyle="bold" />
+
+                            <com.elyeproj.loaderviewlibrary.LoaderTextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/nickname"
+                                android:text="@{viewModel.item.location}"
+                                android:layout_gravity="left"
+                                android:textColor="@color/black_70"
+                                android:textSize="12sp" />
+                        </LinearLayout>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginRight="@dimen/layout_frame_horizontal_margin"
+                            android:background="@drawable/chat_btn"
+                            android:clickable="true"
+                            android:paddingHorizontal="6dp"
+                            android:paddingVertical="8dp"
+                            android:text="@string/one_to_one_chat"
+                            android:textColor="@color/white"
+                            android:textSize="14dp"
+                            android:textStyle="bold" />
+
+                        <!-- 게시글 작성자 정보 End -->
+
+
+                        <!-- 게시글 Title Start -->
+
+                        <View
+                            android:id="@+id/divider_2"
+                            android:layout_width="match_parent"
+                            android:layout_height="0.5dp"
+                            android:layout_alignParentBottom="true"
+                            android:layout_marginTop="12dp"
+                            android:background="@color/gray_20"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/profile_image_view" />
+
+                    </RelativeLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="1000dp"
+                        android:layout_marginHorizontal="@dimen/layout_frame_horizontal_margin"
+                        android:layout_marginVertical="@dimen/layout_frame_vertical_margin"
+                        app:layout_constraintTop_toBottomOf="@+id/title_layout">
+
+                        <com.elyeproj.loaderviewlibrary.LoaderTextView
+                            android:id="@+id/title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:maxLength="20"
+                            android:maxLines="1"
+                            android:singleLine="true"
+                            android:text="@{viewModel.item.title}"
+                            android:textColor="@color/black"
+                            android:textSize="20sp"
+                            android:textStyle="bold"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <com.elyeproj.loaderviewlibrary.LoaderTextView
+                            android:id="@+id/category_location"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="2dp"
+                            android:text="@{viewModel.item.categoryAndTime}"
+                            android:textColor="@color/black_50"
+                            android:textSize="13sp"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/title" />
+
+                        <com.elyeproj.loaderviewlibrary.LoaderTextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintTop_toBottomOf="@+id/category_location"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            android:layout_marginTop="12dp"
+                            android:textColor="@color/black"
+                            android:textSize="18sp"
+                            android:text="@{viewModel.item.content}"/>
+
+
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </com.amar.library.ui.StickyScrollView>
+
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+    </RelativeLayout>
+
+</layout>

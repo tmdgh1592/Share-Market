@@ -2,7 +2,6 @@ package com.app.buna.sharingmarket.fragment
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
@@ -50,7 +49,7 @@ class MainHomeFragment : Fragment() {
 
     fun initView() {
         with(binding) {
-            this?.productRecyclerView?.adapter = ProductRecyclerAdapter(vm)
+            this?.productRecyclerView?.adapter = ProductRecyclerAdapter(vm, context!!)
             this?.productRecyclerView?.layoutManager = LinearLayoutManager(requireContext())
 
                 vm?.getProductData(object : FirebaseGetStorageDataCallback {

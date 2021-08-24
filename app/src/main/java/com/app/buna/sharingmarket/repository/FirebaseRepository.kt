@@ -153,6 +153,8 @@ class FirebaseRepository {
     * - MainHomeFragment의 RecyclerView와 ViewModel에 가져온 데이터로 업데이트
     * */
 
+    // *** Firebase 딜레이를 고려해서 Listener로 완료된 것을 항상 계산하고 코딩해야함. ***
+
     // Firebase 스토리지에서 게시글을 가져오기
     fun getProductData(callback: FirebaseGetStorageDataCallback) {
         productList.clear()
@@ -162,8 +164,6 @@ class FirebaseRepository {
                 for (document in task.getResult()) { // 게시글 개수만큼 반복
                     val item =
                         document.toObject(ProductItem::class.java) // 가져온 Document를 ProductItem으로 캐스팅
-                    Log.d("Repository", "Item : ${item}") // 가져온 Board 아이템 정보 출력
-
                     firebaseDatabaseinstance
                         .getReference("products")
                         .child("img_path")
@@ -171,8 +171,8 @@ class FirebaseRepository {
                         .get()
                         .addOnSuccessListener {
                             var urlMap: HashMap<String, String>?
-                            if (it.getValue() == null) { // 가져온 이미지가 없으면
-                                urlMap = HashMap() // 빈 hashmap 생성
+                            if (it.getValue() == null) { // 가져온 이미지가 없으면, 또는 이미지가 저장된게 없으면
+                                urlMap = HashMap() // Empty hashmap 생성
                             }else { // 이미지가 한개라도 있으면
                                 urlMap = it.getValue() as HashMap<String, String> // DataSnapshot에서 이미지 Url들을 HashMap 형태로 캐스팅해서 가져옴
                             }

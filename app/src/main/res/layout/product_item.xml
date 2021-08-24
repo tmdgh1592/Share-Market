@@ -3,7 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-
         <variable
             name="model"
             type="com.app.buna.sharingmarket.model.items.ProductItem" />
@@ -18,6 +17,7 @@
         android:layout_marginBottom="0.5dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/item_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_margin="12dp">
@@ -38,9 +38,9 @@
                     android:id="@+id/product_image_view"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
-                    android:background="@drawable/radius_shape"
+                    android:background="@drawable/radius12_shape"
                     android:scaleType="fitXY"
-                    android:src="@drawable/no_image" />
+                    android:src="@drawable/default_item" />
             </androidx.cardview.widget.CardView>
 
             <!--제품 정보-->
@@ -50,15 +50,34 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="4dp"
+                android:ellipsize="end"
+                android:maxLines="1"
                 android:text="@{model.title}"
                 android:textColor="@color/black"
                 android:textSize="17sp"
                 android:textStyle="bold"
-                android:maxLines="1"
-                android:ellipsize="end"
                 app:layout_constraintLeft_toRightOf="@+id/cardBackgroundView"
                 app:layout_constraintTop_toTopOf="parent" />
 
+            <!--나눔 타입-->
+            <com.elyeproj.loaderviewlibrary.LoaderTextView
+                android:id="@+id/product_type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/radius16_shape"
+                android:backgroundTint="@color/material_pink50"
+                android:paddingLeft="10dp"
+                android:paddingTop="4dp"
+                android:paddingRight="10dp"
+                android:paddingBottom="4dp"
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                android:layout_marginLeft="16dp"
+                android:layout_marginBottom="4dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toRightOf="@+id/photo_image_view"
+                app:layout_constraintStart_toEndOf="@+id/cardBackgroundView" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -84,37 +103,40 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="4dp"
+                    android:ellipsize="end"
+                    android:maxLines="1"
                     android:text="@{model.getLocationAndTime()}"
                     android:textColor="@color/gray_70"
-                    android:maxLines="1"
-                    android:ellipsize="end"
                     android:textSize="14sp" />
             </LinearLayout>
+
 
             <ImageView
                 android:id="@+id/heart_btn"
                 android:layout_width="16dp"
                 android:layout_height="16dp"
                 android:layout_marginRight="3dp"
+                android:layout_marginBottom="5dp"
                 android:clickable="true"
                 android:heart_visible="@{model.likeCount}"
                 android:src="@drawable/like_heart"
                 android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintRight_toLeftOf="@+id/like_count"
-                app:tint="@color/heart_color"/>
+                app:tint="@color/heart_color" />
 
             <com.elyeproj.loaderviewlibrary.LoaderTextView
                 android:id="@+id/like_count"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:heart_count="@{model.likeCount}"
                 android:gravity="center"
+                android:layout_marginBottom="5dp"
+                android:heart_count="@{model.likeCount}"
                 android:textColor="@color/gray_70"
                 android:textSize="13sp"
                 android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintRight_toRightOf="parent"/>
+                app:layout_constraintRight_toRightOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

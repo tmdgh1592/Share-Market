@@ -2,7 +2,7 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <!--비활성화 상태일 때-->
     <item android:state_enabled="false">
-        <shape xmlns:android="http://schemas.android.com/apk/res/android">
+        <shape>
             <corners android:radius="6dp" />
             <solid android:color="@color/gray_20"/>
         </shape>
@@ -10,7 +10,7 @@
 
     <!--버튼 활성화 상태일 때-->
     <item android:state_enabled="true">
-        <shape xmlns:android="http://schemas.android.com/apk/res/android">
+        <shape>
             <corners android:radius="6dp" />
             <solid android:color="@color/app_green"/>
         </shape>
@@ -18,7 +18,7 @@
 
     <!--버튼을 눌렀을 때-->
     <item android:state_pressed="true">
-        <shape xmlns:android="http://schemas.android.com/apk/res/android">
+        <shape>
             <corners android:radius="6dp" />
             <solid android:color="@color/app_pressed_green"/>
         </shape>

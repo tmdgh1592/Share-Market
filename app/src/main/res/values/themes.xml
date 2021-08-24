@@ -26,8 +26,6 @@
         <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="Theme.ShareMarket.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
-    <style name="Theme.ShareMarket.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
 </resources>
