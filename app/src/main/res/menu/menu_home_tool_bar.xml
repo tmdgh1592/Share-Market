@@ -9,6 +9,7 @@
         android:icon="@drawable/toolbar_search_icon"
         app:showAsAction="ifRoom"/>
 
+
     <item android:id="@+id/action_category"
         android:title="카테고리"
         android:icon="@drawable/toolbar_filter_icon"

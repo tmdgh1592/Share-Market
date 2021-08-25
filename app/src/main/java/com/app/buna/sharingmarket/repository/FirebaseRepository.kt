@@ -19,7 +19,7 @@ class FirebaseRepository {
         val instance = FirebaseRepository()
 
         // Firebase Realtime DB instance 싱글톤 생성
-        val firebaseDatabaseinstance = FirebaseDatabase.getInstance()
+        val firebaseDatabaseInstance = FirebaseDatabase.getInstance()
 
         // Firebase Store instacne 싱글톤 생성
         val firebaseStoreInstance = FirebaseFirestore.getInstance()
@@ -29,19 +29,17 @@ class FirebaseRepository {
         val productList = ArrayList<ProductItem>()
     }
 
-    var imgPathCnt = 0
-
     // Realtime DB에 유저 정보 데이터를 저장하는 메소드
     fun saveUserInfo(key: String, data: String, update: Boolean) {
         // realtimeDB
         // 유저 정보 Reference
         if (update) { // 값을 갱신해야 하는 경우 (update == ture)
-            firebaseDatabaseinstance.getReference("users") // /user_info
+            firebaseDatabaseInstance.getReference("users") // /user_info
                 .child(FirebaseAuth.getInstance().currentUser!!.uid) // /uid
                 .child(key) //
                 .setValue(data)
         } else { // 값을 누적해야 하는 경우 (update == ture)
-            firebaseDatabaseinstance.getReference("users") // /user_info
+            firebaseDatabaseInstance.getReference("users") // /user_info
                 .child(FirebaseAuth.getInstance().currentUser!!.uid) // /uid
                 .child(key) //
                 .push()
@@ -55,7 +53,7 @@ class FirebaseRepository {
     fun saveImgPath(key: String, uri: Uri) {
         // realtimeDB
         // 상품 정보 Reference
-        firebaseDatabaseinstance.getReference("products") // product 정보
+        firebaseDatabaseInstance.getReference("products") // product 정보
             .child("img_path")
             .child(key) // 게시글 Uid
             .push()
@@ -76,7 +74,7 @@ class FirebaseRepository {
 
         var infoData: String? = null
 
-        firebaseDatabaseinstance.getReference("users").child(uid).child(key)
+        firebaseDatabaseInstance.getReference("users").child(uid).child(key)
             .addListenerForSingleValueEvent(
                 object : ValueEventListener {
                     override fun onDataChange(snapshot: DataSnapshot) {
@@ -99,7 +97,6 @@ class FirebaseRepository {
             .add(product)
             .addOnSuccessListener {
                 saveUserInfo("board_uid", it.id, false) // 성공시 realtimeDB의 유저 데이터 목록에 해당 게시글 id 저장
-                //saveImgPath(it.id, )
                 callback.callbackForSuccessfulUploading(it.id) // MainHomeFragment -> 성공 callback
             }.addOnFailureListener {
                 callback.callbackForFailureUploading() // MainHomeFragment -> 실패 callback
@@ -108,35 +105,59 @@ class FirebaseRepository {
 
     // Firebase Storage에 이미지 저장
     fun saveProductImg(
-        imgPath: ArrayList<String>,
+        imgPath: ArrayList<String>, // local path (디바이스 경로)
         boardUid: String
     ) { // boardUid는 FireStore의 랜덤 push값
-        var num = 0
-        val storageReference =
-            firebaseStorage.getReferenceFromUrl("gs://sharing-market.appspot.com")
-                .child("/product_images").child("/${boardUid}/")
-                .child(num.toString()) // 파이어 스토리지의 상품 이미지 경로
 
         // 주의 사항 :: 맨 끝에 있는 child는 파일 명임
         imgPath.forEach { path ->
-            val uri: Uri = Uri.fromFile(File(path))
-            Log.d("FirebaseRepository", "local path : ${uri}") // 기기에 저장되어 있는 이미지 파일 경로
+            var num = 0
+            val storageReference =
+                firebaseStorage.getReferenceFromUrl("gs://sharing-market.appspot.com")
+                    .child("product_images").child("${boardUid}")
+                    .child(num.toString()) // 파이어 스토리지의 상품 이미지 경로 ex) -> '.../{boardUid}/0.jpeg' 와 같은 형태로 저장됨}
 
+            val uri: Uri = Uri.fromFile(File(path)) // 디바이스 경로를 uri로 변경
+            Log.d("FirebaseRepository", "local path : ${uri}") // 기기에 저장되어 있는 이미지 파일 경로
 
             storageReference.putFile(uri).addOnCompleteListener { task ->
                 if (task.isSuccessful) { // Storage에 이미지를 성공적으로 저장했다면
-                    storageReference.downloadUrl.addOnSuccessListener { uri ->
-                        saveImgPath(boardUid, uri) // 이미지 uri를 RealtimeDB에도 저장 (빠르게 가져오기 위함)
+                    storageReference.downloadUrl.addOnSuccessListener { resultUri ->
+                        saveImgPath(boardUid, resultUri) // 이미지 uri를 RealtimeDB에도 저장 (빠르게 가져오기 위함)
+                        num += 1
+                        Log.d("TEST", resultUri.toString())
                     }
                 }
             }
-            num += 1
         }
 
     }
 
+    // 하트 클릭시 변경
+    fun clickHeart(
+        item: ProductItem,
+        nowState: Boolean,
+        pushManUid: String,
+        callback: (Boolean) -> Unit
+    ) {
+        val updateMap = HashMap<String, Any>()
 
+        if (nowState) { // 좋아요 눌려저 있는 경우에 누르면
+            item.likeCount = item.likeCount - 1
+            item.favorites.keys.remove(pushManUid)
+        } else { // 좋아요 안눌러져 있는 경우에 누르면
+            item.likeCount = item.likeCount + 1
+            item.favorites.put(pushManUid, true)
+        }
 
+        updateMap.put("likeCount", item.likeCount)
+        updateMap.put("favorites", item.favorites)
+        firebaseStoreInstance.collection("Boards")?.document(item.documentId).update(updateMap)
+            .addOnCompleteListener {
+                callback(!nowState)
+            }
+
+    }
 
 
     /*
@@ -164,18 +185,20 @@ class FirebaseRepository {
                 for (document in task.getResult()) { // 게시글 개수만큼 반복
                     val item =
                         document.toObject(ProductItem::class.java) // 가져온 Document를 ProductItem으로 캐스팅
-                    firebaseDatabaseinstance
+                    firebaseDatabaseInstance
                         .getReference("products")
                         .child("img_path")
                         .child(document.id)
                         .get()
                         .addOnSuccessListener {
-                            var urlMap: HashMap<String, String>?
+                            var urlMap: HashMap<String, String>? // 이미지 url을 가져올 해시맵
                             if (it.getValue() == null) { // 가져온 이미지가 없으면, 또는 이미지가 저장된게 없으면
                                 urlMap = HashMap() // Empty hashmap 생성
-                            }else { // 이미지가 한개라도 있으면
-                                urlMap = it.getValue() as HashMap<String, String> // DataSnapshot에서 이미지 Url들을 HashMap 형태로 캐스팅해서 가져옴
+                            } else { // 이미지가 한개라도 있으면
+                                urlMap =
+                                    it.getValue() as HashMap<String, String> // DataSnapshot에서 이미지 Url들을 HashMap 형태로 캐스팅해서 가져옴
                             }
+                            item.documentId = document.id
 
                             boardCount += 1 // position 1 증가시키기
                             urlMap?.values?.forEach { url ->
@@ -193,6 +216,53 @@ class FirebaseRepository {
                 }
 
             }
+        }
+    }
+
+
+    // 게시글 삭제
+    @SuppressLint("LongLogTag")
+    fun removeProductData(item: ProductItem, callback: (Boolean) -> Unit) {
+        // 우선 FireStore에서 게시글에 대한 정보부터 지움
+        firebaseStoreInstance.collection("Boards").document(item.documentId).delete()
+            .addOnSuccessListener { // 게시글 지우기에 성공했다면 Realtime Database에 기록된 정보들 제거
+                firebaseDatabaseInstance.getReference("users").child(item.uid)
+                    .child("board_uid").equalTo(item.documentId).ref.removeValue() // 'users' -> document id를 찾아서 해당 user가 지우려는 게시물 제거
+                    .addOnSuccessListener {
+                        firebaseDatabaseInstance.getReference("products").child("img_path") // 'products' -> documentId 찾아서 제거
+                            .child(item.documentId).removeValue().addOnSuccessListener {
+                                callback(true)
+                            }.addOnFailureListener {
+                                Log.d(
+                                    "FirebaseRepository -> removeProductData() -> firebaseDatabaseinstance.products",
+                                    "Failure"
+                                )
+                            }
+                    }.addOnFailureListener {
+                        Log.d(
+                            "FirebaseRepository -> removeProductData() -> firebaseDatabaseinstance.users",
+                            "Failure"
+                        )
+                    }
+            }
+            .addOnFailureListener {
+                Log.d(
+                    "FirebaseRepository -> removeProductData() -> firebaseStoreInstance",
+                    "Failure"
+                )
+            }
+
+        /*
+        * Storage는 Directory를 지우거나, 모든 파일을 지우는 메소드가 없으므로.
+        * url 개수만큼 반복하면서 Image file 제거
+        * */
+        for (num in 0..item.imgPath.size) {
+            firebaseStorage.getReferenceFromUrl("gs://sharing-market.appspot.com")
+                .child("product_images").child("${item.documentId}").child(num.toString())
+                .delete()
+                .addOnCompleteListener {
+
+                }
         }
     }
 

@@ -8,6 +8,7 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class ProductItem(
+    var uid: String = "null", // 게시자 uid
     var owner: String = "null",  // 상품 주인
     var category: String = "null", // 카테고리
     var location: String = "null", // 지역
@@ -18,6 +19,9 @@ data class ProductItem(
     var isComplete: Boolean = false, // 거래 완료된지 여부
     var isGive: Boolean = false, // 주는건지, 필요한건지
     var isExchange: Boolean = false, // 교환인지, 아닌지
+    var favorites: MutableMap<String, Boolean> = HashMap(), // 좋아요 누른 사람 목록
+    @Exclude
+    var documentId: String = "null", // 게시글 uid
     @Exclude
     var imgPath: HashMap<String, String> = HashMap() // FireStorage에 저장된 이미지 경로
 ): Parcelable {

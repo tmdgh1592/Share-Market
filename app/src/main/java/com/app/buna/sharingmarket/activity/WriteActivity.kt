@@ -127,11 +127,11 @@ class WriteActivity : AppCompatActivity(), FirebaseRepositoryCallback {
             }
 
             val item = ProductItem(
+                uid = vm?.getUid()!!,
                 owner = vm?.getUserName()!!,  // 상품 주인
                 category = vm?.category!!, // 카테고리
                 location = location!!, // 지역
                 time = System.currentTimeMillis(), // 게시글 업로드 시간
-                //uri = vm?.imagePaths!!, // 이미지 갤러리 path
                 title = title, // 게시글 제목
                 content = content, // 게시글 내용
                 likeCount = 0, // 좋아요 개수

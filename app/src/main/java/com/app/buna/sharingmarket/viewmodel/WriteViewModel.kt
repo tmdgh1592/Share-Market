@@ -40,6 +40,10 @@ class WriteViewModel(application: Application) : AndroidViewModel(application) {
         return FirebaseAuth.getInstance().currentUser?.displayName
     }
 
+    fun getUid(): String? {
+        return FirebaseAuth.getInstance().currentUser?.uid
+    }
+
     fun saveProductImage(imgPath: ArrayList<String>, boardUid: String) {
         if(imgPath != null && imgPath.size != 0) {
             FirebaseRepository.instance.saveProductImg(imgPath, boardUid)

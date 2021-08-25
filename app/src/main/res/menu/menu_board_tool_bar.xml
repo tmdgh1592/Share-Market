@@ -4,10 +4,18 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/action_heart"
+        android:title="좋아요"
+        android:icon="@drawable/not_like_heart"
+        app:showAsAction="ifRoom"/>
+
+    <item
         android:id="@+id/action_share"
         android:title="공유"
         android:icon="@drawable/share_icon"
         app:iconTint="@color/black"
         app:showAsAction="ifRoom"/>
+
+
 
 </menu>

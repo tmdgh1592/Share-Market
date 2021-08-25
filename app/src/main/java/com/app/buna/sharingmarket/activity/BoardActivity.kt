@@ -1,14 +1,23 @@
 package com.app.buna.sharingmarket.activity
 
+import android.content.Context
+import android.content.DialogInterface
+import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.util.TypedValue
 import android.view.*
 import android.widget.RelativeLayout
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.DrawableCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
+import com.app.buna.sharingmarket.MENU_ID
 import com.app.buna.sharingmarket.R
+import com.app.buna.sharingmarket.REQUEST_CODE
 import com.app.buna.sharingmarket.adapter.ImageSliderAdapter
 import com.app.buna.sharingmarket.databinding.ActivityBoardBinding
 import com.app.buna.sharingmarket.model.items.ProductItem
@@ -76,7 +85,13 @@ class BoardActivity : AppCompatActivity() {
             }
         }
 
+        // 툴바 사용
         setSupportActionBar(binding?.toolBar)
+
+        // 뒤로가기 버튼
+        binding?.backBtn?.setOnClickListener {
+            finish()
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -89,8 +104,68 @@ class BoardActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.action_share -> vm?.sendKakaoLink()
+            R.id.action_heart -> {
+                vm?.clickHeart { newState ->
+                    // 새로운 상태가 좋아요 누른 상태이면
+                    if (newState) {
+                        item.icon = ContextCompat.getDrawable(this, R.drawable.like_heart)
+                        return@clickHeart
+                    } else { // 새로운 상태가 좋아요를 해제한 상태이면
+                        item.icon = (ContextCompat.getDrawable(this, R.drawable.not_like_heart))
+                        return@clickHeart
+                    }
+                }
+            }
+            MENU_ID.DELETE -> {
+                AlertDialog.Builder(this)
+                    .setTitle(R.string.delete)
+                    .setMessage(R.string.delete_board)
+                    .setPositiveButton(getString(R.string.ok), { dialog, id ->
+                        // 해당 게시글 삭제
+                        vm?.removeBoard { isSuccessful ->
+                            if (isSuccessful) { // 성공적으로 삭제했다면 
+                                dialog.dismiss() // Dialog 닫고
+                                setResult(REQUEST_CODE.DELETE_BOARD_CODE)
+                                finish() // 해당 게시글에서 나가기
+                            }
+                        }
+                    }).setNegativeButton(getString(R.string.cancel), { dialog, id ->
+                        dialog.dismiss()
+                    }).create().show()
+
+            }
             else -> return super.onOptionsItemSelected(item)
         }
         return true
+    }
+
+    override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
+        menu?.removeItem(MENU_ID.DELETE)
+        val uid = vm?.getUid()
+
+        // 좋아요 누른 여부에 따라 Toolbar 아이콘 변경
+        if (vm?.item.favorites.containsKey(uid)) { // 좋아요 목록에 본인인 포함되어 있으면 하트 활성화
+            var heart_icon = ContextCompat.getDrawable(this, R.drawable.like_heart)
+            menu?.findItem(R.id.action_heart)?.setIcon(heart_icon)
+        } else { // 좋아요 목록에 본인인 포함되어 있지 않으면 하트 비활성화
+            var heart_icon = ContextCompat.getDrawable(this, R.drawable.not_like_heart)
+            menu?.findItem(R.id.action_heart)?.setIcon(heart_icon)
+        }
+
+        // 본인 게시글 여부에 따라 삭제 버튼 동적으로 추가 및 아이콘 배치 변경
+        if (vm?.getUid() == vm?.item.uid) { // 본인 게시글이면
+            // add() : (groupId, itemId, order, titleRes)
+            menu?.add(0, MENU_ID.DELETE, 0, "삭제")?.setIcon(R.drawable.app_icon)
+                ?.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER)
+            menu?.findItem(R.id.action_share)?.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER)
+        } else { // 본인 게시글이 아니면
+            // 기존 메뉴 방식으로 짆애
+        }
+
+        return true
+    }
+
+    override fun onOptionsMenuClosed(menu: Menu?) {
+        super.onOptionsMenuClosed(menu)
     }
 }

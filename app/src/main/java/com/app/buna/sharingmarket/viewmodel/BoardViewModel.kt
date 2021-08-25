@@ -3,6 +3,7 @@ package com.app.buna.sharingmarket.viewmodel
 import android.app.Application
 import android.content.Context
 import android.content.Intent
+import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
@@ -11,6 +12,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.app.buna.sharingmarket.TAGS.Companion.TAG
 import com.app.buna.sharingmarket.model.items.ProductItem
 import com.app.buna.sharingmarket.model.items.SliderItem
+import com.app.buna.sharingmarket.repository.FirebaseRepository
 import com.google.firebase.auth.FirebaseAuth
 import com.kakao.sdk.link.LinkClient
 import com.kakao.sdk.template.model.*
@@ -19,9 +21,6 @@ import java.lang.Exception
 class BoardViewModel(application: Application, val context: Context) : AndroidViewModel(application) {
 
     lateinit var item: ProductItem
-    val nickname: String by lazy {
-        FirebaseAuth.getInstance().currentUser?.displayName.toString()
-    }
 
     class Factory(val application: Application, val context: Context) : ViewModelProvider.Factory {
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
@@ -29,7 +28,22 @@ class BoardViewModel(application: Application, val context: Context) : AndroidVi
         }
     }
 
-    
+    fun getUid(): String? {
+        return FirebaseAuth.getInstance().currentUser?.uid
+    }
+
+    fun clickHeart(callback: (Boolean) -> Unit) {
+        if (item.favorites.containsKey(getUid())){
+            FirebaseRepository.instance.clickHeart(item, true, getUid()!!, callback) // 좋아요 누른 상태인 경우
+        }else {
+            FirebaseRepository.instance.clickHeart(item, false, getUid()!!, callback) // 누르지 않은 상태인 경우
+        }
+    }
+
+    fun removeBoard(callback: (Boolean) -> Unit) {
+        FirebaseRepository.instance.removeProductData(item, callback)
+    }
+
     // 이미지 슬라이더에 넣을 uri(String)로 이루어진 SliderItem List 반환
     fun getSlideItem(): ArrayList<SliderItem> {
         val slideItemList = ArrayList<SliderItem>()

@@ -17,6 +17,8 @@
     <string name="code_repeat">인증번호 재전송</string>
     <string name="ok">확인</string>
     <string name="cancel">취소</string>
+    <string name="yes">예</string>
+    <string name="no">아니오</string>
     <string name="login_with_google">구글 로그인</string>
     <string name="login_with_facebook">페이스북 로그인</string>
     <string name="login_with_kakao">카카오 로그인</string>
@@ -92,7 +94,7 @@
 
     <string name="title_activity_ka_kao_web_view">KaKaoWebView</string>
 
-    <string name="back_press">한 번 더 누르면 쉐어마켓이 종료됩니다.</string>
+    <string name="back_press">한 번 더 누르시면 쉐어마켓이 종료됩니다.</string>
 
     <string name="write_dialog">글쓰기를 종료하시겠습니까?</string>
 
@@ -104,6 +106,9 @@
     <string name="fb_login_protocol_scheme">fb1183791935429922</string>
 
     <string name="share_friends">공유하기</string>
+
+    <string name="delete">게시글 삭제</string>
+    <string name="delete_board">게시글을 삭제하시겠습니까?</string>
 
     <!--kakao login-->
     <string name="kakao_app_key">88e95ac2b0aa09e4bf047d1b0bd99e6f</string>
