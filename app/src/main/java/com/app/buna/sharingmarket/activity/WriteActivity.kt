@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.app.buna.sharingmarket.CONST
 import com.app.buna.sharingmarket.R
 import com.app.buna.sharingmarket.REQUEST_CODE
 import com.app.buna.sharingmarket.callbacks.FirebaseRepositoryCallback
@@ -126,6 +127,10 @@ class WriteActivity : AppCompatActivity(), FirebaseRepositoryCallback {
                 return@setOnClickListener
             }
 
+            for (i in 1..vm?.imagePaths?.size!!) {
+                vm?.fileNameForDelete?.add(i.toString())
+            }
+
             val item = ProductItem(
                 uid = vm?.getUid()!!,
                 owner = vm?.getUserName()!!,  // 상품 주인
@@ -137,7 +142,8 @@ class WriteActivity : AppCompatActivity(), FirebaseRepositoryCallback {
                 likeCount = 0, // 좋아요 개수
                 isComplete = false, // 거래 완료된지 여부
                 isGive = vm?.isGive!!, // 주는건지 받는건지
-                isExchange = false // 무료나눔 Activity이기 때문에 교환은 false 처리
+                isExchange = false, // 무료나눔 Activity이기 때문에 교환은 false 처리
+                fileNamesForDelete = vm?.fileNameForDelete!!
             )
             vm?.uploadProduct(item, this)
 
@@ -203,11 +209,11 @@ class WriteActivity : AppCompatActivity(), FirebaseRepositoryCallback {
                 //// imgPath.addAll(newData) // image path 받아오기
 
                 for (data in newData) { // 새로운 데이터가 5개를 초과하는지 확인하면서 반복문을 돌림
-                    if ((totalSize + 1) > 5) {
+                    if ((totalSize + 1) > CONST.MAX_PHOTO_SIZE) {
                         FancyToastUtil(this).showFail("이미지는 총 5개만 가져올 수 있어요!")
                         break
                     }
-                    totalSize += 1 // 전체 이미지에 개수 더하기
+                    totalSize += 1 // 전체 선택된 이미지에 개수 더하기
                     tempImgPath.add(data) // 임시 경로 리스트에 추가
                     vm?.imagePaths?.add(data) // 받아온 이미지 경로를 ViewModel의 imagePaths에 추가
                 }
@@ -216,7 +222,7 @@ class WriteActivity : AppCompatActivity(), FirebaseRepositoryCallback {
                 if (!tempImgPath.isNullOrEmpty()) { // 이미지를 한개라도 고른 경우
                     Log.d("WriteActivity", tempImgPath.size.toString())
 
-                    // 새로 추가된 이미지 개수만큼 View 추가
+                    // 새로 추가된 이미지 개수만큼 미리보기 View 추가
                     tempImgPath.forEach { path ->
                         // Photo View
                         val photoView = LayoutInflater.from(this)

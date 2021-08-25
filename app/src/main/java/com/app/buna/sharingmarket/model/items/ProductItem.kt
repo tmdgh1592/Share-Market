@@ -20,6 +20,8 @@ data class ProductItem(
     var isGive: Boolean = false, // 주는건지, 필요한건지
     var isExchange: Boolean = false, // 교환인지, 아닌지
     var favorites: MutableMap<String, Boolean> = HashMap(), // 좋아요 누른 사람 목록
+    // fileNamesForDelete => Storage에 저장될 이미지 파일 이름 (중복되지 않는 값으로 저장해야함, 최대 길이 13), 이미지 파일 삭제할 때 고유 값으로 사용할 용도!!
+    var fileNamesForDelete: ArrayList<String> = ArrayList(),
     @Exclude
     var documentId: String = "null", // 게시글 uid
     @Exclude

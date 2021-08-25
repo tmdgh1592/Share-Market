@@ -106,16 +106,16 @@ class FirebaseRepository {
     // Firebase Storage에 이미지 저장
     fun saveProductImg(
         imgPath: ArrayList<String>, // local path (디바이스 경로)
-        boardUid: String
+        boardUid: String,
+        fileNameForDelete: ArrayList<String>
     ) { // boardUid는 FireStore의 랜덤 push값
-
+        var num = 0
         // 주의 사항 :: 맨 끝에 있는 child는 파일 명임
         imgPath.forEach { path ->
-            var num = 0
             val storageReference =
                 firebaseStorage.getReferenceFromUrl("gs://sharing-market.appspot.com")
                     .child("product_images").child("${boardUid}")
-                    .child(num.toString()) // 파이어 스토리지의 상품 이미지 경로 ex) -> '.../{boardUid}/0.jpeg' 와 같은 형태로 저장됨}
+                    .child(fileNameForDelete.get(num++).toString()) // 파이어 스토리지의 상품 이미지 경로 ex) -> '.../{boardUid}/0.jpeg' 와 같은 형태로 저장됨}
 
             val uri: Uri = Uri.fromFile(File(path)) // 디바이스 경로를 uri로 변경
             Log.d("FirebaseRepository", "local path : ${uri}") // 기기에 저장되어 있는 이미지 파일 경로
@@ -124,7 +124,6 @@ class FirebaseRepository {
                 if (task.isSuccessful) { // Storage에 이미지를 성공적으로 저장했다면
                     storageReference.downloadUrl.addOnSuccessListener { resultUri ->
                         saveImgPath(boardUid, resultUri) // 이미지 uri를 RealtimeDB에도 저장 (빠르게 가져오기 위함)
-                        num += 1
                         Log.d("TEST", resultUri.toString())
                     }
                 }
@@ -183,8 +182,7 @@ class FirebaseRepository {
         firebaseStoreInstance.collection("Boards").get().addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 for (document in task.getResult()) { // 게시글 개수만큼 반복
-                    val item =
-                        document.toObject(ProductItem::class.java) // 가져온 Document를 ProductItem으로 캐스팅
+                    val item = document.toObject(ProductItem::class.java) // 가져온 Document를 ProductItem으로 캐스팅
                     firebaseDatabaseInstance
                         .getReference("products")
                         .child("img_path")
@@ -195,16 +193,17 @@ class FirebaseRepository {
                             if (it.getValue() == null) { // 가져온 이미지가 없으면, 또는 이미지가 저장된게 없으면
                                 urlMap = HashMap() // Empty hashmap 생성
                             } else { // 이미지가 한개라도 있으면
-                                urlMap =
-                                    it.getValue() as HashMap<String, String> // DataSnapshot에서 이미지 Url들을 HashMap 형태로 캐스팅해서 가져옴
+                                urlMap = it.getValue() as HashMap<String, String> // DataSnapshot에서 이미지 Url들을 HashMap 형태로 캐스팅해서 가져옴
                             }
-                            item.documentId = document.id
 
                             boardCount += 1 // position 1 증가시키기
                             urlMap?.values?.forEach { url ->
                                 Log.d("My Uri" + boardCount, url)
                             }
+
                             item.imgPath = urlMap!!
+                            item.documentId = document.id // Document Id는 따로 받아옴
+
                             productList.add(item)
 
                             // 이미지를 모두 가져왔다면 callback 함수로 list 전달
@@ -226,24 +225,7 @@ class FirebaseRepository {
         // 우선 FireStore에서 게시글에 대한 정보부터 지움
         firebaseStoreInstance.collection("Boards").document(item.documentId).delete()
             .addOnSuccessListener { // 게시글 지우기에 성공했다면 Realtime Database에 기록된 정보들 제거
-                firebaseDatabaseInstance.getReference("users").child(item.uid)
-                    .child("board_uid").equalTo(item.documentId).ref.removeValue() // 'users' -> document id를 찾아서 해당 user가 지우려는 게시물 제거
-                    .addOnSuccessListener {
-                        firebaseDatabaseInstance.getReference("products").child("img_path") // 'products' -> documentId 찾아서 제거
-                            .child(item.documentId).removeValue().addOnSuccessListener {
-                                callback(true)
-                            }.addOnFailureListener {
-                                Log.d(
-                                    "FirebaseRepository -> removeProductData() -> firebaseDatabaseinstance.products",
-                                    "Failure"
-                                )
-                            }
-                    }.addOnFailureListener {
-                        Log.d(
-                            "FirebaseRepository -> removeProductData() -> firebaseDatabaseinstance.users",
-                            "Failure"
-                        )
-                    }
+                callback(true)
             }
             .addOnFailureListener {
                 Log.d(
@@ -252,13 +234,35 @@ class FirebaseRepository {
                 )
             }
 
+        // Not Working
+        /*firebaseDatabaseInstance.getReference("users").child(item.uid)
+            .child("board_uid").child("${item.documentId}").removeValue() // 'users' -> document id를 찾아서 해당 user가 지우려는 게시물 제거
+            .addOnSuccessListener {
+
+            }.addOnFailureListener {
+                Log.d(
+                    "FirebaseRepository -> removeProductData() -> firebaseDatabaseinstance.users",
+                    "Failure"
+                )
+            }*/
+
+        firebaseDatabaseInstance.getReference("products").child("img_path") // 'products' -> documentId 찾아서 제거
+            .child(item.documentId).removeValue().addOnSuccessListener {
+                Log.d("", "Remove Successful")
+            }.addOnFailureListener {
+                Log.d(
+                    "FirebaseRepository -> removeProductData() -> firebaseDatabaseinstance.products",
+                    "Failure"
+                )
+            }
+
         /*
         * Storage는 Directory를 지우거나, 모든 파일을 지우는 메소드가 없으므로.
         * url 개수만큼 반복하면서 Image file 제거
         * */
-        for (num in 0..item.imgPath.size) {
+        for (fileName in item.fileNamesForDelete) {
             firebaseStorage.getReferenceFromUrl("gs://sharing-market.appspot.com")
-                .child("product_images").child("${item.documentId}").child(num.toString())
+                .child("product_images").child("${item.documentId}").child(fileName.toString())
                 .delete()
                 .addOnCompleteListener {
 

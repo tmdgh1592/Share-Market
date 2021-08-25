@@ -56,13 +56,10 @@ class LocationHelper(val fragment: Fragment, val context: Context) {
 
             try {
                 // 위도 0.1" 차이는 약 3.1m 거리에 해당하며, 경도 0.1" 차이는 약 2.5m
-                for (i in 0..MAX_ITER_COUNT) {
-                    // 좌표를 i씩 더해가면서 점점 넓은 반경의 주소를 가져온다
-                    val tempList = mGeoCoder.getFromLocation(lat+i,  lng+i, 10)
-                    for (item in tempList) { // 중복이 없는 주소만 추가
-                        if (mResultList?.contains(item) == false){
-                            mResultList?.add(item)
-                        }
+                val tempList = mGeoCoder.getFromLocation(lat,  lng, 10)
+                for (item in tempList) { // 중복이 없는 주소만 추가
+                    if (mResultList?.contains(item) == false){
+                        mResultList?.add(item)
                     }
                 }
             } catch (e: IOException) {

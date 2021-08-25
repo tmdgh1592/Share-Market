@@ -15,6 +15,7 @@ class REQUEST_CODE {
 class CONST {
     companion object {
         const val SPLASH_DURATION: Long = 2000 // 스플래시 화면 전환 1500ms
+        const val MAX_PHOTO_SIZE: Int = 5 // 사진 선택 최대개수
     }
 }
 

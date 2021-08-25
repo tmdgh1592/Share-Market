@@ -7,6 +7,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.app.buna.sharingmarket.CONST
 import com.app.buna.sharingmarket.callbacks.FirebaseRepositoryCallback
 import com.app.buna.sharingmarket.model.items.ProductItem
 import com.app.buna.sharingmarket.repository.FirebaseRepository
@@ -16,8 +17,9 @@ class WriteViewModel(application: Application) : AndroidViewModel(application) {
 
     var category: String? = null
     var isGive: Boolean? = null
-    var imagePaths = ArrayList<String>()
+    var imagePaths = ArrayList<String>(CONST.MAX_PHOTO_SIZE)
     var imageCount: MutableLiveData<Int> = MutableLiveData(0)
+    var fileNameForDelete = ArrayList<String>(CONST.MAX_PHOTO_SIZE)
 
     class Factory(val application: Application): ViewModelProvider.Factory{
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
@@ -46,7 +48,7 @@ class WriteViewModel(application: Application) : AndroidViewModel(application) {
 
     fun saveProductImage(imgPath: ArrayList<String>, boardUid: String) {
         if(imgPath != null && imgPath.size != 0) {
-            FirebaseRepository.instance.saveProductImg(imgPath, boardUid)
+            FirebaseRepository.instance.saveProductImg(imgPath, boardUid, fileNameForDelete)
         }
     }
 }
