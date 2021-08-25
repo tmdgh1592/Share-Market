@@ -22,6 +22,7 @@ import com.app.buna.sharingmarket.model.items.ProductItem
 import com.app.buna.sharingmarket.repository.PreferenceUtil
 import com.app.buna.sharingmarket.utils.FancyChocoBar
 import com.app.buna.sharingmarket.utils.FancyToastUtil
+import com.app.buna.sharingmarket.utils.KeyboardUtil.Companion.hideKeyBoard
 import com.app.buna.sharingmarket.utils.NetworkStatus
 import com.app.buna.sharingmarket.viewmodel.WriteViewModel
 import com.bumptech.glide.Glide
@@ -85,7 +86,7 @@ class WriteActivity : AppCompatActivity(), FirebaseRepositoryCallback {
         // 카테고리 스피너 다이얼로그
         binding?.categorySpinner?.setOnClickListener {
             // 카테고리 선택창 클릭시 키보드 닫기
-            hideKeyBoard()
+            hideKeyBoard(this@WriteActivity, binding?.titleEditText!!.windowToken)
             // 카테고리 스피너 다이얼로그 보이기
             spinnerDialogFragment.show(
                 supportFragmentManager,
@@ -95,7 +96,7 @@ class WriteActivity : AppCompatActivity(), FirebaseRepositoryCallback {
 
         // 완료 버튼 -> 게시글 업로드
         binding?.doneBtn?.setOnClickListener {
-            hideKeyBoard()
+            hideKeyBoard(this@WriteActivity, binding?.titleEditText!!.windowToken)
 
             val location = PreferenceUtil.getString(this, "jibun", "null")
             val title = binding?.titleEditText?.text.toString()
@@ -153,7 +154,7 @@ class WriteActivity : AppCompatActivity(), FirebaseRepositoryCallback {
         binding?.typeRadioGroup?.setOnCheckedChangeListener(object :
             RadioGroup.OnCheckedChangeListener {
             override fun onCheckedChanged(group: RadioGroup?, @IdRes id: Int) {
-                hideKeyBoard()
+                hideKeyBoard(this@WriteActivity, binding?.titleEditText!!.windowToken)
                 when (id) {
                     R.id.radio_give -> vm?.isGive = true
                     R.id.radio_need -> vm?.isGive = false
@@ -185,13 +186,6 @@ class WriteActivity : AppCompatActivity(), FirebaseRepositoryCallback {
         finish() // 업로드 성공시 작성 액티비티 종료
     }
 
-    // 키보드 닫기
-    fun hideKeyBoard() {
-        (getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager).hideSoftInputFromWindow(
-            binding?.titleEditText?.windowToken,
-            0
-        )
-    }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)

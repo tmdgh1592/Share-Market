@@ -139,7 +139,7 @@ class FirebaseRepository {
         pushManUid: String,
         callback: (Boolean) -> Unit
     ) {
-        val updateMap = HashMap<String, Any>()
+        //val updateMap = HashMap<String, Any>()
 
         if (nowState) { // 좋아요 눌려저 있는 경우에 누르면
             item.likeCount = item.likeCount - 1
@@ -149,12 +149,26 @@ class FirebaseRepository {
             item.favorites.put(pushManUid, true)
         }
 
-        updateMap.put("likeCount", item.likeCount)
-        updateMap.put("favorites", item.favorites)
-        firebaseStoreInstance.collection("Boards")?.document(item.documentId).update(updateMap)
+        /*updateMap.put("likeCount", item.likeCount)
+        updateMap.put("favorites", item.favorites)*/
+        val tsDoc = firebaseStoreInstance.collection("Boards")?.document(item.documentId)
+        val uid = FirebaseAuth.getInstance().currentUser?.uid
+        firebaseStoreInstance.runTransaction { transaction ->
+            var dto = transaction.get(tsDoc).toObject(ProductItem::class.java)
+            if (dto?.favorites!!.containsKey(uid)) {
+                dto.likeCount = dto.likeCount - 1
+                dto.favorites.remove(uid)
+            }else {
+                dto.likeCount = dto.likeCount + 1
+                dto.favorites[uid!!] = true
+            }
+            transaction.set(tsDoc, dto)
+            callback(!nowState)
+        }
+            /*.update(updateMap)
             .addOnCompleteListener {
                 callback(!nowState)
-            }
+            }*/
 
     }
 

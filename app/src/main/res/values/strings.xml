@@ -107,9 +107,11 @@
 
     <string name="share_friends">공유하기</string>
 
-    <string name="delete">게시글 삭제</string>
-    <string name="delete_board">게시글을 삭제하시겠습니까?</string>
+    <string name="delete_board">게시글 삭제</string>
+    <string name="delete_board_question">게시글을 삭제하시겠습니까?</string>
 
+    <string name="delete">삭제</string>
+    <string name="update">수정</string>
     <!--kakao login-->
     <string name="kakao_app_key">88e95ac2b0aa09e4bf047d1b0bd99e6f</string>
     <string name="kakao_scheme">kakao88e95ac2b0aa09e4bf047d1b0bd99e6f</string>

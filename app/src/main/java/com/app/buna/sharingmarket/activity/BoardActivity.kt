@@ -1,29 +1,24 @@
 package com.app.buna.sharingmarket.activity
 
-import android.content.Context
-import android.content.DialogInterface
 import android.content.Intent
-import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.util.TypedValue
 import android.view.*
 import android.widget.RelativeLayout
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.core.graphics.drawable.DrawableCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.app.buna.sharingmarket.MENU_ID
 import com.app.buna.sharingmarket.R
 import com.app.buna.sharingmarket.REQUEST_CODE
+import com.app.buna.sharingmarket.REQUEST_CODE.Companion.UPDATE_BOARD_CODE
 import com.app.buna.sharingmarket.adapter.ImageSliderAdapter
 import com.app.buna.sharingmarket.databinding.ActivityBoardBinding
 import com.app.buna.sharingmarket.model.items.ProductItem
 import com.app.buna.sharingmarket.viewmodel.BoardViewModel
 import com.bumptech.glide.Glide
-import com.kakao.sdk.link.LinkClient
 import com.kakao.sdk.template.model.*
 import com.smarteist.autoimageslider.IndicatorView.animation.type.IndicatorAnimationType
 import org.koin.android.ext.android.get
@@ -39,8 +34,7 @@ class BoardActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        vm?.item =
-            intent.getParcelableExtra<ProductItem>("product_item") // MainHomeFragment에서 전달받은 데이터
+        vm?.item = intent.getParcelableExtra<ProductItem>("product_item") // MainHomeFragment에서 전달받은 데이터
         initBinding()
         initView()
     }
@@ -118,21 +112,26 @@ class BoardActivity : AppCompatActivity() {
             }
             MENU_ID.DELETE -> {
                 AlertDialog.Builder(this)
-                    .setTitle(R.string.delete)
-                    .setMessage(R.string.delete_board)
-                    .setPositiveButton(getString(R.string.ok), { dialog, id ->
+                    .setTitle(R.string.delete_board)
+                    .setMessage(R.string.delete_board_question)
+                    .setPositiveButton(getString(R.string.ok)) { dialog, id ->
                         // 해당 게시글 삭제
                         vm?.removeBoard { isSuccessful ->
                             if (isSuccessful) { // 성공적으로 삭제했다면 
                                 dialog.dismiss() // Dialog 닫고
-                                setResult(REQUEST_CODE.DELETE_BOARD_CODE)
+                                //setResult(REQUEST_CODE.DELETE_BOARD_CODE) // NOT WORKING
                                 finish() // 해당 게시글에서 나가기
                             }
                         }
-                    }).setNegativeButton(getString(R.string.cancel), { dialog, id ->
+                    }.setNegativeButton(getString(R.string.cancel)) { dialog, id ->
                         dialog.dismiss()
-                    }).create().show()
+                    }.create().show()
 
+            }
+            MENU_ID.UPDATE -> {
+                val updateIntent = Intent(this, UpdateActivity::class.java)
+                updateIntent.putExtra("product_item", vm?.item)
+                startActivityForResult(updateIntent, UPDATE_BOARD_CODE)
             }
             else -> return super.onOptionsItemSelected(item)
         }
@@ -141,6 +140,7 @@ class BoardActivity : AppCompatActivity() {
 
     override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
         menu?.removeItem(MENU_ID.DELETE)
+        menu?.removeItem(MENU_ID.UPDATE)
         val uid = vm?.getUid()
 
         // 좋아요 누른 여부에 따라 Toolbar 아이콘 변경
@@ -155,9 +155,11 @@ class BoardActivity : AppCompatActivity() {
         // 본인 게시글 여부에 따라 삭제 버튼 동적으로 추가 및 아이콘 배치 변경
         if (vm?.getUid() == vm?.item.uid) { // 본인 게시글이면
             // add() : (groupId, itemId, order, titleRes)
-            menu?.add(0, MENU_ID.DELETE, 0, "삭제")?.setIcon(R.drawable.app_icon)
+            menu?.add(0, MENU_ID.UPDATE, 1, getString(R.string.update))?.setIcon(R.drawable.app_icon)
                 ?.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER)
-            menu?.findItem(R.id.action_share)?.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER)
+            menu?.add(0, MENU_ID.DELETE, 0, getString(R.string.delete))?.setIcon(R.drawable.app_icon)
+                ?.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER)
+            //menu?.findItem(R.id.action_share)?.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER)
         } else { // 본인 게시글이 아니면
             // 기존 메뉴 방식으로 짆애
         }

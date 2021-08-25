@@ -51,4 +51,8 @@ class WriteViewModel(application: Application) : AndroidViewModel(application) {
             FirebaseRepository.instance.saveProductImg(imgPath, boardUid, fileNameForDelete)
         }
     }
+
+    fun updateProduct(item: ProductItem) {
+
+    }
 }

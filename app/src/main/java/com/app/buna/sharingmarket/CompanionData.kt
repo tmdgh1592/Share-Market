@@ -9,6 +9,7 @@ class REQUEST_CODE {
         const val REGISTER_FAIL_CODE = 4001 // 판매 글 등록 실패
         const val IMAGE_PICKER_REQUEST_CODE = 5000 // 이미지 피커 갤러리 request 코드
         const val DELETE_BOARD_CODE = 6000
+        const val UPDATE_BOARD_CODE = 6001
     }
 }
 
@@ -36,6 +37,7 @@ class SOSOCK {
 class MENU_ID {
     companion object {
         const val DELETE = 0
+        const val UPDATE = 1
     }
 }
 
