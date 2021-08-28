@@ -19,14 +19,12 @@ import com.github.hamzaahmedkhan.spinnerdialog.SpinnerDialogFragment
 import com.github.hamzaahmedkhan.spinnerdialog.SpinnerModel
 import com.opensooq.supernova.gligar.GligarPicker
 import org.koin.android.ext.android.get
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class UpdateActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityUpdateBinding
-    private val boardVM: BoardViewModel by lazy {
-        ViewModelProvider(this, BoardViewModel.Factory(get(), this))
-            .get(BoardViewModel::class.java)
-    }
+    val boardVM: BoardViewModel by viewModel()
     private val vm: WriteViewModel by lazy {
         ViewModelProvider(this, WriteViewModel.Factory(get())).get(WriteViewModel::class.java)
     }
