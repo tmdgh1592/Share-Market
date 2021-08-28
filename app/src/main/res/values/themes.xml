@@ -14,6 +14,7 @@
         <item name="android:statusBarColor" tools:targetApi="l">@color/gray_20</item>
         <!-- Customize your theme here. -->
         <item name="android:windowDisablePreview">true</item>
+        <item name="actionOverflowButtonStyle">@style/AppTheme.OverFlow</item>
     </style>
 
     <!-- Title Text Style -->
@@ -24,6 +25,10 @@
     <style name="Theme.ShareMarket.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+    </style>
+    
+    <style name="AppTheme.OverFlow" parent="Widget.AppCompat.Light.ActionButton.Overflow">
+        <item name="android:tint">@color/black</item>
     </style>
 
 

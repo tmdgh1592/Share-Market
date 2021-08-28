@@ -165,12 +165,13 @@ class FirebaseRepository {
             transaction.set(tsDoc, dto)
             callback(!nowState)
         }
-            /*.update(updateMap)
-            .addOnCompleteListener {
-                callback(!nowState)
-            }*/
+        /*.update(updateMap)
+        .addOnCompleteListener {
+            callback(!nowState)
+        }*/
 
     }
+
 
 
     /*

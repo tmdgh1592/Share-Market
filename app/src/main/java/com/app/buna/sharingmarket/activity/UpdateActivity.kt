@@ -1,30 +1,45 @@
 package com.app.buna.sharingmarket.activity
 
-import androidx.appcompat.app.AppCompatActivity
+import android.content.DialogInterface
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
+import android.view.LayoutInflater
+import android.widget.RadioGroup
+import androidx.annotation.IdRes
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.app.buna.sharingmarket.CONST
 import com.app.buna.sharingmarket.R
 import com.app.buna.sharingmarket.REQUEST_CODE
 import com.app.buna.sharingmarket.databinding.ActivityUpdateBinding
 import com.app.buna.sharingmarket.model.items.ProductItem
 import com.app.buna.sharingmarket.repository.PreferenceUtil
 import com.app.buna.sharingmarket.utils.FancyChocoBar
+import com.app.buna.sharingmarket.utils.FancyToastUtil
 import com.app.buna.sharingmarket.utils.KeyboardUtil.Companion.hideKeyBoard
 import com.app.buna.sharingmarket.utils.NetworkStatus
 import com.app.buna.sharingmarket.viewmodel.BoardViewModel
 import com.app.buna.sharingmarket.viewmodel.WriteViewModel
+import com.bumptech.glide.Glide
 import com.github.hamzaahmedkhan.spinnerdialog.OnSpinnerOKPressedListener
 import com.github.hamzaahmedkhan.spinnerdialog.SpinnerDialogFragment
 import com.github.hamzaahmedkhan.spinnerdialog.SpinnerModel
 import com.opensooq.supernova.gligar.GligarPicker
+import kotlinx.android.synthetic.main.picked_photo_view.view.*
 import org.koin.android.ext.android.get
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class UpdateActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityUpdateBinding
-    val boardVM: BoardViewModel by viewModel()
+    val boardVM: BoardViewModel by lazy {
+        ViewModelProvider(this, BoardViewModel.Factory(get(), this))
+            .get(BoardViewModel::class.java)
+    }
     private val vm: WriteViewModel by lazy {
         ViewModelProvider(this, WriteViewModel.Factory(get())).get(WriteViewModel::class.java)
     }
@@ -72,7 +87,7 @@ class UpdateActivity : AppCompatActivity() {
                 .requestCode(REQUEST_CODE.IMAGE_PICKER_REQUEST_CODE)
                 .withActivity(this)
                 .cameraDirect(false) // 열자마자 바로 카메라로 이동할지 여부
-                .limit(5) // 이미지 선택 개수 제한
+                .limit(CONST.MAX_PHOTO_SIZE) // 이미지 선택 개수 제한
                 .show()
         }
 
@@ -154,5 +169,97 @@ class UpdateActivity : AppCompatActivity() {
                 "SpinnerDialogFragment"
             )
         }
+
+        // Radio Button (드릴게요!, 필요해요!)
+        binding?.typeRadioGroup?.setOnCheckedChangeListener(object :
+            RadioGroup.OnCheckedChangeListener {
+            override fun onCheckedChanged(group: RadioGroup?, @IdRes id: Int) {
+                hideKeyBoard(this@UpdateActivity, binding?.titleEditText!!.windowToken)
+                when (id) {
+                    R.id.radio_give -> vm?.isGive = true
+                    R.id.radio_need -> vm?.isGive = false
+                }
+            }
+        })
+
+        /* 이미지 개수가 달라지면 옵저버가 감지하고 이미지 개수 뷰 갱신 */
+        vm?.imageCount?.observe(this, Observer {
+            binding?.photoCountText?.text = "${it}/5"
+        })
+
+        binding?.backBtn?.setOnClickListener {
+            showExitDialog()
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode != RESULT_OK) {
+            return
+        }
+
+        when (requestCode) {
+            REQUEST_CODE.IMAGE_PICKER_REQUEST_CODE -> { // 이미지 피커 :: 갤러리에서 사진을 가져온 경우
+                val newData =
+                    data?.extras?.getStringArray(GligarPicker.IMAGES_RESULT)!! // 선택한 새로운 이미지 가져오기
+                var totalSize: Int = vm?.imageCount?.value!! // 먼저 기존에 저장된 개수 가져오고 그 후에 가져온 개수만큼 더하기
+
+                val tempImgPath = ArrayList<String>() // 전달할 Image path(이미지 경로) arraylist
+                //// imgPath.addAll(newData) // image path 받아오기
+
+                for (data in newData) { // 새로운 데이터가 5개를 초과하는지 확인하면서 반복문을 돌림
+                    if ((totalSize + 1) > CONST.MAX_PHOTO_SIZE) {
+                        FancyToastUtil(this).showFail("이미지는 총 5개만 가져올 수 있어요!")
+                        break
+                    }
+                    totalSize += 1 // 전체 선택된 이미지에 개수 더하기
+                    tempImgPath.add(data) // 임시 경로 리스트에 추가
+                    vm?.imagePaths?.add(data) // 받아온 이미지 경로를 ViewModel의 imagePaths에 추가
+                }
+
+
+                if (!tempImgPath.isNullOrEmpty()) { // 이미지를 한개라도 고른 경우
+                    Log.d("WriteActivity", tempImgPath.size.toString())
+
+                    // 새로 추가된 이미지 개수만큼 미리보기 View 추가
+                    tempImgPath.forEach { path ->
+                        // Photo View
+                        val photoView = LayoutInflater.from(this)
+                            .inflate(R.layout.picked_photo_view, binding?.scrollInnerView, false)
+                        Glide.with(this).load(path).into(photoView.photo_image_view)
+                        photoView.photo_delete_btn.setOnClickListener {
+                            vm?.imagePaths?.remove(path) // ViewModel의 Image Array에서 해당 이미지 원소 제거
+                            vm?.imageCount?.postValue(vm?.imageCount?.value!! - 1) // ViewModel의 이미지 개수 값 변경
+                            binding?.scrollInnerView?.removeView(photoView) // View 제거
+
+                            // 삭제된 후 남은 이미지 개수 출력
+                            Log.d(
+                                "WriteActivity",
+                                "Image count after delete : ${vm?.imagePaths?.size.toString()}"
+                            )
+                        }
+                        binding?.scrollInnerView?.addView(photoView) // Scroll View에 photo view 추가
+                    }
+                }
+
+                vm?.imageCount?.postValue(totalSize) // 기존 이미지 개수와 새로 가져온 이미지 개수를 합침
+            }
+        }
+    }
+
+    fun showExitDialog() {
+        AlertDialog.Builder(this)
+            .setMessage(getString(R.string.write_dialog))
+            .setPositiveButton(
+                getString(R.string.ok), DialogInterface.OnClickListener { dialog, id ->
+                    finish()
+                })
+            .setNegativeButton(
+                getString(R.string.cancel), DialogInterface.OnClickListener { dialog, id -> })
+            .create().show()
+    }
+
+    override fun onBackPressed() {
+        showExitDialog()
     }
 }

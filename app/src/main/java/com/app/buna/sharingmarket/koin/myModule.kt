@@ -14,9 +14,11 @@ val myModule = module(override = true) {
     }
 }
 
+/*
 val viewModelsModules = module(override = true) {
     viewModel<BoardViewModel> {
         BoardViewModel(get(), androidContext())
     }
 }
+*/
 

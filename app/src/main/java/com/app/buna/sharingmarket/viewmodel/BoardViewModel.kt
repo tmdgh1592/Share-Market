@@ -3,6 +3,7 @@ package com.app.buna.sharingmarket.viewmodel
 import android.app.Application
 import android.content.Context
 import android.content.Intent
+import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.util.Log
@@ -88,9 +89,9 @@ class BoardViewModel(application: Application, val context: Context) : AndroidVi
                 Log.e(TAG, "카카오링크 보내기 실패", error)
                 // 카카오톡이 설치되어 있지 않은 경우, 플레이스토어에서 카카오톡 실행
                 try {
-                    context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=com.kakao.talk")))
+                    context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=com.kakao.talk")).addFlags(FLAG_ACTIVITY_NEW_TASK))
                 } catch (e: Exception) {
-                    context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=com.kakao.talk")))
+                    context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=com.kakao.talk")).addFlags(FLAG_ACTIVITY_NEW_TASK))
                 }
             }
             else if (linkResult != null) {

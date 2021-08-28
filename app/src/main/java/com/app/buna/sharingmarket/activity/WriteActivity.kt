@@ -79,7 +79,7 @@ class WriteActivity : AppCompatActivity(), FirebaseRepositoryCallback {
                 .requestCode(REQUEST_CODE.IMAGE_PICKER_REQUEST_CODE)
                 .withActivity(this)
                 .cameraDirect(false) // 열자마자 바로 카메라로 이동할지 여부
-                .limit(5) // 이미지 선택 개수 제한
+                .limit(CONST.MAX_PHOTO_SIZE) // 이미지 선택 개수 제한
                 .show()
         }
 
