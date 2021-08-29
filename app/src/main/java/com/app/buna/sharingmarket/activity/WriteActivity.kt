@@ -10,6 +10,7 @@ import android.widget.RadioGroup
 import androidx.annotation.IdRes
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -71,7 +72,7 @@ class WriteActivity : AppCompatActivity(), FirebaseRepositoryCallback {
             }, 0
         )
         spinnerDialogFragment.buttonText = getString(R.string.done)
-        spinnerDialogFragment.themeColorResId = R.color.app_green
+        spinnerDialogFragment.themeColorResId = ContextCompat.getColor(this, R.color.app_green)
 
         /* 갤러리 포토 피커 */
         binding?.photoAddBtn?.setOnClickListener {
@@ -183,7 +184,6 @@ class WriteActivity : AppCompatActivity(), FirebaseRepositoryCallback {
     /* Firebase 업로드에 실패한 경우 callback 지정 */
     override fun callbackForFailureUploading() {
         FancyToastUtil(this).showFail(getString(R.string.upload_fail))
-        finish() // 업로드 성공시 작성 액티비티 종료
     }
 
 
@@ -257,5 +257,6 @@ class WriteActivity : AppCompatActivity(), FirebaseRepositoryCallback {
     override fun onBackPressed() {
         showExitDialog()
     }
+
 }
 

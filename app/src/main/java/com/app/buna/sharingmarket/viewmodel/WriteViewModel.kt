@@ -18,6 +18,7 @@ class WriteViewModel(application: Application) : AndroidViewModel(application) {
     var category: String? = null
     var isGive: Boolean? = null
     var imagePaths = ArrayList<String>(CONST.MAX_PHOTO_SIZE)
+    var imagePathHash = HashMap<String, Boolean>()
     var imageCount: MutableLiveData<Int> = MutableLiveData(0)
     var fileNameForDelete = ArrayList<String>(CONST.MAX_PHOTO_SIZE)
 
@@ -25,10 +26,6 @@ class WriteViewModel(application: Application) : AndroidViewModel(application) {
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
             return WriteViewModel(application) as T
         }
-    }
-
-    fun uploadProduct(item: ProductItem, callback: FirebaseRepositoryCallback) {
-        FirebaseRepository.instance.uploadBoard(item, callback)
     }
 
     // 가져오는데 딜레이 있음 (코루틴 await 사용해야 함)
@@ -46,13 +43,30 @@ class WriteViewModel(application: Application) : AndroidViewModel(application) {
         return FirebaseAuth.getInstance().currentUser?.uid
     }
 
+
+    // 상품 정보 등록
+    fun uploadProduct(item: ProductItem, callback: FirebaseRepositoryCallback) {
+        FirebaseRepository.instance.uploadBoard(item, callback)
+    }
+
+    // 상품 정보 등록 후 -> callback -> 이미지 Save
     fun saveProductImage(imgPath: ArrayList<String>, boardUid: String) {
         if(imgPath != null && imgPath.size != 0) {
             FirebaseRepository.instance.saveProductImg(imgPath, boardUid, fileNameForDelete)
         }
     }
 
-    fun updateProduct(item: ProductItem) {
+    // 상품 정보 업데이트
+    fun updateProduct(item: ProductItem, callback: FirebaseRepositoryCallback) {
+        if(item != null) {
+            FirebaseRepository.instance.updateBoard(item, callback)
+        }
+    }
 
+    // 상품 정보 업데이트 후 -> callback -> 이미지 새로 Save
+    fun updateProductImage(imgPath: HashMap<String, Boolean>, boardUid: String) {
+        if(imgPath != null && imgPath.size != 0) {
+            FirebaseRepository.instance.updateProductImg(imgPath, boardUid, fileNameForDelete)
+        }
     }
 }

@@ -37,7 +37,12 @@
     <string name="upload_success">게시글을 성공적으로 등록하였습니다.</string>
     <string name="upload_fail">알 수 없는 오류로 업로드에 실패하였습니다.</string>
 
+    <string name="update_success">게시글을 성공적으로 수정하였습니다.</string>
+    <string name="update_fail">알 수 없는 오류로 게시글 수정에 실패하였습니다.</string>
+
     <string name="write_activity_toolbar_title">무료나눔 글쓰기</string>
+    <string name="update_activity_toolbar_title">게시글 수정</string>
+
     <string name="done">완료</string>
 
     <string name="title">제목</string>
@@ -97,6 +102,7 @@
     <string name="back_press">한 번 더 누르시면 쉐어마켓이 종료됩니다.</string>
 
     <string name="write_dialog">글쓰기를 종료하시겠습니까?</string>
+    <string name="update_dialog">게시글 수정을 종료하시겠습니까?</string>
 
     <string name="chatting">채팅</string>
     <string name="one_to_one_chat">1:1 채팅하기</string>

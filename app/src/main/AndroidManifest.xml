@@ -22,6 +22,7 @@
         android:largeHeap="true"
         android:roundIcon="@drawable/app_icon"
         android:supportsRtl="true"
+        android:requestLegacyExternalStorage="true"
         android:theme="@style/Theme.ShareMarket"
         android:usesCleartextTraffic="true">
         <activity android:name=".activity.UpdateActivity"></activity>

@@ -4,7 +4,6 @@ import android.app.Application
 import android.content.Context
 import android.content.Intent
 import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
-import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
@@ -17,7 +16,6 @@ import com.app.buna.sharingmarket.repository.FirebaseRepository
 import com.google.firebase.auth.FirebaseAuth
 import com.kakao.sdk.link.LinkClient
 import com.kakao.sdk.template.model.*
-import java.lang.Exception
 
 class BoardViewModel(application: Application, val context: Context) : AndroidViewModel(application) {
 

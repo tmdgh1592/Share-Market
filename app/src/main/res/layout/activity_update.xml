@@ -35,7 +35,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:text="@string/write_activity_toolbar_title"
+                android:text="@string/update_activity_toolbar_title"
                 android:textStyle="bold"
                 android:textColor="@color/black"
                 android:gravity="center|left"
@@ -201,14 +201,12 @@
                 android:id="@+id/radio_give"
                 android:layout_weight="1"
                 android:layout_width="0dp"
-                android:checked="@{viewModel.item.give}"
                 android:layout_height="wrap_content"
                 android:text="@string/give"/>
             <RadioButton
                 android:id="@+id/radio_need"
                 android:layout_weight="1"
                 android:layout_width="0dp"
-                android:checked="@{viewModel.item.give}"
                 android:layout_height="wrap_content"
                 android:text="@string/need"/>
         </RadioGroup>

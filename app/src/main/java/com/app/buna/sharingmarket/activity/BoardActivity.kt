@@ -155,9 +155,9 @@ class BoardActivity : AppCompatActivity() {
         // 본인 게시글 여부에 따라 삭제 버튼 동적으로 추가 및 아이콘 배치 변경
         if (vm?.getUid() == vm?.item.uid) { // 본인 게시글이면
             // add() : (groupId, itemId, order, titleRes)
-            menu?.add(0, MENU_ID.UPDATE, 1, getString(R.string.update))?.setIcon(R.drawable.app_icon)
+            menu?.add(0, MENU_ID.UPDATE, 0, getString(R.string.update))?.setIcon(R.drawable.app_icon)
                 ?.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER)
-            menu?.add(0, MENU_ID.DELETE, 0, getString(R.string.delete))?.setIcon(R.drawable.app_icon)
+            menu?.add(0, MENU_ID.DELETE, 1, getString(R.string.delete))?.setIcon(R.drawable.app_icon)
                 ?.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER)
             //menu?.findItem(R.id.action_share)?.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER)
         } else { // 본인 게시글이 아니면
