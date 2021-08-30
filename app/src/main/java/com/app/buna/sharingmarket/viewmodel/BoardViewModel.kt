@@ -57,29 +57,58 @@ class BoardViewModel(application: Application, val context: Context) : AndroidVi
     // 공유 :: 카카오 링크 보내기
     fun sendKakaoLink() {
         // 메시지 템플릿 만들기 (피드형)
-        val defaultFeed = FeedTemplate(
-            content = Content(
-                title = item.title,
-                description = item.content,
-                imageUrl = item.imgPath.values.first(),
-                link = Link(
-                    mobileWebUrl = "https://play.google.com/store/apps/details?id=com.app.buna.sharingmarket"
-                )
-            ), social = Social(
-                likeCount = item.likeCount
-            ),
-            buttons = listOf(
-                Button(
-                    "쉐어마켓에서 보기",
-                    Link(
-                        androidExecParams = mapOf(
-                            "key1" to "value1",
-                            "key2" to "value2"
-                        ) // 내 앱에서 파라미터보낼건 필요없음 (앱 다운로드만 유도할것이다)
+        // 대표 이미지가 있을 경우
+        var defaultFeed: FeedTemplate
+
+        if (item.imgPath.size >= 1) {
+            defaultFeed = FeedTemplate(
+                content = Content(
+                    title = item.title,
+                    description = item.content,
+                    imageUrl = item.imgPath.values.first(),
+                    link = Link(
+                        mobileWebUrl = "https://play.google.com/store/apps/details?id=com.app.buna.sharingmarket"
+                    )
+                ), social = Social(
+                    likeCount = item.likeCount
+                ),
+                buttons = listOf(
+                    Button(
+                        "쉐어마켓에서 보기",
+                        Link(
+                            androidExecParams = mapOf(
+                                "key1" to "value1",
+                                "key2" to "value2"
+                            ) // 내 앱에서 파라미터보낼건 필요없음 (앱 다운로드만 유도할것이다)
+                        )
                     )
                 )
             )
-        )
+        } else { // 업로드할 사진이 없을 경우
+            defaultFeed = FeedTemplate(
+                content = Content(
+                    title = item.title,
+                    description = item.content,
+                    imageUrl = "https://firebasestorage.googleapis.com/v0/b/sharing-market.appspot.com/o/app_images%2Fapp_icon.png?alt=media&token=af6cde24-c7af-4ee1-bf98-958de3ba3fbc",
+                    link = Link(
+                        mobileWebUrl = "https://play.google.com/store/apps/details?id=com.app.buna.sharingmarket"
+                    )
+                ), social = Social(
+                    likeCount = item.likeCount
+                ),
+                buttons = listOf(
+                    Button(
+                        "쉐어마켓에서 보기",
+                        Link(
+                            androidExecParams = mapOf(
+                                "key1" to "value1",
+                                "key2" to "value2"
+                            ) // 내 앱에서 파라미터보낼건 필요없음 (앱 다운로드만 유도할것이다)
+                        )
+                    )
+                )
+            )
+        }
 
         // 피드 메시지 보내기
         LinkClient.instance.defaultTemplate(context, defaultFeed) { linkResult, error ->

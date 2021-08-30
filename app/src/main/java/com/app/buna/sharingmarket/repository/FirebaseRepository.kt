@@ -14,7 +14,6 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import java.io.File
-import java.io.InputStream
 
 class FirebaseRepository {
 
@@ -65,7 +64,7 @@ class FirebaseRepository {
                 if (task.isSuccessful) {
                     Log.d(
                         "FirebaseRepository -> saveImgPath",
-                        "Successful Save ImgPath in 'img_path' Realtime Database\n${uri}"
+                        "Successful Save ImgPath in Realtime Database 'img_path' : ${uri}"
                     )
                 }
             }
@@ -121,7 +120,7 @@ class FirebaseRepository {
             )
             .addOnSuccessListener {
                 callback.callbackForSuccessfulUploading(item.documentId)
-                Log.d("FirebaseRepository", item.documentId)
+                Log.d("FirebaseRepository", "Successful for updating board data")
             }.addOnFailureListener {
                 callback.callbackForFailureUploading()
             }
@@ -157,53 +156,77 @@ class FirebaseRepository {
     }
 
 
-    
-    // Not working :: 새로운 사진이 대체되면서 기존 이미지의 Url이 갱신되면서 찾지 못하는 것으로 추정
     fun updateProductImg(
         imgPath: HashMap<String, Boolean>, // local path (디바이스 경로) :: key -> path // value -> isLocal
         boardUid: String,
-        fileNameForDelete: ArrayList<String>
+        fileNamesForDelete: ArrayList<String>
     ) {
+        var idx = 0 // fileNamesForDelete를 접근하기 위한 index!!
 
-        /*imgPath.entries.forEach { entry ->
-            Log.d("mytest", entry.value.toString() + " : " + entry.key)
-        }
-
-        var num = 0
-        // 주의 사항 :: 맨 끝에 있는 child는 파일 명임
-        imgPath.entries.forEach { entry ->
-
-            val storageReference =
+        if (imgPath.size == 0) { // 업데이트할 때 이미지를 설정하지 않으면 기존 이미지 정보들 제거
+            // Delete Storage
+            // 잘못삭제되는 경우에 문제가 될 수 있으므로, 이미지를 아예 안올리는 경우나 게시글을 삭제할 때만 Storage삭제
+            for (fileName in fileNamesForDelete) {
+                Log.d("테스트", fileName+"입니다.")
                 firebaseStorage.getReferenceFromUrl("gs://sharing-market.appspot.com")
-                    .child("product_images").child("${boardUid}")
-                    .child(fileNameForDelete.get(num++)) // 파이어 스토리지의 상품 이미지 경로 ex) -> '.../{boardUid}/0.jpeg' 와 같은 형태로 저장됨}
+                    .child("product_images").child("${boardUid}").child(fileName)
+                    .delete()
+                    .addOnCompleteListener {
 
-            var uri: Uri
-            Log.d("Is Local", entry.value.toString())
-            if (entry.value) { // 디바이스 경로이면
-                uri = Uri.fromFile(File(entry.key)) // 디바이스 경로를 uri로 변경
-                Log.d("FirebaseRepository", "Local : ${entry.key}")
-            }else { // 기존 FireStorage 주소이면
-                uri = Uri.parse(entry.key) // FireStorage에 있는 이미지 주소를 그대로 Uri로 파싱
-                Log.d("FirebaseRepository", "Storage : ${entry.key.replace("\n", "")}")
+                    }
             }
 
-            storageReference.putFile(uri).addOnCompleteListener { task ->
-                if (task.isSuccessful) { // Storage에 이미지를 성공적으로 저장했다면
-                    storageReference.downloadUrl.addOnSuccessListener { resultUri ->
-                        saveImgPath(
-                            boardUid,
-                            resultUri
-                        ) // 이미지 uri를 RealtimeDB에도 저장 (빠르게 가져오기 위함)
-                        Log.d("Result", "Success : ${resultUri}")
+            // Delete DB (이미지 경로를 기록한 Scheme)
+            firebaseDatabaseInstance.getReference("products") // product 정보
+                .child("img_path")
+                .child(boardUid) // 게시글 Uid
+                .setValue(null)
+
+        } else { // 1개라도 업데이트할 이미지가 있는 경우
+            firebaseDatabaseInstance.getReference("products") // product 정보
+                .child("img_path")
+                .child(boardUid) // 게시글 Uid
+                .setValue(null).addOnCompleteListener {
+                    // 주의 사항 :: 맨 끝에 있는 child는 파일 명임
+                    imgPath.entries.forEach { entry ->
+                        if (idx < imgPath.size) {
+                            // 사진을 추가할 storage Reference 경로
+                            val storageReference =
+                                firebaseStorage.getReferenceFromUrl("gs://sharing-market.appspot.com")
+                                    .child("product_images").child("${boardUid}")
+                                    .child(fileNamesForDelete.get(idx++)) // 파이어 스토리지의 상품 이미지 경로 ex) -> '.../{boardUid}/0.jpeg' 와 같은 형태로 저장됨}
+
+                            var uri: Uri
+                            Log.d("Is Local", entry.value.toString())
+                            if (entry.value) { // 디바이스 경로이면
+                                uri = Uri.fromFile(File(entry.key)) // 디바이스 경로를 uri로 변경
+                                Log.d("FirebaseRepository", "Local : ${entry.key}")
+                            } else { // 기존 FireStorage 주소이면
+                                uri = Uri.parse(entry.key) // FireStorage에 있는 이미지 주소를 그대로 Uri로 파싱
+                                saveImgPath(boardUid, uri) // 기존 주소 그대로 Firebase Realtime DB에 저장
+                                Log.d("FirebaseRepository", "Storage : ${entry.key}")
+                            }
+                            // 해당 경로에 이미지 저장
+                            storageReference.putFile(uri).addOnCompleteListener { task ->
+                                if (task.isSuccessful) { // Storage에 이미지를 성공적으로 저장했다면
+                                    storageReference.downloadUrl.addOnSuccessListener { resultUri ->
+                                        saveImgPath(
+                                            boardUid,
+                                            resultUri
+                                        ) // 이미지 uri를 RealtimeDB에도 저장 (빠르게 가져오기 위함)
+                                        Log.d("Result", "Success : ${resultUri}")
+                                    }
+                                }
+                            }.addOnFailureListener {
+                                Log.d("Result", "Fail : ${uri}")
+                                Log.d("FirebaseRepository", it.toString())
+                            }
+                        }
                     }
                 }
-            }.addOnFailureListener {
-                Log.d("Result", "Fail : ${uri}")
-                Log.d("FirebaseRepository", it.toString())
-            }
+        }
 
-        }*/
+
     }
 
     // 하트 클릭시 변경
@@ -285,7 +308,6 @@ class FirebaseRepository {
                             // 이미지를 모두 가져왔다면 callback 함수로 list 전달
                             if (boardCount == task.getResult().size()) {
                                 callback.complete(productList)
-                                Log.d("FirebaseRepository", "Complete : ${productList.size}")
                             }
                         }
                 }
@@ -310,18 +332,25 @@ class FirebaseRepository {
                 )
             }
 
-        // Not Working
-        /*firebaseDatabaseInstance.getReference("users").child(item.uid)
-            .child("board_uid").child("${item.documentId}").removeValue() // 'users' -> document id를 찾아서 해당 user가 지우려는 게시물 제거
-            .addOnSuccessListener {
 
-            }.addOnFailureListener {
-                Log.d(
-                    "FirebaseRepository -> removeProductData() -> firebaseDatabaseinstance.users",
-                    "Failure"
-                )
-            }*/
+        // DB에 속한 데이터 제거
+        // 'users' -> 'board_uid'의 child를 순회하면서 document id를 찾아서 사용자가 지우려는 게시물 제거
+        firebaseDatabaseInstance.getReference("users").child(item.uid)
+            .child("board_uid").addListenerForSingleValueEvent(
+                object : ValueEventListener {
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        for (snap in snapshot.children) {
+                            if (snap.value == item.documentId) {
+                                snap.ref.setValue(null)
+                            }
+                        }
+                    }
+                    override fun onCancelled(error: DatabaseError) {}
+                }
+            )
 
+
+        // 이미지가 있을땐 DB의 이미지 경로들도 제거
         firebaseDatabaseInstance.getReference("products")
             .child("img_path") // 'products' -> documentId 찾아서 제거
             .child(item.documentId).removeValue().addOnSuccessListener {

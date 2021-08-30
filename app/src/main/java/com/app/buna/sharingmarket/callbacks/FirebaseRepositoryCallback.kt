@@ -2,7 +2,7 @@ package com.app.buna.sharingmarket.callbacks
 
 interface FirebaseRepositoryCallback {
 
-    fun callbackForSuccessfulUploading(uid: String)
+    fun callbackForSuccessfulUploading(boardUid: String)
     fun callbackForFailureUploading()
 
 }

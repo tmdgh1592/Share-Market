@@ -46,7 +46,6 @@ class InitialSecondFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         PreferenceUtil.putInt(requireContext(), "fragment_page", 1) // 현재까지 진행한 fragment_page 저장
-
         /*
         *  View 초기화
         * */

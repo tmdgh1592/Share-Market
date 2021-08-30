@@ -64,9 +64,9 @@ class WriteViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     // 상품 정보 업데이트 후 -> callback -> 이미지 새로 Save
-    fun updateProductImage(imgPath: HashMap<String, Boolean>, boardUid: String) {
-        if(imgPath != null && imgPath.size != 0) {
-            FirebaseRepository.instance.updateProductImg(imgPath, boardUid, fileNameForDelete)
+    fun updateProductImage(boardUid: String, fileNamesForDelete: ArrayList<String>) {
+        if(imagePathHash != null) {
+            FirebaseRepository.instance.updateProductImg(imagePathHash, boardUid, fileNamesForDelete)
         }
     }
 }

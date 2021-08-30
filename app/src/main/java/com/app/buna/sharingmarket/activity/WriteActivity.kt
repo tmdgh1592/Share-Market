@@ -2,6 +2,7 @@ package com.app.buna.sharingmarket.activity
 
 import android.content.DialogInterface
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.os.*
 import android.util.Log
 import android.view.LayoutInflater
@@ -32,6 +33,10 @@ import com.github.hamzaahmedkhan.spinnerdialog.SpinnerDialogFragment.Companion.n
 import com.github.hamzaahmedkhan.spinnerdialog.SpinnerModel
 import com.opensooq.supernova.gligar.GligarPicker
 import kotlinx.android.synthetic.main.picked_photo_view.view.*
+import java.io.File
+import java.io.FileOutputStream
+import java.io.OutputStream
+import java.lang.Exception
 
 private var binding: ActivityWriteBinding? = null
 private var vm: WriteViewModel? = null
@@ -219,21 +224,26 @@ class WriteActivity : AppCompatActivity(), FirebaseRepositoryCallback {
                     // 새로 추가된 이미지 개수만큼 미리보기 View 추가
                     tempImgPath.forEach { path ->
                         // Photo View
-                        val photoView = LayoutInflater.from(this)
-                            .inflate(R.layout.picked_photo_view, binding?.scrollInnerView, false)
-                        Glide.with(this).load(path).into(photoView.photo_image_view)
-                        photoView.photo_delete_btn.setOnClickListener {
-                            vm?.imagePaths?.remove(path) // ViewModel의 Image Array에서 해당 이미지 원소 제거
-                            vm?.imageCount?.postValue(vm?.imageCount?.value!! - 1) // ViewModel의 이미지 개수 값 변경
-                            binding?.scrollInnerView?.removeView(photoView) // View 제거
+                        try {
+                            val photoView = LayoutInflater.from(this)
+                                .inflate(R.layout.picked_photo_view, binding?.scrollInnerView, false)
+                            Glide.with(this).load(path).into(photoView.photo_image_view)
+                            photoView.photo_delete_btn.setOnClickListener {
+                                vm?.imagePaths?.remove(path) // ViewModel의 Image Array에서 해당 이미지 원소 제거
+                                vm?.imageCount?.postValue(vm?.imageCount?.value!! - 1) // ViewModel의 이미지 개수 값 변경
+                                binding?.scrollInnerView?.removeView(photoView) // View 제거
 
-                            // 삭제된 후 남은 이미지 개수 출력
-                            Log.d(
-                                "WriteActivity",
-                                "Image count after delete : ${vm?.imagePaths?.size.toString()}"
-                            )
+                                // 삭제된 후 남은 이미지 개수 출력
+                                Log.d(
+                                    "WriteActivity",
+                                    "Image count after delete : ${vm?.imagePaths?.size.toString()}"
+                                )
+                            }
+                            binding?.scrollInnerView?.addView(photoView) // Scroll View에 photo view 추가
+                        }catch (e: Exception) {
+                            e.printStackTrace()
                         }
-                        binding?.scrollInnerView?.addView(photoView) // Scroll View에 photo view 추가
+
                     }
                 }
 

@@ -54,6 +54,7 @@ class BoardActivity : AppCompatActivity() {
         // 이미지 슬라이더 adapter 초기화
         if (vm?.item.imgPath.size > 1) { // 개수가 2개 이상이면 Image Slider 사용
             binding?.imageView?.visibility = View.GONE // Image View는 사라지게
+            binding?.imageHolderView?.visibility = View.GONE // Image View를 감싸고 있는 Holder도 사라지게
             binding?.imageSlider?.apply {
                 visibility = View.VISIBLE
                 setSliderAdapter(ImageSliderAdapter(vm?.getSlideItem()))
@@ -62,23 +63,21 @@ class BoardActivity : AppCompatActivity() {
         } else { // 개수가 1개보다 적으면 Image View 사용
 
             // xml에서와 java에서의 value를 계산하는 방식이 다르므로 아래 로직 수행
-            val height = TypedValue.applyDimension(
-                TypedValue.COMPLEX_UNIT_DIP,
-                300F,
-                getResources().getDisplayMetrics()
-            ).toInt()
+            if (vm?.item.imgPath.size == 1) { // 이미지가 1개인 경우
+                // ImageView의 크기 조정을 위한 디멘션
+                val height = TypedValue.applyDimension(
+                    TypedValue.COMPLEX_UNIT_DIP,
+                    300F,
+                    resources.displayMetrics
+                ).toInt()
 
-            binding?.imageSlider?.visibility = View.GONE // Image Slider는 사라지게
-            binding?.imageView?.let { imageView ->
-                imageView.visibility = View.VISIBLE
-                if (vm?.item.imgPath.size == 1) { // 이미지가 1개인 경우엔 ImageView를 사용
+                binding?.imageSlider?.visibility = View.GONE // Image Slider는 사라지게
+                binding?.imageView?.let { imageView ->
                     imageView.layoutParams.height = height
                     imageView.layoutParams.width = RelativeLayout.LayoutParams.MATCH_PARENT
                     imageView.requestLayout()
 
-                    Glide.with(this).load(vm?.item.imgPath.values.first()).centerCrop().into(
-                        imageView
-                    )
+                    Glide.with(this).load(vm?.item.imgPath.values.first()).centerCrop().into(imageView)
                 }
             }
         }

@@ -148,12 +148,12 @@ class UpdateActivity : AppCompatActivity(), FirebaseRepositoryCallback {
             }
 
 
-            // 기존 삭제를 위한 파일 이름 리스트 초기화
+            // 기존에 있던 삭제를 위한 파일 이름 리스트는 초기화
             boardVM.item.fileNamesForDelete.clear()
             // write ViewModel의 imageCount만큼 반복해서 추가
             for (i in 1..writeVM?.imageCount.value!!) {
                 writeVM?.fileNameForDelete?.add(i.toString())
-                //boardVM.item.fileNamesForDelete?.add(i.toString())
+                boardVM.item.fileNamesForDelete?.add(i.toString()) // 새로 추가
             }
 
             val item = ProductItem(
@@ -172,7 +172,7 @@ class UpdateActivity : AppCompatActivity(), FirebaseRepositoryCallback {
                 isExchange = boardVM?.item.isExchange, // 무료나눔 Activity이기 때문에 교환은 false 처리
                 fileNamesForDelete = writeVM?.fileNameForDelete!! // 파일 삭제를 위한 숫자 이름 리스트
             )
-            
+
             boardVM?.item = item // 게시글 수정 후 BoardActivity의 item을 업데이트하기 위한 데이터
 
             // 게시글 데이터 업데이트
@@ -236,13 +236,13 @@ class UpdateActivity : AppCompatActivity(), FirebaseRepositoryCallback {
             Glide.with(this).load(path).into(photoView.photo_image_view)
             photoView.photo_delete_btn.setOnClickListener {
                 boardVM.item.imgPath.remove(key) // BoardVM의 Storage path를 제거 (기존에 가져온 이미지 path이기 때문에)
+                writeVM?.imagePathHash.remove(path)
                 writeVM?.imageCount?.postValue(writeVM?.imageCount?.value!! - 1) // ViewModel의 이미지 개수 값도 변경 (Photo Picker에서 사용하기 때문)
                 binding?.scrollInnerView?.removeView(photoView) // View 제거
-
                 // 삭제된 후 남은 이미지 개수 출력
                 Log.d(
                     "UpdateActivity",
-                    "Image count after delete : ${boardVM.item?.imgPath.size}"
+                    "Image count after delete : ${writeVM?.imagePathHash.size}"
                 )
             }
             binding?.scrollInnerView?.addView(photoView) // Scroll View에 photo view 추가
@@ -325,7 +325,7 @@ class UpdateActivity : AppCompatActivity(), FirebaseRepositoryCallback {
     }
 
     override fun callbackForSuccessfulUploading(uid: String) {
-        writeVM?.updateProductImage(writeVM?.imagePathHash, uid)
+        writeVM?.updateProductImage(uid, boardVM?.item.fileNamesForDelete)
         FancyToastUtil(this).showSuccess(getString(R.string.update_success))
         finish() // 업로드 성공시 작성 액티비티 종료
     }
