@@ -102,4 +102,10 @@ class BoardViewModel(application: Application, val context: Context) : AndroidVi
             }
         }
     }
+
+
+    // 나눔 완료로 상태표시
+    fun shareDone(isDone: Boolean, callback: () -> Unit) {
+        FirebaseRepository.instance.shareDone(isDone, item.documentId, callback)
+    }
 }

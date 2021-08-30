@@ -1,13 +1,17 @@
 package com.app.buna.sharingmarket.activity
 
+import android.content.DialogInterface
 import android.content.Intent
+import android.content.res.ColorStateList
 import android.os.Bundle
+import android.util.Log
 import android.util.TypedValue
 import android.view.*
 import android.widget.RelativeLayout
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.DrawableCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.app.buna.sharingmarket.MENU_ID
@@ -78,6 +82,57 @@ class BoardActivity : AppCompatActivity() {
                 }
             }
         }
+
+        // ''1:1 채팅하기 버튼'' or ''거래 완료''
+        if (vm?.getUid() == vm?.item.uid) { // 본인인 경우에 ''거래 완료''로 표시
+            if (vm?.item.isComplete) { // 거래가 완료된 게시물인 경우
+                binding?.chatBtn?.apply {
+                    /*val btnDrawable = DrawableCompat.wrap(background)
+                    DrawableCompat.setTint(btnDrawable, ContextCompat.getColor(this@BoardActivity, R.color.gray_50))
+                    background = btnDrawable*/
+                    backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(this@BoardActivity, R.color.gray_50))
+                    text = getString(R.string.share_not_done)
+                    // 거래 완료 상태를 해제할지 물어봄
+                    setOnClickListener {
+                        AlertDialog.Builder(this@BoardActivity)
+                            .setMessage(getString(R.string.share_not_done_message))
+                            .setPositiveButton(getString(R.string.ok)) { dialog, id ->
+                                vm?.shareDone(false) { // 나눔 완료로 상태 표시
+                                    finish()
+                                }
+                            }.setNegativeButton(getString(R.string.cancel)) { dialog, id ->
+                                dialog.dismiss()
+                            }.create().show()
+                    }
+                }
+            } else { // 거래가 완료된 게시물이 아니면 완료로 변경할건지 물어봄
+                binding?.chatBtn?.apply {
+                    // 게시글을 나눔 완료 상태로 변경할지 물어봄
+                    text = getString(R.string.share_done)
+                    setOnClickListener {
+                        AlertDialog.Builder(this@BoardActivity)
+                            .setTitle(getString(R.string.share_done))
+                            .setMessage(getString(R.string.share_done_message))
+                            .setPositiveButton(getString(R.string.ok)) { dialog, id ->
+                                vm?.shareDone(true) { // 나눔 완료로 상태 표시
+                                    finish()
+                                }
+                            }.setNegativeButton(getString(R.string.cancel)) { dialog, id ->
+                                dialog.dismiss()
+                            }.create().show()
+                    }
+                }
+            }
+        }else { // 본인이 아닌 경우에는 채팅 버튼으로 전환
+            binding?.chatBtn?.text = getString(R.string.one_to_one_chat)
+            if (vm?.item.isComplete == true) { // 거래 완료된 게시물이면 클릭 못하게 변경
+                binding?.chatBtn?.isEnabled = false
+                binding?.chatBtn?.isClickable = false
+            }
+        }
+
+
+
 
         // 툴바 사용
         setSupportActionBar(binding?.toolBar)

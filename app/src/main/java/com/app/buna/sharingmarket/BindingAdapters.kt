@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.databinding.BindingAdapter
@@ -18,7 +19,6 @@ import com.bumptech.glide.Glide
 import com.elyeproj.loaderviewlibrary.LoaderTextView
 import com.facebook.login.widget.LoginButton
 import com.google.android.gms.common.SignInButton
-
 object BindingAdapters {
 
     // 구글 로그인 버튼
@@ -62,4 +62,5 @@ object BindingAdapters {
         }
     }
 }
+
 

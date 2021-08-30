@@ -3,6 +3,7 @@ package com.app.buna.sharingmarket.adapter
 import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.MutableLiveData
@@ -23,7 +24,8 @@ class ProductRecyclerAdapter(var viewModel: MainViewModel, val context: Context)
         RecyclerView.ViewHolder(binding.root) {
         val productImageView = binding?.productImageView
         val typeTextView = binding?.productType
-        val frameView = binding?.itemView
+        val frameView = binding?.frameView
+        val completeView = binding?.completeView
 
         fun bind(item: ProductItem) {
             binding.model = item
@@ -58,18 +60,51 @@ class ProductRecyclerAdapter(var viewModel: MainViewModel, val context: Context)
         if (!item.isExchange) { // 교환이 아닌 경우
             if (item.isGive) { // 나눔
                 holder.typeTextView.setText("나눔")
-                holder.typeTextView.background.setTint(ContextCompat.getColor(context, R.color.give_color))
+                holder.typeTextView.background.setTint(
+                    ContextCompat.getColor(
+                        context,
+                        R.color.give_color
+                    )
+                )
             } else { // 필요
                 holder.typeTextView.setText("필요")
-                holder.typeTextView.background.setTint(ContextCompat.getColor(context, R.color.need_color))
+                holder.typeTextView.background.setTint(
+                    ContextCompat.getColor(
+                        context,
+                        R.color.need_color
+                    )
+                )
             }
-        } else { // 물물교환인 경우
+        } else if (item.isExchange) { // 물물교환인 경우
             holder.typeTextView.setText("물물교환")
-            holder.typeTextView.background.setTint(ContextCompat.getColor(context, R.color.exchange_color)) // 노란색
+            holder.typeTextView.background.setTint(
+                ContextCompat.getColor(
+                    context,
+                    R.color.exchange_color
+                )
+            ) // 노란색
         }
+
+        // 제품 타입 추가 입력
+        if (item.isComplete) { // 거래 완료 상태인 경우
+            holder.typeTextView.setText("나눔완료")
+            holder.typeTextView.background.setTint(
+                ContextCompat.getColor(
+                    context,
+                    R.color.complete_color
+                )
+            ) // 노란색
+        }
+
 
         holder.frameView.setOnClickListener {
             viewModel.clickProduct(position)
+        }
+
+        if (item.isComplete) { // 나눔 완료 상태인 경우
+            holder.completeView.visibility = View.VISIBLE
+        } else {
+            holder.completeView.visibility = View.GONE
         }
 
         holder.bind(item)

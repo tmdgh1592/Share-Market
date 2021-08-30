@@ -173,12 +173,13 @@
                         </LinearLayout>
 
                         <TextView
+                            android:id="@+id/chat_btn"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentRight="true"
                             android:layout_centerVertical="true"
                             android:layout_marginRight="@dimen/layout_frame_horizontal_margin"
-                            android:background="@drawable/chat_btn"
+                            android:background="@drawable/btn_chat"
                             android:clickable="true"
                             android:paddingHorizontal="6dp"
                             android:paddingVertical="8dp"

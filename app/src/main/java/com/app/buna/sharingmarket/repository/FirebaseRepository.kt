@@ -157,23 +157,13 @@ class FirebaseRepository {
     }
 
 
+    
+    // Not working :: 새로운 사진이 대체되면서 기존 이미지의 Url이 갱신되면서 찾지 못하는 것으로 추정
     fun updateProductImg(
         imgPath: HashMap<String, Boolean>, // local path (디바이스 경로) :: key -> path // value -> isLocal
         boardUid: String,
         fileNameForDelete: ArrayList<String>
     ) {
-
-
-
-
-
-
-
-
-
-
-
-
 
         /*imgPath.entries.forEach { entry ->
             Log.d("mytest", entry.value.toString() + " : " + entry.key)
@@ -354,6 +344,16 @@ class FirebaseRepository {
                 .addOnCompleteListener {
 
                 }
+        }
+    }
+
+    fun shareDone(isDone: Boolean, documentId: String, callback: () -> Unit) {
+        val doc = firebaseStoreInstance.collection("Boards").document(documentId)
+        firebaseStoreInstance.runTransaction { transaction ->
+            val board = transaction.get(doc).toObject(ProductItem::class.java)
+            board?.isComplete = isDone
+            transaction.set(doc, board!!)
+            callback() // 트랜잭션이 끝나면 액티비티를 종료하기 위한 callback을 호출
         }
     }
 
