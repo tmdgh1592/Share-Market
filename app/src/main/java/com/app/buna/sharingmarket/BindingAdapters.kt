@@ -61,6 +61,14 @@ object BindingAdapters {
             Glide.with(imageView.context).load(url).centerCrop().into(imageView)
         }
     }
+
+    @BindingAdapter("background_res")
+    @JvmStatic
+    fun bindImage(imageView: ImageView, res: Int) {
+        if (res != null) {
+            Glide.with(imageView.context).load(res).fitCenter().into(imageView)
+        }
+    }
 }
 
 

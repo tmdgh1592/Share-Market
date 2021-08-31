@@ -2,11 +2,9 @@ package com.app.buna.sharingmarket.activity
 
 import android.content.DialogInterface
 import android.content.Intent
-import android.graphics.BitmapFactory
 import android.os.*
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.inputmethod.InputMethodManager
 import android.widget.RadioGroup
 import androidx.annotation.IdRes
 import androidx.appcompat.app.AlertDialog
@@ -33,9 +31,6 @@ import com.github.hamzaahmedkhan.spinnerdialog.SpinnerDialogFragment.Companion.n
 import com.github.hamzaahmedkhan.spinnerdialog.SpinnerModel
 import com.opensooq.supernova.gligar.GligarPicker
 import kotlinx.android.synthetic.main.picked_photo_view.view.*
-import java.io.File
-import java.io.FileOutputStream
-import java.io.OutputStream
 import java.lang.Exception
 
 private var binding: ActivityWriteBinding? = null
@@ -61,7 +56,7 @@ class WriteActivity : AppCompatActivity(), FirebaseRepositoryCallback {
     fun initView() {
         // 카테고리 Spinner 아이템 선택 리스너
         val categoryList = ArrayList<SpinnerModel>()
-        resources.getStringArray(R.array.category).forEach {
+        resources.getStringArray(R.array.category_title).forEach {
             categoryList.add(SpinnerModel(it))
         }
 

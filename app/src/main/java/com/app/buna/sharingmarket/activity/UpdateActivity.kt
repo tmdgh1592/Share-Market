@@ -64,9 +64,12 @@ class UpdateActivity : AppCompatActivity(), FirebaseRepositoryCallback {
 
     fun initView() {
 
+        // 나눔인지 받는건지 설정
+        writeVM?.isGive = boardVM?.item.isGive
+
         // 카테고리 Spinner 아이템 선택 리스너
         val categoryList = ArrayList<SpinnerModel>()
-        resources.getStringArray(R.array.category).forEach {
+        resources.getStringArray(R.array.category_title).forEach {
             categoryList.add(SpinnerModel(it))
         }
 
@@ -84,12 +87,6 @@ class UpdateActivity : AppCompatActivity(), FirebaseRepositoryCallback {
         )
         spinnerDialogFragment.buttonText = getString(R.string.done)
         spinnerDialogFragment.themeColorResId = ContextCompat.getColor(this, R.color.app_green)
-
-        if (boardVM.item.isGive) {
-            binding?.radioGive?.isChecked = true
-        }else {
-            binding?.radioGive?.isChecked = false
-        }
 
 
         /* 갤러리 포토 피커 */
@@ -206,6 +203,9 @@ class UpdateActivity : AppCompatActivity(), FirebaseRepositoryCallback {
                 }
             }
         })
+
+
+
 
         /* 이미지 개수가 달라지면 옵저버가 감지하고 이미지 개수 뷰 갱신 */
         writeVM?.imageCount?.observe(this, Observer {

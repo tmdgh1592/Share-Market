@@ -34,7 +34,7 @@
                     app:contentScrim="@color/white"
                     app:expandedTitleMarginEnd="64dp"
                     app:expandedTitleMarginStart="24dp"
-                    app:layout_scrollFlags="scroll|enterAlways">
+                    app:layout_scrollFlags="noScroll|enterAlwaysCollapsed">
 
                     <androidx.appcompat.widget.Toolbar
                         android:id="@+id/tool_bar"

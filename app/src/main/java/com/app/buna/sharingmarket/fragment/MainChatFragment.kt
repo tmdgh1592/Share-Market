@@ -69,7 +69,7 @@ class MainChatFragment : Fragment() {
     }
 
     companion object {
-        val instacne = MainChatFragment()
+        val instance = MainChatFragment()
     }
 
 

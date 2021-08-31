@@ -1,6 +1,7 @@
 package com.app.buna.sharingmarket.fragment
 
 import android.content.Intent
+import android.opengl.Visibility
 import android.os.Bundle
 import android.view.*
 import androidx.appcompat.widget.Toolbar
@@ -20,7 +21,7 @@ import com.google.android.material.snackbar.Snackbar
 import io.github.yavski.fabspeeddial.FabSpeedDial
 import org.koin.android.ext.android.get
 
-class MainHomeFragment : Fragment() {
+class MainHomeFragment(val category: String = "all") : Fragment() {
 
     private var binding: FragmentMainHomeBinding? = null
     private val vm: MainViewModel by lazy {
@@ -49,25 +50,31 @@ class MainHomeFragment : Fragment() {
 
     fun initView() {
         with(binding) {
-            this?.productRecyclerView?.adapter = ProductRecyclerAdapter(vm, context!!)
+            this?.productRecyclerView?.adapter = ProductRecyclerAdapter(vm, requireContext())
             this?.productRecyclerView?.layoutManager = LinearLayoutManager(requireContext())
 
-                vm?.getProductData(object : FirebaseGetStorageDataCallback {
-                    override fun complete(data: ArrayList<ProductItem>) {
-                        (binding?.productRecyclerView?.adapter as ProductRecyclerAdapter).updateData(data)
-                        vm?.productItems.value = (data)
-                    }
-                })
+            vm?.getProductData(category, object : FirebaseGetStorageDataCallback {
+                override fun complete(data: ArrayList<ProductItem>) {
+                    (binding?.productRecyclerView?.adapter as ProductRecyclerAdapter).updateData(
+                        data
+                    )
+                    vm?.productItems.value = (data)
+                }
+            })
 
         }
 
 
         // * 툴바 관련
-        setHasOptionsMenu(true)
-        toolbar =
-            binding?.toolBar!!.also { (requireActivity() as MainActivity).setSupportActionBar(it) } // 액션바 지정
-        (requireActivity() as MainActivity).supportActionBar?.setDisplayShowTitleEnabled(false) // 레이아웃에서 타이틀 직접 만들었으므로 이건 False
-        /*toolbar.setTitleTextAppearance(requireContext(), R.style.titleTextStyle) // 타이틀 font 지정*/
+        if (category == "all") { // 모두 보여주는 경우엔 Home Toolbar를 보여줌
+            setHasOptionsMenu(true)
+            toolbar = binding?.toolBar!!.also { (requireActivity() as MainActivity).setSupportActionBar(it) } // 액션바 지정
+            (requireActivity() as MainActivity).supportActionBar?.setDisplayShowTitleEnabled(false) // 레이아웃에서 타이틀 직접 만들었으므로 이건 False
+            binding?.mainFab?.visibility = View.VISIBLE // Fab버튼 보여주기
+        } else { // 카테고리에서 선택한 경우에는 toolbar의 text를 category로 변경해준다.
+            binding?.toolbarTitleText?.text = category // Toolbar 제목을 '카테고리명'으로 설정
+            binding?.mainFab?.visibility = View.GONE // Fab버튼 감추기
+        }
 
 
         /* Fab 버튼 관련 */
@@ -112,7 +119,9 @@ class MainHomeFragment : Fragment() {
         /* 툴바 메뉴 선택 관련 */
         when (item.itemId) {
             R.id.action_category -> { // Toolbar 카테고리 버튼 클릭
-                Snackbar.make(toolbar, "Account 카테고리 pressed", Snackbar.LENGTH_SHORT).show()
+                (requireActivity() as MainActivity).supportFragmentManager.beginTransaction()
+                    .replace(R.id.main_frame_layout, MainCategoryFragment.instance).commit() // 카테고리 Fragment로 이동
+                (requireActivity() as MainActivity).tabLayout.getTabAt(1)?.select() // 탭도 같이 움직일 수 있도록 select() 호출
             }
             R.id.action_search -> { // Toolbar 검색 버튼 클릭
                 Snackbar.make(toolbar, "Account 검색 pressed", Snackbar.LENGTH_SHORT).show()
@@ -123,7 +132,7 @@ class MainHomeFragment : Fragment() {
     }
 
     companion object {
-        val instacne = MainHomeFragment()
+        val instance = MainHomeFragment()
     }
 
 

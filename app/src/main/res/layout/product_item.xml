@@ -67,7 +67,7 @@
                     app:layout_constraintLeft_toRightOf="@+id/cardBackgroundView"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <!--나눔 타입-->
+                <!-- 나눔 타입 -->
                 <com.elyeproj.loaderviewlibrary.LoaderTextView
                     android:id="@+id/product_type"
                     android:layout_width="wrap_content"
@@ -87,7 +87,23 @@
                     app:layout_constraintLeft_toRightOf="@+id/photo_image_view"
                     app:layout_constraintStart_toEndOf="@+id/cardBackgroundView" />
 
+                <!-- 제품 카테고리 -->
+                <com.elyeproj.loaderviewlibrary.LoaderTextView
+                    android:id="@+id/category"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:ellipsize="end"
+                    android:maxLines="2"
+                    android:text="@{model.category}"
+                    android:textColor="@color/gray_70"
+                    android:textSize="14sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toRightOf="@+id/product_type" />
+
                 <LinearLayout
+                    android:id="@+id/linearLayout"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="16dp"
@@ -108,11 +124,11 @@
                     <!--동네 및 등록 시간-->
                     <com.elyeproj.loaderviewlibrary.LoaderTextView
                         android:id="@+id/location_and_time_text"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="4dp"
                         android:ellipsize="end"
-                        android:maxLines="1"
+                        android:maxLines="2"
                         android:text="@{model.getLocationAndTime()}"
                         android:textColor="@color/gray_70"
                         android:textSize="14sp" />

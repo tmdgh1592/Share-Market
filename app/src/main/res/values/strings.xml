@@ -78,7 +78,7 @@
     <string name="permission_storage_never_ask">권한을 허용하지 않으면 이미지를 등록하실 수 없어요!</string>
 
     <!--string-array-->
-    <string-array name="category">
+    <string-array name="category_title">
         <item>가전디지털</item>
         <item>패션의류/잡화</item>
         <item>출산/유아동</item>
@@ -96,6 +96,25 @@
         <item>여행/티켓</item>
         <item>기타 물품</item>
     </string-array>
+    
+    <array name="category_res_id">
+        <item>@drawable/category_item_0</item>
+        <item>@drawable/category_item_1</item>
+        <item>@drawable/category_item_2</item>
+        <item>@drawable/category_item_3</item>
+        <item>@drawable/category_item_4</item>
+        <item>@drawable/category_item_5</item>
+        <item>@drawable/category_item_6</item>
+        <item>@drawable/category_item_7</item>
+        <item>@drawable/category_item_8</item>
+        <item>@drawable/category_item_9</item>
+        <item>@drawable/category_item_10</item>
+        <item>@drawable/category_item_11</item>
+        <item>@drawable/category_item_12</item>
+        <item>@drawable/category_item_13</item>
+        <item>@drawable/category_item_14</item>
+        <item>@drawable/category_item_15</item>
+    </array>
 
     <string name="title_activity_ka_kao_web_view">KaKaoWebView</string>
 

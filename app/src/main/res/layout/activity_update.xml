@@ -202,12 +202,14 @@
                 android:layout_weight="1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:checked="@{viewModel.item.give}"
                 android:text="@string/give"/>
             <RadioButton
                 android:id="@+id/radio_need"
                 android:layout_weight="1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:checked="@{!viewModel.item.give}"
                 android:text="@string/need"/>
         </RadioGroup>
 

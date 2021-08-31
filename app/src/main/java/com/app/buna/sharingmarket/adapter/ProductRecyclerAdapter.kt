@@ -41,6 +41,7 @@ class ProductRecyclerAdapter(var viewModel: MainViewModel, val context: Context)
     override fun onBindViewHolder(holder: ProductViewHolder, position: Int) {
         val item = productItemList?.value!!.get(position)
 
+
         // 이미지가 한개라도 있는 경우에만 제품 프로필 설정
         if (item.imgPath.size > 0) {
             Glide.with(holder.itemView).load(item.imgPath.values.first())

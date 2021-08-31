@@ -273,47 +273,53 @@ class FirebaseRepository {
     // *** Firebase 딜레이를 고려해서 Listener로 완료된 것을 항상 계산하고 코딩해야함. ***
 
     // Firebase 스토리지에서 게시글을 가져오기
-    fun getProductData(callback: FirebaseGetStorageDataCallback) {
+    fun getProductData(category: String, callback: FirebaseGetStorageDataCallback) {
         productList.clear()
         var boardCount = 0 // 지금까지 가져온 게시글 개수를 파악하기 위한 변수!!
-        firebaseStoreInstance.collection("Boards").get().addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                for (document in task.getResult()) { // 게시글 개수만큼 반복
-                    val item =
-                        document.toObject(ProductItem::class.java) // 가져온 Document를 ProductItem으로 캐스팅
-                    firebaseDatabaseInstance
-                        .getReference("products")
-                        .child("img_path")
-                        .child(document.id)
-                        .get()
-                        .addOnSuccessListener {
-                            var urlMap: HashMap<String, String>? // 이미지 url을 가져올 해시맵
-                            if (it.getValue() == null) { // 가져온 이미지가 없으면, 또는 이미지가 저장된게 없으면
-                                urlMap = HashMap() // Empty hashmap 생성
-                            } else { // 이미지가 한개라도 있으면
-                                urlMap =
-                                    it.getValue() as HashMap<String, String> // DataSnapshot에서 이미지 Url들을 HashMap 형태로 캐스팅해서 가져옴
-                            }
 
-                            boardCount += 1 // position 1 증가시키기
-                            urlMap?.values?.forEach { url ->
-                                Log.d("Uri" + boardCount, url)
-                            }
+        // FireStore에서 Board 데이터 및 FireDB에서 이미지 경로 가져오는 메소드
+        // category 값이 "all"이거나 선택한 category값인 경우에 가져옴
+        fun getData(category: String) {
+            firebaseStoreInstance.collection("Boards").get().addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    for (document in task.result) { // 게시글 개수만큼 반복
+                        if (category == "all" || document.get("category") == category) {
+                            val item = document.toObject(ProductItem::class.java) // 가져온 Document를 ProductItem으로 캐스팅
+                            firebaseDatabaseInstance
+                                .getReference("products")
+                                .child("img_path")
+                                .child(document.id)
+                                .get()
+                                .addOnSuccessListener {
+                                    var urlMap: HashMap<String, String>? // 이미지 url을 가져올 해시맵
+                                    if (it.getValue() == null) { // 가져온 이미지가 없으면, 또는 이미지가 저장된게 없으면
+                                        urlMap = HashMap() // Empty hashmap 생성
+                                    } else { // 이미지가 한개라도 있으면
+                                        urlMap = it.getValue() as HashMap<String, String> // DataSnapshot에서 이미지 Url들을 HashMap 형태로 캐스팅해서 가져옴
+                                    }
 
-                            item.imgPath = urlMap!!
-                            item.documentId = document.id // Document Id는 따로 받아옴
+                                    urlMap?.values?.forEach { url ->
+                                        Log.d("Uri" + boardCount, url)
+                                    }
 
-                            productList.add(item)
+                                    item.imgPath = urlMap!!
+                                    item.documentId = document.id // Document Id는 따로 받아옴
 
-                            // 이미지를 모두 가져왔다면 callback 함수로 list 전달
-                            if (boardCount == task.getResult().size()) {
-                                callback.complete(productList)
-                            }
+                                    productList.add(item)
+
+                                    // 이미지를 모두 가져왔다면 callback 함수로 list 전달
+                                    if (boardCount == task.result.size()) {
+                                        callback.complete(productList)
+                                    }
+                                }
                         }
+                        boardCount += 1 // position 1 증가시키기
+                    }
                 }
-
             }
         }
+        // category를 바탕으로 데이터를 가져옴
+        getData(category)        
     }
 
 

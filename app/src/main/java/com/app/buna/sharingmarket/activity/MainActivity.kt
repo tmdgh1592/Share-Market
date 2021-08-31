@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -27,7 +28,7 @@ class MainActivity : AppCompatActivity() {
         ViewModelProvider(this, MainViewModel.Factory(get(), this))
             .get(MainViewModel::class.java)
     }
-    private lateinit var tabLayout: TabLayout
+    lateinit var tabLayout: TabLayout
     private var regTime = 0L
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,37 +45,23 @@ class MainActivity : AppCompatActivity() {
     }
 
     /*view 초기화*/
-
     fun initView() {
         // 초기 실행 fragment
-        replaceFragment(MainHomeFragment.instacne) // Home Fragment
+        replaceFragment(MainHomeFragment.instance) // Home Fragment
 
         // * 탭 레이아웃 관련
         tabLayout = binding?.mainTabLayout!!.apply {
             addOnTabSelectedListener(object: TabLayout.OnTabSelectedListener {
                 override fun onTabSelected(tab: TabLayout.Tab?) {
-                    val position = tab?.position
-
-                    when(position) {
+                    when(tab?.position) {
                         // 0 : 홈
-                        0 -> {
-                            replaceFragment(MainHomeFragment.instacne)
-                        }
-
+                        0 -> replaceFragment(MainHomeFragment.instance)
                         // 1 : 카테고리
-                        1 -> {
-                            replaceFragment(MainCategoryFragment.instacne)
-                        }
-
+                        1 -> replaceFragment(MainCategoryFragment.instance)
                         // 2 : 채팅
-                        2 -> {
-                            replaceFragment(MainChatFragment.instacne)
-                        }
-
+                        2 -> replaceFragment(MainChatFragment.instance)
                         // 3 : MY (개인 정보 설정)
-                        3 -> {
-                            replaceFragment(MainMyFragment.instacne)
-                        }
+                        3 -> replaceFragment(MainMyFragment.instance)
                     }
                 }
 
@@ -83,20 +70,29 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 override fun onTabReselected(tab: TabLayout.Tab?) {
-
+                    when(tab?.position) {
+                        // 0 : 홈
+                        0 -> replaceFragment(MainHomeFragment.instance)
+                        // 1 : 카테고리
+                        1 -> replaceFragment(MainCategoryFragment.instance)
+                        // 2 : 채팅
+                        2 -> replaceFragment(MainChatFragment.instance)
+                        // 3 : MY (개인 정보 설정)
+                        3 -> replaceFragment(MainMyFragment.instance)
+                    }
                 }
             })
+
         }
 
 
     }
 
     // 프래그먼트 전환하는 메소드
-    fun replaceFragment(fragment: Fragment) {
-        val fragmentTransaction = supportFragmentManager.beginTransaction()
+    fun replaceFragment(fragment: Fragment) =
         // tabLayout에서 클릭한 fragment 실행
-        fragmentTransaction.replace(R.id.main_frame_layout, fragment).commit()
-    }
+        supportFragmentManager.beginTransaction().replace(R.id.main_frame_layout, fragment).commit()
+
 
     @SuppressLint("LongLogTag")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
