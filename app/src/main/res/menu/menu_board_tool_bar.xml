@@ -12,7 +12,7 @@
     <item
         android:id="@+id/action_share"
         android:title="공유"
-        android:icon="@drawable/share_icon"
+        android:icon="@drawable/icon_share"
         app:iconTint="@color/black"
         app:showAsAction="ifRoom"/>
 

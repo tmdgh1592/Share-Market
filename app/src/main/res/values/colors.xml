@@ -10,11 +10,12 @@
     <color name="black_50">#80000000</color>
     <color name="gray">#535353</color>
     <color name="gray_50">#80535353</color>
+    <color name="gray_40">#66535353</color>
     <color name="gray_70">#B3535353</color>
     <color name="gray_20">#33535353</color>
 
     <color name="white">#FFFFFFFF</color>
-    <color name="pressed_white">#F8F8F8</color>
+    <color name="pressed_white">#F9F9F9</color>
     <color name="enabled_white">#E1E1E1</color>
     <!--my color-->
     <color name="app_green">#FF9ACE97</color>

@@ -8,13 +8,14 @@ import androidx.lifecycle.ViewModelProvider
 import com.app.buna.sharingmarket.R
 import com.app.buna.sharingmarket.activity.MainActivity
 import com.app.buna.sharingmarket.databinding.FragmentMainCategoryBinding
+import com.app.buna.sharingmarket.databinding.FragmentMainChatBinding
 import com.app.buna.sharingmarket.viewmodel.MainViewModel
 import com.google.android.material.snackbar.Snackbar
 import org.koin.android.ext.android.get
 
 class MainChatFragment : Fragment() {
 
-    private var binding: FragmentMainCategoryBinding? = null
+    private var binding: FragmentMainChatBinding? = null
     private val vm: MainViewModel by lazy {
         ViewModelProvider(this, MainViewModel.Factory(get(), requireContext()))
             .get(MainViewModel::class.java)
@@ -26,7 +27,7 @@ class MainChatFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentMainCategoryBinding.inflate(inflater, container, false).apply {
+        binding = FragmentMainChatBinding.inflate(inflater, container, false).apply {
             lifecycleOwner = viewLifecycleOwner
             viewModel = vm
         }
