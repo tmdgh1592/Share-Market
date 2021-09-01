@@ -80,7 +80,6 @@ class InitialFourthFragment : Fragment() {
             it.setSpan(StyleSpan(Typeface.BOLD), 23+vm.getUserName().length, 25+vm.getUserName().length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE) // "소속" <- Bold
             binding?.welcomeMessage?.text = it
         }
-        Log.d("MainMain", String.format(getString(R.string.welcome_message), vm.getUserName()))
 
 
         // 소속 선택시(즉, 값이 변경될 시) 가입 완료 버튼 활성화

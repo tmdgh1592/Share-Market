@@ -1,7 +1,6 @@
 package com.app.buna.sharingmarket.fragment
 
 import android.content.Intent
-import android.opengl.Visibility
 import android.os.Bundle
 import android.view.*
 import androidx.appcompat.widget.Toolbar
@@ -12,7 +11,7 @@ import com.app.buna.sharingmarket.R
 import com.app.buna.sharingmarket.activity.MainActivity
 import com.app.buna.sharingmarket.activity.WriteActivity
 import com.app.buna.sharingmarket.adapter.ProductRecyclerAdapter
-import com.app.buna.sharingmarket.callbacks.FirebaseGetStorageDataCallback
+import com.app.buna.sharingmarket.callbacks.IFirebaseGetStorageDataCallback
 import com.app.buna.sharingmarket.databinding.FragmentMainHomeBinding
 import com.app.buna.sharingmarket.model.items.ProductItem
 import com.app.buna.sharingmarket.viewmodel.MainViewModel
@@ -53,7 +52,7 @@ class MainHomeFragment(val category: String = "all") : Fragment() {
             this?.productRecyclerView?.adapter = ProductRecyclerAdapter(vm, requireContext())
             this?.productRecyclerView?.layoutManager = LinearLayoutManager(requireContext())
 
-            vm?.getProductData(category, object : FirebaseGetStorageDataCallback {
+            vm?.getProductData(category, object : IFirebaseGetStorageDataCallback {
                 override fun complete(data: ArrayList<ProductItem>) {
                     (binding?.productRecyclerView?.adapter as ProductRecyclerAdapter).updateData(
                         data

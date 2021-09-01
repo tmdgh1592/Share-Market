@@ -3,8 +3,8 @@ package com.app.buna.sharingmarket.repository
 import android.annotation.SuppressLint
 import android.net.Uri
 import android.util.Log
-import com.app.buna.sharingmarket.callbacks.FirebaseGetStorageDataCallback
-import com.app.buna.sharingmarket.callbacks.FirebaseRepositoryCallback
+import com.app.buna.sharingmarket.callbacks.IFirebaseGetStorageDataCallback
+import com.app.buna.sharingmarket.callbacks.IFirebaseRepositoryCallback
 import com.app.buna.sharingmarket.model.items.ProductItem
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
@@ -95,7 +95,7 @@ class FirebaseRepository {
     }
 
     // 파이어 스토어에 제품 게시글 '등록'
-    fun uploadBoard(item: ProductItem, callback: FirebaseRepositoryCallback) {
+    fun uploadBoard(item: ProductItem, callback: IFirebaseRepositoryCallback) {
         firebaseStoreInstance.collection("Boards")
             .add(item)
             .addOnSuccessListener {
@@ -107,7 +107,7 @@ class FirebaseRepository {
     }
 
     // 파이어 스토어에 제품 게시글 '수정'
-    fun updateBoard(item: ProductItem, callback: FirebaseRepositoryCallback) {
+    fun updateBoard(item: ProductItem, callback: IFirebaseRepositoryCallback) {
         firebaseStoreInstance.collection("Boards").document(item.documentId)
             .update(
                 mapOf(
@@ -273,7 +273,7 @@ class FirebaseRepository {
     // *** Firebase 딜레이를 고려해서 Listener로 완료된 것을 항상 계산하고 코딩해야함. ***
 
     // Firebase 스토리지에서 게시글을 가져오기
-    fun getProductData(category: String, callback: FirebaseGetStorageDataCallback) {
+    fun getProductData(category: String, callback: IFirebaseGetStorageDataCallback) {
         productList.clear()
         var boardCount = 0 // 지금까지 가져온 게시글 개수를 파악하기 위한 변수!!
 

@@ -19,6 +19,7 @@
     <string name="cancel">취소</string>
     <string name="yes">예</string>
     <string name="no">아니오</string>
+    <string name="submit">제출</string>
     <string name="login_with_google">구글 로그인</string>
     <string name="login_with_facebook">페이스북 로그인</string>
     <string name="login_with_kakao">카카오 로그인</string>
@@ -116,6 +117,21 @@
         <item>@drawable/category_item_14</item>
         <item>@drawable/category_item_15</item>
     </array>
+
+    <!--logout-->
+    <string name="ask_logout">로그아웃 하시겠습니까?</string>
+    <string name="logout_success">쉐어마켓에서 로그아웃 하셨습니다.</string>
+    <string name="logout_fail">인터넷 연결 상태를 확인해주세요.</string>
+    <!--unregister-->
+    <string name="ask_unregister">회원탈퇴 하시겠습니까?</string>
+    <string name="unregister_fail">인터넷 연결 상태를 확인해주세요.</string>
+    <!--unregister survey-->
+    <string name="survey_type_1">회원탈퇴 후 재가입을 위해서</string>
+    <string name="survey_type_2">유저들의 거래 활성도가 낮아서</string>
+    <string name="survey_type_3">앱을 사용하기 불편해서</string>
+    <string name="survey_type_4">더 이상 앱을 사용하기 않아서</string>
+    <string name="survey_type_5">기타 사유</string>
+
 
     <string name="title_activity_ka_kao_web_view">KaKaoWebView</string>
 

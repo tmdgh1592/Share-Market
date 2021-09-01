@@ -1,5 +1,9 @@
 package com.app.buna.sharingmarket.fragment
 
+import android.app.AlertDialog
+import android.app.Dialog
+import android.content.DialogInterface
+import android.content.Intent
 import android.os.Bundle
 import android.view.*
 import androidx.appcompat.widget.Toolbar
@@ -7,10 +11,11 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.app.buna.sharingmarket.R
 import com.app.buna.sharingmarket.activity.MainActivity
-import com.app.buna.sharingmarket.databinding.FragmentMainCategoryBinding
+import com.app.buna.sharingmarket.callbacks.ILogoutCallback
 import com.app.buna.sharingmarket.databinding.FragmentMainMyBinding
+import com.app.buna.sharingmarket.repository.PreferenceUtil
+import com.app.buna.sharingmarket.utils.FancyToastUtil
 import com.app.buna.sharingmarket.viewmodel.MainViewModel
-import com.google.android.material.snackbar.Snackbar
 import org.koin.android.ext.android.get
 
 class MainMyFragment : Fragment() {
@@ -46,6 +51,65 @@ class MainMyFragment : Fragment() {
         (requireActivity() as MainActivity).supportActionBar?.setDisplayShowTitleEnabled(false) // 타이틀 안보이게 하기
 
 
+        /* 앱 공유 버튼 */
+        binding?.shareAppBtn?.setOnClickListener {
+            val msg = Intent(Intent.ACTION_SEND).apply {
+                addCategory(Intent.CATEGORY_DEFAULT)
+                putExtra(Intent.EXTRA_TITLE, getString(R.string.app_name))
+                putExtra(
+                    Intent.EXTRA_TEXT,
+                    "https://play.google.com/store/apps/details?id=${requireContext().packageName}"
+                )
+                type = "text/plain"
+            }
+            startActivity(Intent.createChooser(msg, getString(R.string.share_app)))
+        }
+
+        /* 회원 탈퇴 */
+        binding?.unregisterBtn?.setOnClickListener {
+            AlertDialog.Builder(requireContext())
+                .setTitle(getString(R.string.app_name))
+                .setMessage(getString(R.string.ask_unregister))
+                .setPositiveButton(getString(R.string.ok)) { _, _ ->
+                    // 탈퇴 이유 설문조사
+                    val surveyView = layoutInflater.inflate(R.layout.unregister_survey_layout, null) // 탈퇴 설문조사 view
+                    val surveyDialog = AlertDialog.Builder(requireContext())
+                        .setView(surveyView)
+                        .setPositiveButton(getString(R.string.code_submit)) { dialog, id ->
+
+                        }.setNegativeButton(getString(R.string.cancel)) { dialog, id ->
+
+                        }
+                    // 회원탈퇴
+                    vm?.unregister()
+                }.setNegativeButton(getString(R.string.cancel)) { dialog, _ ->
+                    dialog.dismiss()
+                }.create().show()
+        }
+
+
+        /* 로그아웃 */
+        // 로그아웃할지 질문
+        binding?.logoutBtn?.setOnClickListener {
+            AlertDialog.Builder(requireContext())
+                .setTitle(getString(R.string.app_name))
+                .setMessage(getString(R.string.ask_logout))
+                .setPositiveButton(getString(R.string.ok)) { _, _ ->
+                    // 로그아웃
+                    vm?.logout(object : ILogoutCallback {
+                        override fun success() { // 성공 콜백시 액티비티 종료
+                            FancyToastUtil(requireContext()).showSuccess(getString(R.string.logout_success))
+                            requireActivity().finish()
+                        }
+                        override fun fail() { // 실패할 경우 실패 문구 출력
+                            FancyToastUtil(requireContext()).showFail(getString(R.string.logout_fail))
+                        }
+                    })
+                }.setNegativeButton(getString(R.string.cancel)) { dialog, _ ->
+                dialog.dismiss()
+            }.create().show()
+        }
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -53,21 +117,6 @@ class MainMyFragment : Fragment() {
         inflater.inflate(R.menu.menu_home_tool_bar, menu)
     }
 
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-
-        /* 툴바 메뉴 선택 관련 */
-        when(item.itemId){
-            R.id.action_category -> { // Toolbar 카테고리 버튼 클릭
-                Snackbar.make(toolbar,"Account 카테고리 pressed",Snackbar.LENGTH_SHORT).show()
-            }
-            R.id.action_search -> { // Toolbar 검색 버튼 클릭
-                Snackbar.make(toolbar,"Account 검색 pressed",Snackbar.LENGTH_SHORT).show()
-            }
-        }
-
-        return super.onOptionsItemSelected(item)
-    }
 
     companion object {
         val instance = MainMyFragment()

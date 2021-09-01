@@ -127,7 +127,8 @@ class InitialViewModel(application: Application) :
             // firebase realtimedb에 소속&이름(닉네임) 추가
             PreferenceUtil.putString(context, "sosock", mySoSock.value!!) // SharedPreference에 저장
             Log.d("InitialViewModel", PreferenceUtil.getString(context, "sosock", "")) // Log출력
-
+            
+            saveUserInfo(context, key = "jibun", value = "jibun", isInPref = true) // firebase realtimedb에 사용자의 주소 등록
             saveUserInfo(context, key = "sosock", value = "sosock", isInPref = true) // firebaseDB에 유저의 ''이름(닉네임)'' 저장
             saveUserInfo(context, key = "nickname", value = FirebaseAuth.getInstance().currentUser?.displayName.toString()) // firebaseDB에 유저의 ''소속'' 저장
 
@@ -147,12 +148,11 @@ class InitialViewModel(application: Application) :
     }
 
     fun saveUserInfo(context: Context, key: String, value: String, isInPref: Boolean = false) {
-        // preference에 저장된 key값의 value를 가져오는 경우
+        // preference에 저장된 값을 가져와서 저장하려는 경우
         if (isInPref) {
             firebaseRepository.saveUserInfo(key, PreferenceUtil.getString(context, key, ""), true)
             return
         }
-
         // preference가 아닌 단순 key, value를 firebaseDB에 저장하는 경우
         firebaseRepository.saveUserInfo(key, value, true)
     }

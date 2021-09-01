@@ -16,7 +16,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.app.buna.sharingmarket.CONST
 import com.app.buna.sharingmarket.R
 import com.app.buna.sharingmarket.REQUEST_CODE
-import com.app.buna.sharingmarket.callbacks.FirebaseRepositoryCallback
+import com.app.buna.sharingmarket.callbacks.IFirebaseRepositoryCallback
 import com.app.buna.sharingmarket.databinding.ActivityUpdateBinding
 import com.app.buna.sharingmarket.model.items.ProductItem
 import com.app.buna.sharingmarket.repository.PreferenceUtil
@@ -37,7 +37,7 @@ import org.koin.android.ext.android.get
 
 private var binding: ActivityUpdateBinding? = null
 
-class UpdateActivity : AppCompatActivity(), FirebaseRepositoryCallback {
+class UpdateActivity : AppCompatActivity(), IFirebaseRepositoryCallback {
 
     val boardVM: BoardViewModel by lazy {
         ViewModelProvider(this, BoardViewModel.Factory(get(), this))

@@ -16,7 +16,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.app.buna.sharingmarket.CONST
 import com.app.buna.sharingmarket.R
 import com.app.buna.sharingmarket.REQUEST_CODE
-import com.app.buna.sharingmarket.callbacks.FirebaseRepositoryCallback
+import com.app.buna.sharingmarket.callbacks.IFirebaseRepositoryCallback
 import com.app.buna.sharingmarket.databinding.ActivityWriteBinding
 import com.app.buna.sharingmarket.model.items.ProductItem
 import com.app.buna.sharingmarket.repository.PreferenceUtil
@@ -36,7 +36,7 @@ import java.lang.Exception
 private var binding: ActivityWriteBinding? = null
 private var vm: WriteViewModel? = null
 
-class WriteActivity : AppCompatActivity(), FirebaseRepositoryCallback {
+class WriteActivity : AppCompatActivity(), IFirebaseRepositoryCallback {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initBinding()

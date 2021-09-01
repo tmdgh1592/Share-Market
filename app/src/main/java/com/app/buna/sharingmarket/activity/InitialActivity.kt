@@ -70,9 +70,6 @@ class InitialActivity : AppCompatActivity() {
 
         // facebook login 화면 닫힐 때 들어오는 콜백
         if(callbackManager != null) {
-            // firebase realtimedb에 preferenceUtil의 "jibun" 등록해야함
-            viewModel.saveUserInfo(this, key = "jibun", value = "jibun", isInPref = true)
-
             Log.d("RESULT", callbackManager?.toString())
             callbackManager?.onActivityResult(requestCode, resultCode, data)
         }
@@ -105,10 +102,6 @@ class InitialActivity : AppCompatActivity() {
         auth?.signInWithCredential(credential)
             ?.addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
-                    // firebase realtimedb에 preferenceUtil의 "jibun" 등록해야함
-
-                    viewModel.saveUserInfo(this, key = "jibun", value = "jibun", isInPref = true)
-
                     Log.d("InitialActivty", "signInWithCredential:success")
                     val user = auth?.currentUser
                     replaceFragment(InitialFourthFragment(), user!!)
