@@ -1,6 +1,5 @@
 package com.app.buna.sharingmarket.activity
 
-import android.content.DialogInterface
 import android.content.Intent
 import android.content.res.ColorStateList
 import android.os.Bundle
@@ -11,12 +10,13 @@ import android.widget.RelativeLayout
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.core.graphics.drawable.DrawableCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.app.buna.sharingmarket.MENU_ID
 import com.app.buna.sharingmarket.R
 import com.app.buna.sharingmarket.REQUEST_CODE
+import com.app.buna.sharingmarket.REQUEST_CODE.Companion.DELETE_BOARD_CODE_FROM_MAIN
+import com.app.buna.sharingmarket.REQUEST_CODE.Companion.DELETE_BOARD_CODE_FROM_MY_BOARD
 import com.app.buna.sharingmarket.REQUEST_CODE.Companion.UPDATE_BOARD_CODE
 import com.app.buna.sharingmarket.adapter.ImageSliderAdapter
 import com.app.buna.sharingmarket.databinding.ActivityBoardBinding
@@ -141,7 +141,7 @@ class BoardActivity : AppCompatActivity() {
 
         // 뒤로가기 버튼
         binding?.backBtn?.setOnClickListener {
-            finish()
+            onBackPressed()
         }
     }
 
@@ -160,9 +160,11 @@ class BoardActivity : AppCompatActivity() {
                     // 새로운 상태가 좋아요 누른 상태이면
                     if (newState) {
                         item.icon = ContextCompat.getDrawable(this, R.drawable.like_heart)
+                        vm.item.favorites[vm.getUid()!!] = true
                         return@clickHeart
                     } else { // 새로운 상태가 좋아요를 해제한 상태이면
                         item.icon = (ContextCompat.getDrawable(this, R.drawable.not_like_heart))
+                        vm.item.favorites.remove(vm.getUid())
                         return@clickHeart
                     }
                 }
@@ -171,16 +173,17 @@ class BoardActivity : AppCompatActivity() {
                 AlertDialog.Builder(this)
                     .setTitle(R.string.delete_board)
                     .setMessage(R.string.delete_board_question)
-                    .setPositiveButton(getString(R.string.ok)) { dialog, id ->
+                    .setPositiveButton(getString(R.string.ok)) { dialog, _ ->
                         // 해당 게시글 삭제
                         vm?.removeBoard { isSuccessful ->
                             if (isSuccessful) { // 성공적으로 삭제했다면 
                                 dialog.dismiss() // Dialog 닫고
-                                //setResult(REQUEST_CODE.DELETE_BOARD_CODE) // NOT WORKING
+                                // 내 게시글 보기 액티비티에서 실행한 경우
+                                setResult(RESULT_OK)
                                 finish() // 해당 게시글에서 나가기
                             }
                         }
-                    }.setNegativeButton(getString(R.string.cancel)) { dialog, id ->
+                    }.setNegativeButton(getString(R.string.cancel)) { dialog, _ ->
                         dialog.dismiss()
                     }.create().show()
 
@@ -226,5 +229,14 @@ class BoardActivity : AppCompatActivity() {
 
     override fun onOptionsMenuClosed(menu: Menu?) {
         super.onOptionsMenuClosed(menu)
+    }
+
+    override fun onBackPressed() {
+        //super.onBackPressed()
+        Log.d("BoardActivity", "onbackpressed")
+        if (!vm?.item.favorites.containsKey(vm?.getUid())){
+            setResult(RESULT_OK)
+        }
+        finish()
     }
 }

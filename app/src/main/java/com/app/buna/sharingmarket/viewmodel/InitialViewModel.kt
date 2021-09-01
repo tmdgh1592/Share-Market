@@ -13,9 +13,9 @@ import com.app.buna.sharingmarket.SOSOCK
 import com.app.buna.sharingmarket.fragment.InitialThirdFragment
 import com.app.buna.sharingmarket.model.items.LocationItem
 import com.app.buna.sharingmarket.utils.LocationHelper
-import com.app.buna.sharingmarket.repository.PreferenceUtil
+import com.app.buna.sharingmarket.repository.Local.PreferenceUtil
 import com.app.buna.sharingmarket.activity.InitialActivity
-import com.app.buna.sharingmarket.repository.FirebaseRepository
+import com.app.buna.sharingmarket.repository.Firebase.FirebaseRepository
 import com.app.buna.sharingmarket.utils.FancyChocoBar
 import com.app.buna.sharingmarket.utils.NetworkStatus
 import com.google.firebase.auth.FirebaseAuth

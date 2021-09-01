@@ -12,7 +12,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.app.buna.sharingmarket.TAGS.Companion.TAG
 import com.app.buna.sharingmarket.model.items.ProductItem
 import com.app.buna.sharingmarket.model.items.SliderItem
-import com.app.buna.sharingmarket.repository.FirebaseRepository
+import com.app.buna.sharingmarket.repository.Firebase.FirebaseRepository
 import com.google.firebase.auth.FirebaseAuth
 import com.kakao.sdk.link.LinkClient
 import com.kakao.sdk.template.model.*

@@ -12,7 +12,7 @@ import com.app.buna.sharingmarket.REQUEST_CODE
 import com.app.buna.sharingmarket.R
 import com.app.buna.sharingmarket.activity.InitialActivity
 import com.app.buna.sharingmarket.fragment.InitialFourthFragment
-import com.app.buna.sharingmarket.repository.PreferenceUtil
+import com.app.buna.sharingmarket.repository.Local.PreferenceUtil
 import com.app.buna.sharingmarket.utils.FancyChocoBar
 import com.app.buna.sharingmarket.utils.NetworkStatus
 import com.facebook.AccessToken

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.app.buna.sharingmarket.viewmodel.MyBoardViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".activity.MyBoardsActivity">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/tool_bar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/white"
+            android:elevation="3dp"
+            android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+            app:layout_constraintTop_toTopOf="parent"
+            android:paddingLeft="@dimen/layout_frame_horizontal_margin"
+            android:paddingRight="@dimen/layout_frame_horizontal_margin">
+            <ImageView
+                android:id="@+id/back_btn"
+                android:layout_width="@dimen/toolbar_back_btn"
+                android:layout_height="@dimen/toolbar_back_btn"
+                android:clickable="true"
+                android:src="@drawable/back_icon"
+                android:layout_marginRight="@dimen/toolbar_icon_margin"
+                android:background="?attr/selectableItemBackgroundBorderless"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="@string/my_heart_board"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:gravity="center|left"
+                android:textSize="@dimen/toolbar_title_size"/>
+        </androidx.appcompat.widget.Toolbar>
+
+        <!--내가 쓴글을 보여주는 Recycler View-->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/my_hearts_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintTop_toBottomOf="@+id/tool_bar"
+            android:layout_marginTop="?attr/actionBarSize"
+            android:visibility="gone"/>
+
+        <!--No Result View-->
+        <!--검색결과 없을 때 보여짐-->
+        <LinearLayout
+            android:id="@+id/no_result_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="?attr/actionBarSize"
+            app:layout_constraintTop_toBottomOf="@+id/search_now_location_btn"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <ImageView
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:src="@drawable/no_my_board_result"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/no_my_board_result"
+                android:textSize="16sp"
+                android:gravity="center"/>
+
+
+        </LinearLayout>
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

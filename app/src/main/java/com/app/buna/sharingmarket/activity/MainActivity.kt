@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -97,13 +96,11 @@ class MainActivity : AppCompatActivity() {
     @SuppressLint("LongLogTag")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode != RESULT_OK) {
-            return
-        }
+        if (resultCode != RESULT_OK) return
         when(resultCode) {
-            REQUEST_CODE.DELETE_BOARD_CODE -> { // 게시글을 삭제 했다면
+            REQUEST_CODE.DELETE_BOARD_CODE_FROM_MAIN -> { // 게시글을 삭제 했다면
                 Log.d("MainActivity -> onActivityResult", "replace MainHomeFragment")
-                replaceFragment(MainHomeFragment()) // 게시글을 새로 불러오기 위해 HomeFragment 다시 실행
+                //replaceFragment(MainHomeFragment()) // 게시글을 새로 불러오기 위해 HomeFragment 다시 실행
             }
         }
             

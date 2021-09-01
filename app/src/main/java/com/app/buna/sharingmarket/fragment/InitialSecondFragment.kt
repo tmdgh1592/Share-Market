@@ -18,7 +18,7 @@ import com.app.buna.sharingmarket.databinding.FragmentSecondInitialBinding
 import com.app.buna.sharingmarket.utils.FancyChocoBar
 import com.app.buna.sharingmarket.utils.NetworkStatus
 import com.app.buna.sharingmarket.activity.AddressApiWebView
-import com.app.buna.sharingmarket.repository.PreferenceUtil
+import com.app.buna.sharingmarket.repository.Local.PreferenceUtil
 import com.app.buna.sharingmarket.viewmodel.InitialViewModel
 import org.koin.android.ext.android.get
 

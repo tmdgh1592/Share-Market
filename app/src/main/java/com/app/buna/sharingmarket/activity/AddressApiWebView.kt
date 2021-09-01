@@ -11,7 +11,7 @@ import android.webkit.WebViewClient
 import androidx.appcompat.app.AppCompatActivity
 import com.app.buna.sharingmarket.REQUEST_CODE
 import com.app.buna.sharingmarket.R
-import com.app.buna.sharingmarket.repository.PreferenceUtil
+import com.app.buna.sharingmarket.repository.Local.PreferenceUtil
 
 class AddressApiWebView : AppCompatActivity() {
 

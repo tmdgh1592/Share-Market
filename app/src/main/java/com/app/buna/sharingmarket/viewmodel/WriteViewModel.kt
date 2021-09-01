@@ -9,7 +9,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.app.buna.sharingmarket.CONST
 import com.app.buna.sharingmarket.callbacks.IFirebaseRepositoryCallback
 import com.app.buna.sharingmarket.model.items.ProductItem
-import com.app.buna.sharingmarket.repository.FirebaseRepository
+import com.app.buna.sharingmarket.repository.Firebase.FirebaseRepository
 import com.google.firebase.auth.FirebaseAuth
 
 class WriteViewModel(application: Application) : AndroidViewModel(application) {

@@ -1,4 +1,4 @@
-package com.app.buna.sharingmarket.repository
+package com.app.buna.sharingmarket.repository.Firebase
 
 import android.annotation.SuppressLint
 import android.net.Uri
@@ -319,10 +319,6 @@ class FirebaseRepository {
                                             it.getValue() as HashMap<String, String> // DataSnapshot에서 이미지 Url들을 HashMap 형태로 캐스팅해서 가져옴
                                     }
 
-                                    urlMap?.values?.forEach { url ->
-                                        Log.d("Uri" + boardCount, url)
-                                    }
-
                                     item.imgPath = urlMap!!
                                     item.documentId = document.id // Document Id는 따로 받아옴
 
@@ -341,6 +337,105 @@ class FirebaseRepository {
         }
         // category를 바탕으로 데이터를 가져옴
         getData(category)
+    }
+
+    // 내가 쓴 게시글 목록들 가져오는 함수
+    fun getProductData(callback: IFirebaseGetStorageDataCallback) {
+        productList.clear()
+
+        // FireStore에서 Board 데이터 및 FireDB에서 이미지 경로 가져오는 메소드
+        // category 값이 "all"이거나 선택한 category값인 경우에 가져옴
+        fun getData() {
+            var boardCount = 0 // 지금까지 가져온 게시글 개수를 파악하기 위한 변수!!
+            val uid = Firebase.auth.uid
+
+            firebaseStoreInstance.collection("Boards").get().addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    for (document in task.result) { // 게시글 개수만큼 반복
+                        if (document.get("uid") == uid) {
+                            val item = document.toObject(ProductItem::class.java) // 가져온 Document를 ProductItem으로 캐스팅
+                            firebaseDatabaseInstance
+                                .getReference("products")
+                                .child("img_path")
+                                .child(document.id)
+                                .get()
+                                .addOnSuccessListener {
+                                    var urlMap: HashMap<String, String>? // 이미지 url을 가져올 해시맵
+                                    urlMap = if (it.value == null) { // 가져온 이미지가 없으면, 또는 이미지가 저장된게 없으면
+                                        HashMap() // Empty hashmap 생성
+                                    } else { // 이미지가 한개라도 있으면
+                                        it.value as HashMap<String, String> // DataSnapshot에서 이미지 Url들을 HashMap 형태로 캐스팅해서 가져옴
+                                    }
+
+                                    item.imgPath = urlMap!!
+                                    item.documentId = document.id // Document Id는 따로 받아옴
+
+                                    productList.add(item)
+
+                                    // 이미지를 모두 가져왔다면 callback 함수로 list 전달
+                                    if (boardCount == task.result.size()) {
+                                        callback.complete(productList)
+                                    }
+                                }
+                        }
+                        boardCount += 1 // position 1 증가시키기
+                    }
+                }
+            }
+        }
+        
+        // uid를 바탕으로 데이터를 가져옴 (해당 사용자가 작성한 글만 가져옴)
+        getData()
+    }
+
+
+    // 내가 좋아요 누른 게시글 목록들 가져오는 함수
+    fun getLikeProductData(callback: IFirebaseGetStorageDataCallback) {
+        productList.clear()
+
+        // FireStore에서 Board 데이터 및 FireDB에서 이미지 경로 가져오는 메소드
+        // category 값이 "all"이거나 선택한 category값인 경우에 가져옴
+        fun getData() {
+            var boardCount = 0 // 지금까지 가져온 게시글 개수를 파악하기 위한 변수!!
+            val uid = Firebase.auth.uid
+
+            firebaseStoreInstance.collection("Boards").get().addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    for (document in task.result) { // 게시글 개수만큼 반복
+                        if ((document.get("favorites") as MutableMap<String, String>).containsKey(uid)) {
+                            val item = document.toObject(ProductItem::class.java) // 가져온 Document를 ProductItem으로 캐스팅
+                            firebaseDatabaseInstance
+                                .getReference("products")
+                                .child("img_path")
+                                .child(document.id)
+                                .get()
+                                .addOnSuccessListener {
+                                    var urlMap: HashMap<String, String>? // 이미지 url을 가져올 해시맵
+                                    urlMap = if (it.value == null) { // 가져온 이미지가 없으면, 또는 이미지가 저장된게 없으면
+                                        HashMap() // Empty hashmap 생성
+                                    } else { // 이미지가 한개라도 있으면
+                                        it.value as HashMap<String, String> // DataSnapshot에서 이미지 Url들을 HashMap 형태로 캐스팅해서 가져옴
+                                    }
+
+                                    item.imgPath = urlMap!!
+                                    item.documentId = document.id // Document Id는 따로 받아옴
+
+                                    productList.add(item)
+
+                                    // 이미지를 모두 가져왔다면 callback 함수로 list 전달
+                                    if (boardCount == task.result.size()) {
+                                        callback.complete(productList)
+                                    }
+                                }
+                        }
+                        boardCount += 1 // position 1 증가시키기
+                    }
+                }
+            }
+        }
+
+        // uid를 바탕으로 데이터를 가져옴 (해당 사용자가 작성한 글만 가져옴)
+        getData()
     }
 
 

@@ -1,6 +1,7 @@
 package com.app.buna.sharingmarket.fragment
 
 import android.content.Intent
+import android.opengl.Visibility
 import android.os.Bundle
 import android.view.*
 import androidx.appcompat.widget.Toolbar
@@ -8,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.app.buna.sharingmarket.R
+import com.app.buna.sharingmarket.REQUEST_CODE
 import com.app.buna.sharingmarket.activity.MainActivity
 import com.app.buna.sharingmarket.activity.WriteActivity
 import com.app.buna.sharingmarket.adapter.ProductRecyclerAdapter
@@ -54,9 +56,7 @@ class MainHomeFragment(val category: String = "all") : Fragment() {
 
             vm?.getProductData(category, object : IFirebaseGetStorageDataCallback {
                 override fun complete(data: ArrayList<ProductItem>) {
-                    (binding?.productRecyclerView?.adapter as ProductRecyclerAdapter).updateData(
-                        data
-                    )
+                    (binding?.productRecyclerView?.adapter as ProductRecyclerAdapter).updateData(data)
                     vm?.productItems.value = (data)
                 }
             })
@@ -90,7 +90,7 @@ class MainHomeFragment(val category: String = "all") : Fragment() {
                         val intent = Intent(context, WriteActivity::class.java).apply {
                             addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP or Intent.FLAG_ACTIVITY_CLEAR_TOP)
                         }
-                        startActivity(intent) // 게시글 작성 액티비티 실행
+                        (requireActivity() as MainActivity).startActivityForResult(intent, REQUEST_CODE.DELETE_BOARD_CODE_FROM_MAIN) // 게시글 작성 액티비티 실행
                     }
                     R.id.action_exchange -> { // fab 쇼핑버튼 버튼 클릭시
                         Snackbar.make(toolbar, "쇼핑하기", Snackbar.LENGTH_SHORT).show()

@@ -5,13 +5,17 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.*
 import androidx.appcompat.widget.Toolbar
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.app.buna.sharingmarket.R
 import com.app.buna.sharingmarket.activity.InitialActivity
 import com.app.buna.sharingmarket.activity.MainActivity
+import com.app.buna.sharingmarket.activity.MyBoardsActivity
+import com.app.buna.sharingmarket.activity.MyHeartsActivity
 import com.app.buna.sharingmarket.callbacks.ILogoutCallback
 import com.app.buna.sharingmarket.databinding.FragmentMainMyBinding
+import com.app.buna.sharingmarket.databinding.UnregisterSurveyLayoutBinding
 import com.app.buna.sharingmarket.utils.FancyChocoBar
 import com.app.buna.sharingmarket.utils.FancyToastUtil
 import com.app.buna.sharingmarket.viewmodel.MainViewModel
@@ -49,6 +53,25 @@ class MainMyFragment : Fragment() {
         toolbar = binding?.toolBar!!.also { (requireActivity() as MainActivity).setSupportActionBar(it) } // 액션바 지정
         (requireActivity() as MainActivity).supportActionBar?.setDisplayShowTitleEnabled(false) // 타이틀 안보이게 하기
 
+        /* 내 위치 수정 */
+        binding?.editLocationBtn?.setOnClickListener {
+
+        }
+
+
+        /* 내가 쓴 글 */
+        binding?.myBoardBtn?.setOnClickListener {
+            val intent = Intent(requireContext(), MyBoardsActivity::class.java) // 내가 쓴 글을 보여주는 액티비티로 이동
+            startActivity(intent)
+        }
+
+
+        /* 관심 게시글 */
+        binding?.myHeartBtn?.setOnClickListener {
+            val intent = Intent(requireContext(), MyHeartsActivity::class.java) // 내가 쓴 글을 보여주는 액티비티로 이동
+            startActivity(intent)
+        }
+
 
         /* 앱 공유 버튼 */
         binding?.shareAppBtn?.setOnClickListener {
@@ -72,35 +95,35 @@ class MainMyFragment : Fragment() {
                 .setMessage(getString(R.string.ask_unregister))
                 .setPositiveButton(getString(R.string.ok)) { _, _ ->
                     // 탈퇴 이유 설문조사
-                    val surveyView = layoutInflater.inflate(R.layout.unregister_survey_layout, null) // 탈퇴 설문조사 view
+                    val surveyBinding = DataBindingUtil.bind<UnregisterSurveyLayoutBinding>(layoutInflater.inflate(R.layout.unregister_survey_layout, null))  // 탈퇴 설문조사 view
                     // 설문조사 선택 옵션 선택
-                    surveyView.survey_radio_group.setOnCheckedChangeListener { _, id ->
+                    surveyBinding?.surveyRadioGroup?.setOnCheckedChangeListener { _, id ->
                         when (id) {
                             R.id.survey_type_1 -> {
-                                surveyView.survey_type_5_layout.visibility = View.GONE // 설문조사 에딧텍스트 사라지게함
+                                surveyBinding.surveyType5Layout.visibility = View.GONE // 설문조사 에딧텍스트 사라지게함
                                 vm.surveyOptionId = 1
                                 vm.surveyText = getString(R.string.survey_type_1)
                             }R.id.survey_type_2 -> {
-                                surveyView.survey_type_5_layout.visibility = View.GONE // 설문조사 에딧텍스트 사라지게함
+                                surveyBinding.surveyType5Layout.visibility = View.GONE // 설문조사 에딧텍스트 사라지게함
                                 vm.surveyOptionId = 2
                                 vm.surveyText = getString(R.string.survey_type_2)
                             }R.id.survey_type_3 -> {
-                                surveyView.survey_type_5_layout.visibility = View.GONE // 설문조사 에딧텍스트 사라지게함
+                                surveyBinding.surveyType5Layout.visibility = View.GONE // 설문조사 에딧텍스트 사라지게함
                                 vm.surveyOptionId = 3
                                 vm.surveyText = getString(R.string.survey_type_3)
                             }R.id.survey_type_4 -> {
-                                surveyView.survey_type_5_layout.visibility = View.GONE // 설문조사 에딧텍스트 사라지게함
+                                surveyBinding.surveyType5Layout.visibility = View.GONE // 설문조사 에딧텍스트 사라지게함
                                 vm.surveyOptionId = 4
                                 vm.surveyText = getString(R.string.survey_type_4)
                             }R.id.survey_type_5 -> { // 기타 사유
-                                surveyView.survey_type_5_layout.visibility = View.VISIBLE // 설문조사 에딧텍스트 사라지게함
+                                surveyBinding.surveyType5Layout.visibility = View.VISIBLE // 설문조사 에딧텍스트 사라지게함
                                 vm.surveyOptionId = 5
                                 vm.surveyText = ""
                             }
                         }
                     }
                     val surveyDialog = AlertDialog.Builder(requireContext()) // 탈퇴 설문조사하는 다이얼로그 show()
-                        .setView(surveyView)
+                        .setView(surveyBinding?.root)
                         .setCancelable(false)
                         .setPositiveButton(android.R.string.ok, null) //onClick오버라이딩할거니까 null로해줘요.
                         .setNegativeButton(android.R.string.cancel){ dialog, _ ->
@@ -115,17 +138,17 @@ class MainMyFragment : Fragment() {
 
                                 if (vm.surveyOptionId!! == 5) {
                                     // 기타 사유인 경우엔 survey text를 EditTextView에 작성한 내용으로 수정
-                                    vm.surveyText = surveyView.survey_type_5_edit_text.text.toString()
+                                    vm.surveyText = surveyBinding?.surveyType5EditText?.text.toString()
                                 }
 
-                                if(vm.surveyOptionId!! in 1..4 || (vm.surveyOptionId!! == 5 && surveyView.survey_type_5_edit_text.text.length > 10)) { // 기타 사유인 경우 EditText값도 확인해줘야함
+                                if(vm.surveyOptionId!! in 1..4 || (vm.surveyOptionId!! == 5 && surveyBinding?.surveyType5EditText?.text!!.length > 10)) { // 기타 사유인 경우 EditText값도 확인해줘야함
                                     // 회원탈퇴
                                     vm?.unregister(vm.surveyText!!, vm.surveyOptionId!!) {
                                         surveyDialog.dismiss()
                                         startActivity(Intent(requireContext(), InitialActivity::class.java))
                                         requireActivity().finish()
                                     }
-                                } else if (vm.surveyOptionId!! == 5 && surveyView.survey_type_5_edit_text.text.length < 10) {
+                                } else if (vm.surveyOptionId!! == 5 && surveyBinding?.surveyType5EditText?.text!!.length < 10) {
                                     FancyChocoBar(requireActivity()).showOrangeSnackBar(getString(R.string.survey_submit_condition_1))
                                 } else {
                                     FancyChocoBar(requireActivity()).showOrangeSnackBar(getString(R.string.survey_submit_condition_2))

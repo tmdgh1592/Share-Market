@@ -1,9 +1,7 @@
 package com.app.buna.sharingmarket.utils
 
 import android.content.Context
-import androidx.room.OnConflictStrategy.FAIL
 import com.app.buna.sharingmarket.R
-import com.app.buna.sharingmarket.repository.PreferenceUtil.getString
 import com.shashank.sony.fancytoastlib.FancyToast
 
 class FancyToastUtil(val context: Context) {

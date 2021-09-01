@@ -12,7 +12,7 @@ import com.app.buna.sharingmarket.R
 import com.app.buna.sharingmarket.fragment.InitialFirstFragment
 import com.app.buna.sharingmarket.fragment.InitialFourthFragment
 import com.app.buna.sharingmarket.fragment.InitialThirdFragment
-import com.app.buna.sharingmarket.repository.PreferenceUtil
+import com.app.buna.sharingmarket.repository.Local.PreferenceUtil
 import com.app.buna.sharingmarket.viewmodel.InitialViewModel
 import com.facebook.CallbackManager
 import com.google.android.gms.auth.api.signin.GoogleSignIn

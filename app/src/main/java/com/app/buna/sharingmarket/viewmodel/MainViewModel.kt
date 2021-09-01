@@ -11,13 +11,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.app.buna.sharingmarket.R
 import com.app.buna.sharingmarket.activity.BoardActivity
-import com.app.buna.sharingmarket.activity.InitialActivity
 import com.app.buna.sharingmarket.callbacks.IFirebaseGetStorageDataCallback
 import com.app.buna.sharingmarket.callbacks.ILogoutCallback
 import com.app.buna.sharingmarket.model.items.CategoryItem
 import com.app.buna.sharingmarket.model.items.ProductItem
-import com.app.buna.sharingmarket.repository.FirebaseRepository
-import com.app.buna.sharingmarket.repository.PreferenceUtil
+import com.app.buna.sharingmarket.repository.Firebase.FirebaseRepository
+import com.app.buna.sharingmarket.repository.Local.PreferenceUtil
 import com.app.buna.sharingmarket.utils.NetworkStatus
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -42,7 +41,6 @@ class MainViewModel(application: Application, val context: Context) :
     }
 
     fun clickProduct(position: Int) {
-
         val intent = Intent(context, BoardActivity::class.java)
             .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
             .putExtra("product_item", productItems.value!!.get(position))

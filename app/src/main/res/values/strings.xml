@@ -5,6 +5,8 @@
     <string name="set_my_location">내 지역 설정하기</string>
     <string name="search_location">예) 판교역로 235, 분당 준공, 삼평동 681</string>
     <string name="no_location_result">찾으시는 결과가 없습니다.\n주소를 다시 한 번 확인해주세요!</string>
+    <string name="no_my_board_result">작성하신 게시글이 없습니다.\n홈으로 이동하여 글을 작성해보세요!</string>
+    <string name="no_heart_board_result">좋아요를 누른 게시글이 없습니다.\n홈으로 게시글에 관심을 표현해보세요!</string>
     <string name="search_now_location">현재 위치로 검색</string>
     <string name="require_location_permission">"앱을 실행하려면 위치 접근 권한이 필요합니다."</string>
     <string name="gps_check">"GPS가 켜져있는지 확인해주세요!"</string>
@@ -98,7 +100,7 @@
         <item>여행/티켓</item>
         <item>기타 물품</item>
     </string-array>
-    
+
     <array name="category_res_id">
         <item>@drawable/category_item_0</item>
         <item>@drawable/category_item_1</item>
@@ -152,13 +154,13 @@
     <string name="share_not_done_message">게시글의 나눔 상태를 해제합니다.</string>
 
     <!-- fragment : my -->
-    <string name="edit_information">내 정보 수정</string>
+    <string name="edit_location">내 위치 수정</string>
     <string name="my_board">내가 쓴 글</string>
     <string name="my_heart_board">관심 게시글</string>
     <string name="share_app">쉐어마켓 공유</string>
     <string name="unregister">회원탈퇴</string>
     <string name="logout">로그아웃</string>
-    
+
     <!--facebook login-->
     <string name="facebook_app_id">1183791935429922</string>
     <string name="fb_login_protocol_scheme">fb1183791935429922</string>
