@@ -7,11 +7,13 @@ import com.app.buna.sharingmarket.callbacks.IFirebaseGetStorageDataCallback
 import com.app.buna.sharingmarket.callbacks.IFirebaseRepositoryCallback
 import com.app.buna.sharingmarket.model.items.ProductItem
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import java.io.File
 
@@ -48,6 +50,23 @@ class FirebaseRepository {
                 .push()
                 .setValue(data)
 
+        }
+    }
+
+    // 탈퇴 사유를 Realtime DB에 저장
+    fun saveUnregisterCause(cause: String, id:Int, callback: () -> Unit) {
+        // 탈퇴한 유저 Uid 함께 저장
+        // 파이어베이스는 비동기이기 때문에 'uid값'이 null값이 될 수도 있으므로 callback사용
+        if (id in 1..4) {
+            firebaseDatabaseInstance.getReference("unregister").child(cause).push()
+                .setValue(Firebase.auth.uid).addOnCompleteListener {
+                    callback()
+                }
+        } else { // 기타 사유인 경우 사유를 따로 보관하기 위해 'other'이라는 경로에 따로 추가
+            firebaseDatabaseInstance.getReference("unregister").child("other").child(cause).push()
+                .setValue(Firebase.auth.uid).addOnCompleteListener {
+                    callback()
+                }
         }
     }
 
@@ -167,7 +186,7 @@ class FirebaseRepository {
             // Delete Storage
             // 잘못삭제되는 경우에 문제가 될 수 있으므로, 이미지를 아예 안올리는 경우나 게시글을 삭제할 때만 Storage삭제
             for (fileName in fileNamesForDelete) {
-                Log.d("테스트", fileName+"입니다.")
+                Log.d("테스트", fileName + "입니다.")
                 firebaseStorage.getReferenceFromUrl("gs://sharing-market.appspot.com")
                     .child("product_images").child("${boardUid}").child(fileName)
                     .delete()
@@ -284,7 +303,8 @@ class FirebaseRepository {
                 if (task.isSuccessful) {
                     for (document in task.result) { // 게시글 개수만큼 반복
                         if (category == "all" || document.get("category") == category) {
-                            val item = document.toObject(ProductItem::class.java) // 가져온 Document를 ProductItem으로 캐스팅
+                            val item =
+                                document.toObject(ProductItem::class.java) // 가져온 Document를 ProductItem으로 캐스팅
                             firebaseDatabaseInstance
                                 .getReference("products")
                                 .child("img_path")
@@ -295,7 +315,8 @@ class FirebaseRepository {
                                     if (it.getValue() == null) { // 가져온 이미지가 없으면, 또는 이미지가 저장된게 없으면
                                         urlMap = HashMap() // Empty hashmap 생성
                                     } else { // 이미지가 한개라도 있으면
-                                        urlMap = it.getValue() as HashMap<String, String> // DataSnapshot에서 이미지 Url들을 HashMap 형태로 캐스팅해서 가져옴
+                                        urlMap =
+                                            it.getValue() as HashMap<String, String> // DataSnapshot에서 이미지 Url들을 HashMap 형태로 캐스팅해서 가져옴
                                     }
 
                                     urlMap?.values?.forEach { url ->
@@ -319,7 +340,7 @@ class FirebaseRepository {
             }
         }
         // category를 바탕으로 데이터를 가져옴
-        getData(category)        
+        getData(category)
     }
 
 
@@ -351,6 +372,7 @@ class FirebaseRepository {
                             }
                         }
                     }
+
                     override fun onCancelled(error: DatabaseError) {}
                 }
             )

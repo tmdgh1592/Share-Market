@@ -127,6 +127,9 @@ class BoardActivity : AppCompatActivity() {
             if (vm?.item.isComplete == true) { // 거래 완료된 게시물이면 클릭 못하게 변경
                 binding?.chatBtn?.isEnabled = false
                 binding?.chatBtn?.isClickable = false
+            }else {
+                binding?.chatBtn?.isEnabled = true
+                binding?.chatBtn?.isClickable = true
             }
         }
 

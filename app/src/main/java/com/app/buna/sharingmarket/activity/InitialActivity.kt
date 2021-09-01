@@ -103,6 +103,7 @@ class InitialActivity : AppCompatActivity() {
             ?.addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
                     Log.d("InitialActivty", "signInWithCredential:success")
+                    PreferenceUtil.putString(this, key = "nickname", value = FirebaseAuth.getInstance().currentUser?.displayName.toString()) // Preference에 유저의 '(닉네임)' 저장
                     val user = auth?.currentUser
                     replaceFragment(InitialFourthFragment(), user!!)
                 } else {

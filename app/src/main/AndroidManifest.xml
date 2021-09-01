@@ -86,7 +86,8 @@
         </activity>
         <activity
             android:name=".activity.MainActivity"
-            android:hardwareAccelerated="true">
+            android:hardwareAccelerated="true"
+            android:usesCleartextTraffic="true">
 
         </activity>
     </application>

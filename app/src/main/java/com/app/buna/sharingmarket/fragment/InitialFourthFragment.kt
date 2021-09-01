@@ -75,9 +75,9 @@ class InitialFourthFragment : Fragment() {
         })
 
         // welcome_message 텍스트 뷰에 닉네임 입력
-        SpannableStringBuilder().append("쉐어마켓에 오신 것을 환영합니다!\n ${vm.getUserName()}님의 소속을 선택해주세요.").let {
-            it.setSpan(StyleSpan(Typeface.BOLD), 20, 20+vm.getUserName().length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE) // "닉네임" <- Bold
-            it.setSpan(StyleSpan(Typeface.BOLD), 23+vm.getUserName().length, 25+vm.getUserName().length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE) // "소속" <- Bold
+        SpannableStringBuilder().append("쉐어마켓에 오신 것을 환영합니다!\n ${vm.getUserName(requireContext())}님의 소속을 선택해주세요.").let {
+            it.setSpan(StyleSpan(Typeface.BOLD), 20, 20+vm.getUserName(requireContext()).length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE) // "닉네임" <- Bold
+            it.setSpan(StyleSpan(Typeface.BOLD), 23+vm.getUserName(requireContext()).length, 25+vm.getUserName(requireContext()).length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE) // "소속" <- Bold
             binding?.welcomeMessage?.text = it
         }
 

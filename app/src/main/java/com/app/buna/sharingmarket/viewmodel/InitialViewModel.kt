@@ -105,8 +105,8 @@ class InitialViewModel(application: Application) :
         (view.requireActivity() as InitialActivity).replaceFragment(InitialThirdFragment())
     }
 
-    fun getUserName(): String{
-        val userName = FirebaseAuth.getInstance().currentUser?.displayName.toString()
+    fun getUserName(context: Context): String{
+        val userName = PreferenceUtil.getString(context, "nickname")
         Log.d("Firebase", userName)
         return userName
     }
@@ -128,8 +128,8 @@ class InitialViewModel(application: Application) :
             PreferenceUtil.putString(context, "sosock", mySoSock.value!!) // SharedPreference에 저장
             Log.d("InitialViewModel", PreferenceUtil.getString(context, "sosock", "")) // Log출력
             
-            saveUserInfo(context, key = "jibun", value = "jibun", isInPref = true) // firebase realtimedb에 사용자의 주소 등록
-            saveUserInfo(context, key = "sosock", value = "sosock", isInPref = true) // firebaseDB에 유저의 ''이름(닉네임)'' 저장
+            saveUserInfo(context, key = "jibun", value = "jibun", isInPref = true) // Preference에 사용자의 주소 등록
+            saveUserInfo(context, key = "sosock", value = "sosock", isInPref = true) // Preference에 유저의 '소속' 저장
             saveUserInfo(context, key = "nickname", value = FirebaseAuth.getInstance().currentUser?.displayName.toString()) // firebaseDB에 유저의 ''소속'' 저장
 
             // 가입 완료 버튼 누르고 문제 없으면 MainActivity 실행

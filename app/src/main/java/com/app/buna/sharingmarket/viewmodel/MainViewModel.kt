@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.app.buna.sharingmarket.R
 import com.app.buna.sharingmarket.activity.BoardActivity
+import com.app.buna.sharingmarket.activity.InitialActivity
 import com.app.buna.sharingmarket.callbacks.IFirebaseGetStorageDataCallback
 import com.app.buna.sharingmarket.callbacks.ILogoutCallback
 import com.app.buna.sharingmarket.model.items.CategoryItem
@@ -31,6 +32,8 @@ class MainViewModel(application: Application, val context: Context) :
     }
 
     val productItems = MutableLiveData<ArrayList<ProductItem>>(ArrayList())
+    var surveyOptionId: Int? = null
+    var surveyText: String? = null
 
 
     // View Model의 product
@@ -58,6 +61,9 @@ class MainViewModel(application: Application, val context: Context) :
         return list
     }
 
+    fun getUserName(): String = PreferenceUtil.getString(context, "nickname")
+    fun getJibun(): String = PreferenceUtil.getString(context, "jibun")
+
     // 로그아웃
     fun logout(logoutCallback: ILogoutCallback) {
         if (NetworkStatus.isConnectedInternet(context)) {
@@ -72,7 +78,16 @@ class MainViewModel(application: Application, val context: Context) :
     }
 
     // 회원탈퇴
-    fun unregister() {
-        Firebase.auth.currentUser?.delete()
+    fun unregister(cause: String, id: Int, activityFinishCallback: () -> Unit) {
+        // DB에 탈퇴 사유 저장
+        FirebaseRepository.instance.saveUnregisterCause(cause, id) { // DB에 저장을 완료하였다면
+            Firebase.auth.currentUser!!.delete().addOnSuccessListener { task -> // 파이어베이스에서 유저 delete
+                Log.d("MainViewModel", "User account deleted")
+                PreferenceUtil.putInt(context, "fragment_page", 0) // 현재까지 진행한 fragment_page를 초기화면으로 돌림
+                activityFinishCallback() // 액티비티 종료 콜백
+            }.addOnFailureListener { exception ->
+                print(exception.message)
+            }
+        }
     }
 }

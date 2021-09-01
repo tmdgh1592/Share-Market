@@ -73,7 +73,7 @@
                     android:textColor="@color/black"
                     android:textSize="16sp"
                     android:textStyle="bold"
-                    android:text="최승호"/>
+                    android:text="@{viewModel.getUserName()}"/>
                 <!-- location text view -->
                 <TextView
                     android:id="@+id/location"
@@ -82,7 +82,7 @@
                     app:layout_constraintLeft_toRightOf="@+id/profile_image_view"
                     app:layout_constraintTop_toBottomOf="@+id/nickname_text_view"
                     android:layout_marginLeft="@dimen/layout_frame_horizontal_margin"
-                    android:text="경기도 고양시 덕양구 행신동"
+                    android:text="@{viewModel.getJibun()}"
                     android:textSize="14sp"/>
                 <!-- 정보 수정 버튼 -->
                 <LinearLayout
