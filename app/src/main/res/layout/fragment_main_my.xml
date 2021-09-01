@@ -44,7 +44,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 android:layout_marginTop="30dp">
                 <!-- profile image view -->
-                <ImageView
+                <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/profile_image_view"
                     android:layout_width="65dp"
                     android:layout_height="65dp"
@@ -52,15 +52,15 @@
                     app:layout_constraintTop_toTopOf="parent"
                     android:layout_marginHorizontal="@dimen/layout_frame_horizontal_margin"
                     android:clickable="true"
-                    android:background="@drawable/default_profile"/>
+                    android:src="@drawable/default_profile"/>
                 <!-- edit icon image view-->
                 <ImageView
                     android:layout_width="16dp"
                     android:layout_height="16dp"
                     app:layout_constraintBottom_toBottomOf="@+id/profile_image_view"
                     app:layout_constraintRight_toLeftOf="@+id/nickname_text_view"
-                    android:layout_marginRight="16dp"
-                    android:background="@drawable/edit_icon"/>
+                    android:layout_marginRight="18dp"
+                    android:src="@drawable/photo_edit_icon"/>
                 <!-- nickname text view-->
                 <TextView
                     android:id="@+id/nickname_text_view"

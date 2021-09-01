@@ -81,6 +81,9 @@
     <string name="all_images">전체</string>
     <string name="permission_storage_never_ask">권한을 허용하지 않으면 이미지를 등록하실 수 없어요!</string>
 
+    <!--profile change-->
+    <string name="profile_change">프로필을 성공적으로 변경하였습니다.</string>
+
     <!--string-array-->
     <string-array name="category_title">
         <item>가전디지털</item>

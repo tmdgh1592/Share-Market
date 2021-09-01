@@ -34,10 +34,14 @@
     <color name="exchange_color">#FFF280</color>
     <color name="complete_color">#606060</color>
 
+    <!--gallery image picker for profile color-->
+    <color name="ucrop_color_toolbar">@color/app_green</color>
+    <color name="ucrop_color_statusbar">@color/app_pressed_green</color>
+    <color name="ucrop_color_widget_active">@color/app_green</color>
 
     <!--gallery image picker color-->
     <color name="counter_bg">@color/app_green</color>
-    <color name="toolbar_bg">@color/app_green</color>
+    <color name="toolbar_bg">@color/app_pressed_green</color>
     <color name="permission_alert_color">#ffffff</color>
     <color name="permission_alert_bg">@color/app_green</color>
     <color name="change_album_color">#ffffff</color>

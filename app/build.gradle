@@ -6,9 +6,8 @@ plugins {
 
 allprojects {
     repositories {
-        maven {
-            url 'https://www.jitpack.io'
-        }
+        maven { url 'https://www.jitpack.io' }
+        maven { url "https://jitpack.io" }
     }
     subprojects {
         repositories {
@@ -110,6 +109,9 @@ dependencies {
 
     /* Gallery Photo Picker */
     implementation 'com.opensooq.supernova:gligar:1.1.0'
+
+    /* Image Picker For Profile */
+    implementation 'com.github.dhaval2404:imagepicker:2.1'
 
     /* Circle image view */
     implementation 'de.hdodenhof:circleimageview:3.1.0'

@@ -14,9 +14,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.app.buna.sharingmarket.MENU_ID
 import com.app.buna.sharingmarket.R
-import com.app.buna.sharingmarket.REQUEST_CODE
-import com.app.buna.sharingmarket.REQUEST_CODE.Companion.DELETE_BOARD_CODE_FROM_MAIN
-import com.app.buna.sharingmarket.REQUEST_CODE.Companion.DELETE_BOARD_CODE_FROM_MY_BOARD
 import com.app.buna.sharingmarket.REQUEST_CODE.Companion.UPDATE_BOARD_CODE
 import com.app.buna.sharingmarket.adapter.ImageSliderAdapter
 import com.app.buna.sharingmarket.databinding.ActivityBoardBinding
@@ -51,6 +48,13 @@ class BoardActivity : AppCompatActivity() {
 
     private fun initView() {
 
+        // 게시판 작성자 프로필 설정
+        vm.getProfile(vm.item.uid) { profileUri ->
+            if (profileUri != null){
+                Glide.with(this).load(profileUri).circleCrop().into(binding?.profileImageView!!)
+            }
+        }
+
         // 이미지 슬라이더 adapter 초기화
         if (vm?.item.imgPath.size > 1) { // 개수가 2개 이상이면 Image Slider 사용
             binding?.imageView?.visibility = View.GONE // Image View는 사라지게
@@ -61,7 +65,6 @@ class BoardActivity : AppCompatActivity() {
                 setIndicatorAnimation(IndicatorAnimationType.DROP)
             }
         } else { // 개수가 1개보다 적으면 Image View 사용
-
             // xml에서와 java에서의 value를 계산하는 방식이 다르므로 아래 로직 수행
             if (vm?.item.imgPath.size == 1) { // 이미지가 1개인 경우
                 // ImageView의 크기 조정을 위한 디멘션
@@ -132,9 +135,6 @@ class BoardActivity : AppCompatActivity() {
                 binding?.chatBtn?.isClickable = true
             }
         }
-
-
-
 
         // 툴바 사용
         setSupportActionBar(binding?.toolBar)

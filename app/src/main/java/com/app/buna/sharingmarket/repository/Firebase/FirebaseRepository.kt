@@ -89,6 +89,26 @@ class FirebaseRepository {
             }
     }
 
+    fun saveProfile(imgUri: Uri, callback: () -> Unit) {
+        firebaseStorage
+            .getReferenceFromUrl("gs://sharing-market.appspot.com")
+            .child("profiles")
+            .child(Firebase.auth.uid.toString())
+            .putFile(imgUri)
+            .addOnSuccessListener {
+                callback()
+            }
+    }
+
+    fun getProfile(uid: String, callback: (Uri) -> Unit){
+        val profileStorage = firebaseStorage.getReferenceFromUrl("gs://sharing-market.appspot.com").child("profiles").child(uid)
+        profileStorage.downloadUrl.addOnCompleteListener { task ->
+            if(task.isSuccessful) {
+                callback(task.result)
+            }
+        }
+    }
+
 
     // 파이어베이스 DB는 비동기로 실행되기 때문에 infoData 변수가 초기화되지 않을 수도 있음
     // 이 부분 수정해줘야 함
@@ -383,7 +403,7 @@ class FirebaseRepository {
                 }
             }
         }
-        
+
         // uid를 바탕으로 데이터를 가져옴 (해당 사용자가 작성한 글만 가져옴)
         getData()
     }

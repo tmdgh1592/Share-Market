@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.Application
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
@@ -87,5 +88,22 @@ class MainViewModel(application: Application, val context: Context) :
                 print(exception.message)
             }
         }
+    }
+
+    fun saveProfile(imgUri: Uri, callback: () -> Unit) {
+        FirebaseRepository.instance.saveProfile(imgUri, callback)
+    }
+
+    fun getProfile(uid: String, callback: (Uri)->Unit) {
+        FirebaseRepository.instance.getProfile(uid, callback)
+    }
+
+    fun saveProfileUriInPref(uri: Uri) {
+        PreferenceUtil.putString(context, "profile_uri", uri.toString())
+        Log.d("mytest",getProfileUriInPref())
+    }
+
+    fun getProfileUriInPref(): String{
+        return PreferenceUtil.getString(context, "profile_uri")
     }
 }

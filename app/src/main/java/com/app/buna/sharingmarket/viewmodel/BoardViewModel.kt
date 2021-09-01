@@ -132,6 +132,9 @@ class BoardViewModel(application: Application, val context: Context) : AndroidVi
         }
     }
 
+    fun getProfile(uid: String, callback: (Uri) -> Unit) {
+        FirebaseRepository.instance.getProfile(uid, callback)
+    }
 
     // 나눔 완료로 상태표시
     fun shareDone(isDone: Boolean, callback: () -> Unit) {

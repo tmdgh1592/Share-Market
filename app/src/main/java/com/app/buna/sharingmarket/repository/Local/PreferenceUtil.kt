@@ -15,7 +15,7 @@ object PreferenceUtil {
     }
 
     fun putString(context: Context, key: String, value: String) {
-        getPreference(context).edit().putString(key, value).apply()
+        getPreference(context).edit().putString(key, value).commit()
     }
 
     fun getInt(context: Context, key: String, defValue: Int = 0): Int {
@@ -23,7 +23,7 @@ object PreferenceUtil {
     }
 
     fun putInt(context: Context, key: String, value: Int) {
-        getPreference(context).edit().putInt(key, value).apply()
+        getPreference(context).edit().putInt(key, value).commit()
     }
 
     fun clearAllValue(context: Context) {
