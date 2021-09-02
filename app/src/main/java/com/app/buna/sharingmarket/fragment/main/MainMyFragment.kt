@@ -46,7 +46,7 @@ class MainMyFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentMainMyBinding.inflate(inflater, container, false).apply {
+        binding = FragmentMainMyBinding.inflate(inflater).apply {
             lifecycleOwner = viewLifecycleOwner
             viewModel = vm
         }
@@ -70,9 +70,9 @@ class MainMyFragment : Fragment() {
                 .into(binding?.profileImageView!!)
         } else { // Preference에 Profile Uri가 없는 경우
             if (NetworkStatus.isConnectedInternet(requireContext())) { // Preference에 기록된게 없기때문에 Storage에서 가져옴
-                vm.getProfile(Firebase.auth.uid.toString()) { profileUri ->
-                    if (profileUri != null) {
-                        Glide.with(this).load(profileUri).into(binding?.profileImageView!!)
+                vm.getProfile(Firebase.auth.uid.toString()) { profileUrl ->
+                    if (profileUrl != null) {
+                        Glide.with(this).load(Uri.parse(profileUrl)).into(binding?.profileImageView!!)
                     }
                 }
             }
@@ -91,12 +91,12 @@ class MainMyFragment : Fragment() {
                             Glide.with(requireContext()).load(imgUri).circleCrop()
                                 .into(binding?.profileImageView!!)
                             vm.saveProfile(imgUri) {
-                                vm.saveProfileUriInPref(imgUri)
-                                FancyToastUtil(requireContext()).showSuccess(getString(R.string.profile_change))
+                                vm.saveProfileUriInPref(imgUri) // Preference에도 uri를 저장
+                                //FancyToastUtil(MainActivity.instance.getContext()).showSuccess(getString(R.string.profile_change)) // 성공 Toast
                             }
-                        } else {
-                            FancyToastUtil(requireContext()).showFail(getString(R.string.internet_check))
-                        }
+                        } /*else {
+                            FancyToastUtil(MainActivity.instance.getContext()).showFail(getString(R.string.internet_check)) // 실패 Toast
+                        }*/
                     }
                 } else if (resultCode == ImagePicker.RESULT_ERROR) {
                     //Toast.makeText(this, ImagePicker.getError(data), Toast.LENGTH_SHORT).show()
@@ -123,6 +123,8 @@ class MainMyFragment : Fragment() {
             val locationDialog = LocationFragmentDialog()
             locationDialog.setCallback(object : ILocationDialogCallback {
                 override fun changeLocation(jibun: String) {
+                    vm.saveLocationInFirebase(jibun = jibun!!)
+                    vm.saveLocationInPref(jibun = jibun!!)
                     binding?.location?.text = jibun
                 }
             })
@@ -284,7 +286,6 @@ class MainMyFragment : Fragment() {
                             startActivity(Intent(requireContext(), InitialActivity::class.java))
                             requireActivity().finish()
                         }
-
                         override fun fail() { // 실패할 경우 실패 문구 출력
                             FancyToastUtil(requireContext()).showFail(getString(R.string.logout_fail))
                         }

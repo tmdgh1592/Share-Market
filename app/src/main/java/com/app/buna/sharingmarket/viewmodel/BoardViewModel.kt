@@ -132,7 +132,7 @@ class BoardViewModel(application: Application, val context: Context) : AndroidVi
         }
     }
 
-    fun getProfile(uid: String, callback: (Uri) -> Unit) {
+    fun getProfile(uid: String, callback: (String?) -> Unit) {
         FirebaseRepository.instance.getProfile(uid, callback)
     }
 

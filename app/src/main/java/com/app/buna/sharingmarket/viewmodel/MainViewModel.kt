@@ -12,7 +12,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.app.buna.sharingmarket.R
 import com.app.buna.sharingmarket.activity.BoardActivity
-import com.app.buna.sharingmarket.callbacks.IFirebaseGetStorageDataCallback
+import com.app.buna.sharingmarket.callbacks.IFirebaseGetStoreDataCallback
 import com.app.buna.sharingmarket.callbacks.ILogoutCallback
 import com.app.buna.sharingmarket.model.items.CategoryItem
 import com.app.buna.sharingmarket.model.items.ProductItem
@@ -37,7 +37,7 @@ class MainViewModel(application: Application, val context: Context) :
 
 
     // View Model의 product
-    fun getProductData(category: String, callback: IFirebaseGetStorageDataCallback) {
+    fun getProductData(category: String, callback: IFirebaseGetStoreDataCallback) {
         FirebaseRepository.instance.getProductData(category, callback)
     }
 
@@ -94,7 +94,7 @@ class MainViewModel(application: Application, val context: Context) :
         FirebaseRepository.instance.saveProfile(imgUri, callback)
     }
 
-    fun getProfile(uid: String, callback: (Uri)->Unit) {
+    fun getProfile(uid: String, callback: (String?)->Unit) {
         FirebaseRepository.instance.getProfile(uid, callback)
     }
 
@@ -106,4 +106,7 @@ class MainViewModel(application: Application, val context: Context) :
     fun getProfileUriInPref(): String{
         return PreferenceUtil.getString(context, "profile_uri")
     }
+
+    fun saveLocationInFirebase(jibun: String) = FirebaseRepository.instance.saveUserInfo("jibun", jibun, true)
+    fun saveLocationInPref(jibun: String) = PreferenceUtil.putString(context, "jibun", jibun)
 }

@@ -1,6 +1,7 @@
 package com.app.buna.sharingmarket.activity
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -31,10 +32,12 @@ class MainActivity : AppCompatActivity() {
     lateinit var tabLayout: TabLayout
     private var regTime = 0L
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initBinding()
         initView()
+
     }
 
     /*Binding 초기화*/
@@ -84,8 +87,6 @@ class MainActivity : AppCompatActivity() {
             })
 
         }
-
-
     }
 
     // 프래그먼트 전환하는 메소드

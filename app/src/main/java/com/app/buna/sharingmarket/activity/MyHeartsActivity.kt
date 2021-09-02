@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.app.buna.sharingmarket.R
 import com.app.buna.sharingmarket.REQUEST_CODE
 import com.app.buna.sharingmarket.adapter.MyHeartsRecyclerAdapter
-import com.app.buna.sharingmarket.callbacks.IFirebaseGetStorageDataCallback
+import com.app.buna.sharingmarket.callbacks.IFirebaseGetStoreDataCallback
 import com.app.buna.sharingmarket.databinding.ActivityMyHeartsBinding
 import com.app.buna.sharingmarket.model.items.ProductItem
 import com.app.buna.sharingmarket.viewmodel.MyBoardViewModel
@@ -38,7 +38,7 @@ class MyHeartsActivity : AppCompatActivity() {
         binding?.myHeartsRecyclerView.adapter = MyHeartsRecyclerAdapter(vm, this, this)
         binding?.myHeartsRecyclerView?.layoutManager = LinearLayoutManager(this)
 
-        vm?.getMyHearts(object : IFirebaseGetStorageDataCallback {
+        vm?.getMyHearts(object : IFirebaseGetStoreDataCallback {
             override fun complete(data: ArrayList<ProductItem>) {
                 vm.myBoardItems.postValue(data) // viewmodel의 리스트 데이터들도 갱신
 

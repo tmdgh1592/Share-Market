@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
 import com.app.buna.sharingmarket.R
 import com.app.buna.sharingmarket.databinding.ProductItemBinding
@@ -18,7 +17,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 class ProductRecyclerAdapter(var viewModel: MainViewModel, val context: Context) :
     RecyclerView.Adapter<ProductRecyclerAdapter.ProductViewHolder>() {
 
-    val productItemList = MutableLiveData<List<ProductItem>>(ArrayList())
+    var productItemList = ArrayList<ProductItem>()
 
     class ProductViewHolder(val binding: ProductItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
@@ -39,7 +38,7 @@ class ProductRecyclerAdapter(var viewModel: MainViewModel, val context: Context)
 
     @SuppressLint("ResourceAsColor")
     override fun onBindViewHolder(holder: ProductViewHolder, position: Int) {
-        val item = productItemList?.value!![position]
+        val item = productItemList[position]
 
         // 이미지가 한개라도 있는 경우에만 제품 프로필 설정
         if (item.imgPath.size > 0) {
@@ -111,11 +110,12 @@ class ProductRecyclerAdapter(var viewModel: MainViewModel, val context: Context)
     }
 
     override fun getItemCount(): Int {
-        return productItemList?.value!!.size
+        if (productItemList != null) return productItemList.size
+        return 0
     }
 
-    fun updateData(newList: List<ProductItem>) {
-        this.productItemList.value = newList
+    fun updateData(newList: ArrayList<ProductItem>) {
+        this.productItemList = newList
         notifyDataSetChanged()
     }
 

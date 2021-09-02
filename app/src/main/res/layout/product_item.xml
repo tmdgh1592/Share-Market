@@ -124,11 +124,13 @@
                     <!--동네 및 등록 시간-->
                     <com.elyeproj.loaderviewlibrary.LoaderTextView
                         android:id="@+id/location_and_time_text"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="4dp"
                         android:ellipsize="end"
-                        android:maxLines="2"
+                        android:maxLines="1"
+                        android:maxLength="20"
+                        app:layout_constrainedWidth="true"
                         android:text="@{model.getLocationAndTime()}"
                         android:textColor="@color/gray_70"
                         android:textSize="14sp" />

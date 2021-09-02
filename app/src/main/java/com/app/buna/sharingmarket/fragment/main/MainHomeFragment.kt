@@ -12,7 +12,7 @@ import com.app.buna.sharingmarket.REQUEST_CODE
 import com.app.buna.sharingmarket.activity.MainActivity
 import com.app.buna.sharingmarket.activity.WriteActivity
 import com.app.buna.sharingmarket.adapter.ProductRecyclerAdapter
-import com.app.buna.sharingmarket.callbacks.IFirebaseGetStorageDataCallback
+import com.app.buna.sharingmarket.callbacks.IFirebaseGetStoreDataCallback
 import com.app.buna.sharingmarket.databinding.FragmentMainHomeBinding
 import com.app.buna.sharingmarket.model.items.ProductItem
 import com.app.buna.sharingmarket.viewmodel.MainViewModel
@@ -35,7 +35,7 @@ class MainHomeFragment(val category: String = "all") : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentMainHomeBinding.inflate(inflater, container, false).apply {
+        binding = FragmentMainHomeBinding.inflate(inflater).apply {
             lifecycleOwner = viewLifecycleOwner
             viewModel = vm
         }
@@ -43,17 +43,12 @@ class MainHomeFragment(val category: String = "all") : Fragment() {
         return binding?.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-    }
-
     fun initView() {
         with(binding) {
             this?.productRecyclerView?.adapter = ProductRecyclerAdapter(vm, requireContext())
             this?.productRecyclerView?.layoutManager = LinearLayoutManager(requireContext())
 
-            vm?.getProductData(category, object : IFirebaseGetStorageDataCallback {
+            vm?.getProductData(category, object : IFirebaseGetStoreDataCallback {
                 override fun complete(data: ArrayList<ProductItem>) {
                     (binding?.productRecyclerView?.adapter as ProductRecyclerAdapter).updateData(data)
                     vm?.productItems.value = (data)

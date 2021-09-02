@@ -3,6 +3,7 @@ package com.app.buna.sharingmarket
 import android.app.Application
 import android.content.res.Resources
 import android.graphics.Color
+import android.net.Uri
 import android.util.Log
 import android.view.View
 import android.widget.ImageView
@@ -19,6 +20,8 @@ import com.bumptech.glide.Glide
 import com.elyeproj.loaderviewlibrary.LoaderTextView
 import com.facebook.login.widget.LoginButton
 import com.google.android.gms.common.SignInButton
+import de.hdodenhof.circleimageview.CircleImageView
+
 object BindingAdapters {
 
     // 구글 로그인 버튼
@@ -67,6 +70,14 @@ object BindingAdapters {
     fun bindImage(imageView: ImageView, res: Int) {
         if (res != null) {
             Glide.with(imageView.context).load(res).fitCenter().into(imageView)
+        }
+    }
+
+    @BindingAdapter("chat_profile_img")
+    @JvmStatic
+    fun bindChatProfileImage(imageView: CircleImageView, uri: String) {
+        if (uri != null || uri != "") {
+            Glide.with(imageView.context).load(Uri.parse(uri)).fitCenter().into(imageView)
         }
     }
 }

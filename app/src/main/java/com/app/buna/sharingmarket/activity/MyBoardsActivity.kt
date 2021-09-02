@@ -2,7 +2,6 @@ package com.app.buna.sharingmarket.activity
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -12,7 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.app.buna.sharingmarket.R
 import com.app.buna.sharingmarket.REQUEST_CODE
 import com.app.buna.sharingmarket.adapter.MyBoardsRecyclerAdapter
-import com.app.buna.sharingmarket.callbacks.IFirebaseGetStorageDataCallback
+import com.app.buna.sharingmarket.callbacks.IFirebaseGetStoreDataCallback
 import com.app.buna.sharingmarket.databinding.ActivityMyBoardsBinding
 import com.app.buna.sharingmarket.model.items.ProductItem
 import com.app.buna.sharingmarket.viewmodel.MyBoardViewModel
@@ -40,7 +39,7 @@ class MyBoardsActivity : AppCompatActivity() {
         binding?.myBoardRecyclerView.adapter = MyBoardsRecyclerAdapter(vm, this, this)
         binding?.myBoardRecyclerView?.layoutManager = LinearLayoutManager(this)
 
-        vm?.getMyBoards(object : IFirebaseGetStorageDataCallback {
+        vm?.getMyBoards(object : IFirebaseGetStoreDataCallback {
             override fun complete(data: ArrayList<ProductItem>) {
                 vm.myBoardItems.postValue(data) // viewmodel의 리스트 데이터들도 갱신
 

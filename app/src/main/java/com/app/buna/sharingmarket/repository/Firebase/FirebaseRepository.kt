@@ -3,7 +3,7 @@ package com.app.buna.sharingmarket.repository.Firebase
 import android.annotation.SuppressLint
 import android.net.Uri
 import android.util.Log
-import com.app.buna.sharingmarket.callbacks.IFirebaseGetStorageDataCallback
+import com.app.buna.sharingmarket.callbacks.IFirebaseGetStoreDataCallback
 import com.app.buna.sharingmarket.callbacks.IFirebaseRepositoryCallback
 import com.app.buna.sharingmarket.model.items.ProductItem
 import com.google.firebase.auth.FirebaseAuth
@@ -96,18 +96,49 @@ class FirebaseRepository {
             .child(Firebase.auth.uid.toString())
             .putFile(imgUri)
             .addOnSuccessListener {
-                callback()
+                // 파이어베이스 DB에도 저장
+                firebaseDatabaseInstance.getReference("users")
+                    .child(Firebase.auth.uid.toString()) // uid
+                    .child("profile_url")
+                    .setValue(imgUri.toString()).addOnCompleteListener {
+                        if (it.isSuccessful){
+                            callback()
+                        }
+                    }
             }
     }
 
-    fun getProfile(uid: String, callback: (Uri) -> Unit){
+    // DB에 저장한 프로필 Url 가져오는 경우
+    fun getProfile(uid: String, callback: (String?) -> Unit){
+        firebaseDatabaseInstance.getReference("users")
+            .child(uid)
+            .child("profile_url")
+            .addListenerForSingleValueEvent(
+                object : ValueEventListener {
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        val url = snapshot.getValue(String::class.java)
+                        callback(url)
+                    }
+
+                    override fun onCancelled(error: DatabaseError) {
+                        Log.d("FirebaseRepository", "Canceled")
+                    }
+                }
+            )
+
+    }
+
+
+    // Storage에서 Profile Uri주소 가져오는 경우
+    /*fun getProfile(uid: String, callback: (Uri) -> Unit){
         val profileStorage = firebaseStorage.getReferenceFromUrl("gs://sharing-market.appspot.com").child("profiles").child(uid)
         profileStorage.downloadUrl.addOnCompleteListener { task ->
             if(task.isSuccessful) {
                 callback(task.result)
             }
         }
-    }
+    }*/
+
 
 
     // 파이어베이스 DB는 비동기로 실행되기 때문에 infoData 변수가 초기화되지 않을 수도 있음
@@ -312,7 +343,7 @@ class FirebaseRepository {
     // *** Firebase 딜레이를 고려해서 Listener로 완료된 것을 항상 계산하고 코딩해야함. ***
 
     // Firebase 스토리지에서 게시글을 가져오기
-    fun getProductData(category: String, callback: IFirebaseGetStorageDataCallback) {
+    fun getProductData(category: String, callback: IFirebaseGetStoreDataCallback) {
         productList.clear()
         var boardCount = 0 // 지금까지 가져온 게시글 개수를 파악하기 위한 변수!!
 
@@ -360,7 +391,7 @@ class FirebaseRepository {
     }
 
     // 내가 쓴 게시글 목록들 가져오는 함수
-    fun getProductData(callback: IFirebaseGetStorageDataCallback) {
+    fun getProductData(callback: IFirebaseGetStoreDataCallback) {
         productList.clear()
 
         // FireStore에서 Board 데이터 및 FireDB에서 이미지 경로 가져오는 메소드
@@ -410,7 +441,7 @@ class FirebaseRepository {
 
 
     // 내가 좋아요 누른 게시글 목록들 가져오는 함수
-    fun getLikeProductData(callback: IFirebaseGetStorageDataCallback) {
+    fun getLikeProductData(callback: IFirebaseGetStoreDataCallback) {
         productList.clear()
 
         // FireStore에서 Board 데이터 및 FireDB에서 이미지 경로 가져오는 메소드

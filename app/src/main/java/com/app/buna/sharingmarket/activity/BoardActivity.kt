@@ -2,6 +2,7 @@ package com.app.buna.sharingmarket.activity
 
 import android.content.Intent
 import android.content.res.ColorStateList
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.util.TypedValue
@@ -49,9 +50,9 @@ class BoardActivity : AppCompatActivity() {
     private fun initView() {
 
         // 게시판 작성자 프로필 설정
-        vm.getProfile(vm.item.uid) { profileUri ->
-            if (profileUri != null){
-                Glide.with(this).load(profileUri).circleCrop().into(binding?.profileImageView!!)
+        vm.getProfile(vm.item.uid) { profileUrl ->
+            if (profileUrl != null){
+                Glide.with(this).load(Uri.parse(profileUrl)).circleCrop().into(binding?.profileImageView!!)
             }
         }
 
