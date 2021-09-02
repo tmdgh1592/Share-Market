@@ -12,10 +12,11 @@ import androidx.lifecycle.ViewModelProvider
 import com.app.buna.sharingmarket.R
 import com.app.buna.sharingmarket.REQUEST_CODE
 import com.app.buna.sharingmarket.databinding.ActivityMainBinding
-import com.app.buna.sharingmarket.fragment.MainCategoryFragment
-import com.app.buna.sharingmarket.fragment.MainChatFragment
-import com.app.buna.sharingmarket.fragment.MainHomeFragment
-import com.app.buna.sharingmarket.fragment.MainMyFragment
+import com.app.buna.sharingmarket.fragment.initial.InitialThirdFragment
+import com.app.buna.sharingmarket.fragment.main.MainCategoryFragment
+import com.app.buna.sharingmarket.fragment.main.MainChatFragment
+import com.app.buna.sharingmarket.fragment.main.MainHomeFragment
+import com.app.buna.sharingmarket.fragment.main.MainMyFragment
 import com.app.buna.sharingmarket.viewmodel.MainViewModel
 import com.google.android.material.tabs.TabLayout
 import org.koin.android.ext.android.get
@@ -101,6 +102,12 @@ class MainActivity : AppCompatActivity() {
             REQUEST_CODE.DELETE_BOARD_CODE_FROM_MAIN -> { // 게시글을 삭제 했다면
                 Log.d("MainActivity -> onActivityResult", "replace MainHomeFragment")
                 //replaceFragment(MainHomeFragment()) // 게시글을 새로 불러오기 위해 HomeFragment 다시 실행
+            } REQUEST_CODE.API_COMPLETED_FINISH -> {// 다음 주소에서 주소 선택했을 때 :: AddressApiWebView
+                var jibun: String? = data?.getStringExtra("jibun")
+                Log.d("Main", jibun)
+                if (jibun != null && jibun != "") {
+
+                }
             }
         }
             

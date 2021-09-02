@@ -1,4 +1,4 @@
-package com.app.buna.sharingmarket.fragment
+package com.app.buna.sharingmarket.fragment.initial
 
 import android.os.Bundle
 import android.view.LayoutInflater

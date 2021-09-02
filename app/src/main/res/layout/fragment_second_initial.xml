@@ -12,7 +12,8 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".fragment.InitialSecondFragment">
+        android:background="@color/white"
+        tools:context=".fragment.initial.InitialSecondFragment">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -130,6 +131,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:text="@string/no_location_result"
+                    android:textColor="@color/gray_70"
                     android:textSize="16sp"
                     android:gravity="center"/>
 

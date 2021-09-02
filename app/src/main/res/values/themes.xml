@@ -22,11 +22,24 @@
         <item name="android:fontFamily">@font/wemp_bold</item>
     </style>
 
+    <!--location dialog style-->
+    <style name="dialog_fullscreen" parent="Theme.AppCompat.Dialog">
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:windowFullscreen">false</item>
+        <!-- status bar 색 설정 -->
+        <item name="android:statusBarColor">#ffffff</item>
+        <!-- 배경 dim 설정 -->
+        <item name="android:backgroundDimEnabled">true</item>
+        <!-- 0.0 (투명) ~ 1.0 (검정색) 값을 가집니다 -->
+        <item name="android:backgroundDimAmount">0.6</item>
+        <item name="android:textColor">@color/gray_70</item>
+    </style>
+
     <style name="Theme.ShareMarket.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
-    
+
     <style name="AppTheme.OverFlow" parent="Widget.AppCompat.Light.ActionButton.Overflow">
         <item name="android:tint">@color/black</item>
     </style>

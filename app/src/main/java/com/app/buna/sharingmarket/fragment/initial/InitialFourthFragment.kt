@@ -1,4 +1,4 @@
-package com.app.buna.sharingmarket.fragment
+package com.app.buna.sharingmarket.fragment.initial
 
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter

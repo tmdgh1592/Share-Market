@@ -9,9 +9,9 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.app.buna.sharingmarket.REQUEST_CODE
 import com.app.buna.sharingmarket.R
-import com.app.buna.sharingmarket.fragment.InitialFirstFragment
-import com.app.buna.sharingmarket.fragment.InitialFourthFragment
-import com.app.buna.sharingmarket.fragment.InitialThirdFragment
+import com.app.buna.sharingmarket.fragment.initial.InitialFirstFragment
+import com.app.buna.sharingmarket.fragment.initial.InitialFourthFragment
+import com.app.buna.sharingmarket.fragment.initial.InitialThirdFragment
 import com.app.buna.sharingmarket.repository.Local.PreferenceUtil
 import com.app.buna.sharingmarket.viewmodel.InitialViewModel
 import com.facebook.CallbackManager

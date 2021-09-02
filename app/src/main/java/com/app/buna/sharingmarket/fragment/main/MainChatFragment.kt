@@ -1,37 +1,32 @@
-package com.app.buna.sharingmarket.fragment
+package com.app.buna.sharingmarket.fragment.main
 
 import android.os.Bundle
-import android.util.Log
 import android.view.*
-import android.widget.AdapterView
-import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.app.buna.sharingmarket.R
 import com.app.buna.sharingmarket.activity.MainActivity
-import com.app.buna.sharingmarket.adapter.CategoryGridAdapter
-import com.app.buna.sharingmarket.databinding.FragmentMainCategoryBinding
+import com.app.buna.sharingmarket.databinding.FragmentMainChatBinding
 import com.app.buna.sharingmarket.viewmodel.MainViewModel
 import com.google.android.material.snackbar.Snackbar
 import org.koin.android.ext.android.get
 
-class MainCategoryFragment : Fragment() {
+class MainChatFragment : Fragment() {
 
-    private var binding: FragmentMainCategoryBinding? = null
+    private var binding: FragmentMainChatBinding? = null
     private val vm: MainViewModel by lazy {
         ViewModelProvider(this, MainViewModel.Factory(get(), requireContext()))
             .get(MainViewModel::class.java)
     }
     private lateinit var toolbar: Toolbar
-    private lateinit var gridViewAdapter: CategoryGridAdapter
 
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentMainCategoryBinding.inflate(inflater, container, false).apply {
+        binding = FragmentMainChatBinding.inflate(inflater, container, false).apply {
             lifecycleOwner = viewLifecycleOwner
             viewModel = vm
         }
@@ -49,18 +44,6 @@ class MainCategoryFragment : Fragment() {
             binding?.toolBar!!.also { (requireActivity() as MainActivity).setSupportActionBar(it) } // 액션바 지정
         (requireActivity() as MainActivity).supportActionBar?.setDisplayShowTitleEnabled(false) // 타이틀 안보이게 하기
 
-        gridViewAdapter = CategoryGridAdapter(requireContext(), vm.getCategoryList())
-        binding?.categoryGridView?.apply {
-            adapter = gridViewAdapter
-            onItemClickListener = AdapterView.OnItemClickListener { parent, v, position, id ->
-                // 선택한 카테고리 가져오기
-                val category = vm?.getCategoryList().get(position).title
-
-                // 메인 Fragment로 이동하면서 선택한 category 데이터만 가져올 수 있도록 값 전달
-                (requireActivity() as MainActivity).supportFragmentManager.beginTransaction().setCustomAnimations(R.anim.slide_in_up, R.anim.slide_out_up)
-                    .replace(R.id.main_frame_layout, MainHomeFragment(category)).commit()
-            }
-        }
 
     }
 
@@ -70,8 +53,23 @@ class MainCategoryFragment : Fragment() {
     }
 
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+
+        /* 툴바 메뉴 선택 관련 */
+        when(item.itemId){
+            R.id.action_category -> { // Toolbar 카테고리 버튼 클릭
+                Snackbar.make(toolbar,"Account 카테고리 pressed",Snackbar.LENGTH_SHORT).show()
+            }
+            R.id.action_search -> { // Toolbar 검색 버튼 클릭
+                Snackbar.make(toolbar,"Account 검색 pressed",Snackbar.LENGTH_SHORT).show()
+            }
+        }
+
+        return super.onOptionsItemSelected(item)
+    }
+
     companion object {
-        val instance = MainCategoryFragment()
+        val instance = MainChatFragment()
     }
 
 

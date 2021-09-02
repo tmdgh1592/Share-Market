@@ -1,4 +1,4 @@
-package com.app.buna.sharingmarket.fragment
+package com.app.buna.sharingmarket.fragment.main
 
 import android.app.Activity.RESULT_OK
 import android.app.AlertDialog
@@ -17,9 +17,11 @@ import com.app.buna.sharingmarket.activity.InitialActivity
 import com.app.buna.sharingmarket.activity.MainActivity
 import com.app.buna.sharingmarket.activity.MyBoardsActivity
 import com.app.buna.sharingmarket.activity.MyHeartsActivity
+import com.app.buna.sharingmarket.callbacks.ILocationDialogCallback
 import com.app.buna.sharingmarket.callbacks.ILogoutCallback
 import com.app.buna.sharingmarket.databinding.FragmentMainMyBinding
 import com.app.buna.sharingmarket.databinding.UnregisterSurveyLayoutBinding
+import com.app.buna.sharingmarket.fragment.dialog.LocationFragmentDialog
 import com.app.buna.sharingmarket.utils.FancyChocoBar
 import com.app.buna.sharingmarket.utils.FancyToastUtil
 import com.app.buna.sharingmarket.utils.NetworkStatus
@@ -64,7 +66,8 @@ class MainMyFragment : Fragment() {
 
         /* 프로필 수정 */
         if (vm.getProfileUriInPref() != "null") { // Preference에 Profile Uri가 있는 경우
-            Glide.with(this).load(Uri.parse(vm.getProfileUriInPref())).into(binding?.profileImageView!!)
+            Glide.with(this).load(Uri.parse(vm.getProfileUriInPref()))
+                .into(binding?.profileImageView!!)
         } else { // Preference에 Profile Uri가 없는 경우
             if (NetworkStatus.isConnectedInternet(requireContext())) { // Preference에 기록된게 없기때문에 Storage에서 가져옴
                 vm.getProfile(Firebase.auth.uid.toString()) { profileUri ->
@@ -83,9 +86,10 @@ class MainMyFragment : Fragment() {
                 if (resultCode == RESULT_OK) {
                     //Image Uri will not be null for RESULT_OK
                     val imgUri = data?.data!!
-                    if(imgUri != null) {
+                    if (imgUri != null) {
                         if (NetworkStatus.isConnectedInternet(requireContext())) { // 인터넷이 연결되어 있으면 프로필 수정
-                            Glide.with(requireContext()).load(imgUri).circleCrop().into(binding?.profileImageView!!)
+                            Glide.with(requireContext()).load(imgUri).circleCrop()
+                                .into(binding?.profileImageView!!)
                             vm.saveProfile(imgUri) {
                                 vm.saveProfileUriInPref(imgUri)
                                 FancyToastUtil(requireContext()).showSuccess(getString(R.string.profile_change))
@@ -105,7 +109,10 @@ class MainMyFragment : Fragment() {
             ImagePicker.with(this)
                 .crop()        //Crop image(Optional), Check Customization for more option
                 .compress(1024)   //Final image size will be less than 1 MB(Optional)
-                .maxResultSize(1080, 1080) //Final image resolution will be less than 1080 x 1080(Optional)
+                .maxResultSize(
+                    1080,
+                    1080
+                ) //Final image resolution will be less than 1080 x 1080(Optional)
                 .createIntent {
                     startForProfileImageResult.launch(it)
                 }
@@ -113,7 +120,13 @@ class MainMyFragment : Fragment() {
 
         /* 내 위치 수정 */
         binding?.editLocationBtn?.setOnClickListener {
-
+            val locationDialog = LocationFragmentDialog()
+            locationDialog.setCallback(object : ILocationDialogCallback {
+                override fun changeLocation(jibun: String) {
+                    binding?.location?.text = jibun
+                }
+            })
+            locationDialog.show(parentFragmentManager, "Location Fragment Show")
         }
 
 

@@ -1,7 +1,6 @@
-package com.app.buna.sharingmarket.fragment
+package com.app.buna.sharingmarket.fragment.main
 
 import android.content.Intent
-import android.opengl.Visibility
 import android.os.Bundle
 import android.view.*
 import androidx.appcompat.widget.Toolbar

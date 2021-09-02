@@ -3,6 +3,7 @@ package com.app.buna.sharingmarket.viewmodel
 import android.app.Application
 import android.content.Context
 import android.util.Log
+import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
@@ -10,11 +11,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.app.buna.sharingmarket.R
 import com.app.buna.sharingmarket.SOSOCK
-import com.app.buna.sharingmarket.fragment.InitialThirdFragment
+import com.app.buna.sharingmarket.fragment.initial.InitialThirdFragment
 import com.app.buna.sharingmarket.model.items.LocationItem
 import com.app.buna.sharingmarket.utils.LocationHelper
 import com.app.buna.sharingmarket.repository.Local.PreferenceUtil
 import com.app.buna.sharingmarket.activity.InitialActivity
+import com.app.buna.sharingmarket.fragment.dialog.LocationFragmentDialog
 import com.app.buna.sharingmarket.repository.Firebase.FirebaseRepository
 import com.app.buna.sharingmarket.utils.FancyChocoBar
 import com.app.buna.sharingmarket.utils.NetworkStatus
@@ -34,6 +36,7 @@ class InitialViewModel(application: Application) :
     constructor(application: Application, view: Fragment): this(application) {
         this.view = view
     }
+
     class FactoryWithFragment(
         val application: Application,
         val context: Context,
@@ -83,6 +86,7 @@ class InitialViewModel(application: Application) :
             locationItems.postValue(locationList.distinct())
         }
     }
+    
 
     /* fun startKakaoWebView() {
          *//* 인터넷 연결 상태 확인 *//*
@@ -105,11 +109,16 @@ class InitialViewModel(application: Application) :
         (view.requireActivity() as InitialActivity).replaceFragment(InitialThirdFragment())
     }
 
-    fun getUserName(context: Context): String{
-        val userName = PreferenceUtil.getString(context, "nickname")
-        Log.d("Firebase", userName)
-        return userName
+    fun saveLocationAndDismiss(context: Context, item: LocationItem) {
+        PreferenceUtil.putString(context, "jibun", item.location)
+        (view as LocationFragmentDialog).dismiss()
     }
+
+    // 사용자 이름 가져오는 함수
+    fun getUserName(context: Context): String = PreferenceUtil.getString(context, "nickname")
+    
+    // 지번 가져오는 함수
+    fun getLocation(context: Context): String = PreferenceUtil.getString(context, "jibun")
 
     // FourthInitialFragment :: 가입 완료 텍스트 버튼 클릭 수행 로직
     fun register(context: Context) {
