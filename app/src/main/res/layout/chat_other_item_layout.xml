@@ -13,7 +13,8 @@
         android:id="@+id/constraint_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="6dp">
+        android:layout_marginTop="6dp"
+        >
         <ImageView
             android:id="@+id/profile_image_view"
             android:layout_width="50dp"
@@ -33,15 +34,6 @@
             android:layout_marginTop="6dp"
             android:text="@{destModel.userName}"/>
 
-        <TextView
-            android:id="@+id/my_timestamp_text_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintRight_toLeftOf="@+id/comment_text_view"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginRight="6dp"
-            android:textColor="@color/gray_50"
-            android:text="오후 8:47"/>
 
         <TextView
             android:id="@+id/comment_text_view"
@@ -54,14 +46,14 @@
             android:maxLength="@integer/max_chat_length"
             android:paddingHorizontal="8dp"
             android:paddingVertical="6dp"
-            android:text="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+            android:text="@{comment.message}"
             android:textColor="@color/black"
             android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toRightOf="@+id/profile_image_view"
             app:layout_constraintRight_toLeftOf="@+id/timestamp_text_view"
             app:layout_constraintTop_toBottomOf="@+id/nickname_text_view" />
-        <!--@{comment.message}-->
+
         <TextView
             android:id="@+id/other_timestamp_text_view"
             android:layout_width="wrap_content"
