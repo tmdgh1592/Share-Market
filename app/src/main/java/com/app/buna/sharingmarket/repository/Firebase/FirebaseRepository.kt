@@ -6,12 +6,10 @@ import android.util.Log
 import com.app.buna.sharingmarket.callbacks.IFirebaseGetStoreDataCallback
 import com.app.buna.sharingmarket.callbacks.IFirebaseRepositoryCallback
 import com.app.buna.sharingmarket.model.items.ProductItem
+import com.app.buna.sharingmarket.model.items.chat.ChatModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.*
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
@@ -54,7 +52,7 @@ class FirebaseRepository {
     }
 
     // 탈퇴 사유를 Realtime DB에 저장
-    fun saveUnregisterCause(cause: String, id:Int, callback: () -> Unit) {
+    fun saveUnregisterCause(cause: String, id: Int, callback: () -> Unit) {
         // 탈퇴한 유저 Uid 함께 저장
         // 파이어베이스는 비동기이기 때문에 'uid값'이 null값이 될 수도 있으므로 callback사용
         if (id in 1..4) {
@@ -101,7 +99,7 @@ class FirebaseRepository {
                     .child(Firebase.auth.uid.toString()) // uid
                     .child("profile_url")
                     .setValue(imgUri.toString()).addOnCompleteListener {
-                        if (it.isSuccessful){
+                        if (it.isSuccessful) {
                             callback()
                         }
                     }
@@ -109,7 +107,7 @@ class FirebaseRepository {
     }
 
     // DB에 저장한 프로필 Url 가져오는 경우
-    fun getProfile(uid: String, callback: (String?) -> Unit){
+    fun getProfile(uid: String, callback: (String?) -> Unit) {
         firebaseDatabaseInstance.getReference("users")
             .child(uid)
             .child("profile_url")
@@ -138,7 +136,6 @@ class FirebaseRepository {
             }
         }
     }*/
-
 
 
     // 파이어베이스 DB는 비동기로 실행되기 때문에 infoData 변수가 초기화되지 않을 수도 있음
@@ -404,7 +401,8 @@ class FirebaseRepository {
                 if (task.isSuccessful) {
                     for (document in task.result) { // 게시글 개수만큼 반복
                         if (document.get("uid") == uid) {
-                            val item = document.toObject(ProductItem::class.java) // 가져온 Document를 ProductItem으로 캐스팅
+                            val item =
+                                document.toObject(ProductItem::class.java) // 가져온 Document를 ProductItem으로 캐스팅
                             firebaseDatabaseInstance
                                 .getReference("products")
                                 .child("img_path")
@@ -412,11 +410,12 @@ class FirebaseRepository {
                                 .get()
                                 .addOnSuccessListener {
                                     var urlMap: HashMap<String, String>? // 이미지 url을 가져올 해시맵
-                                    urlMap = if (it.value == null) { // 가져온 이미지가 없으면, 또는 이미지가 저장된게 없으면
-                                        HashMap() // Empty hashmap 생성
-                                    } else { // 이미지가 한개라도 있으면
-                                        it.value as HashMap<String, String> // DataSnapshot에서 이미지 Url들을 HashMap 형태로 캐스팅해서 가져옴
-                                    }
+                                    urlMap =
+                                        if (it.value == null) { // 가져온 이미지가 없으면, 또는 이미지가 저장된게 없으면
+                                            HashMap() // Empty hashmap 생성
+                                        } else { // 이미지가 한개라도 있으면
+                                            it.value as HashMap<String, String> // DataSnapshot에서 이미지 Url들을 HashMap 형태로 캐스팅해서 가져옴
+                                        }
 
                                     item.imgPath = urlMap!!
                                     item.documentId = document.id // Document Id는 따로 받아옴
@@ -453,8 +452,12 @@ class FirebaseRepository {
             firebaseStoreInstance.collection("Boards").get().addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     for (document in task.result) { // 게시글 개수만큼 반복
-                        if ((document.get("favorites") as MutableMap<String, String>).containsKey(uid)) {
-                            val item = document.toObject(ProductItem::class.java) // 가져온 Document를 ProductItem으로 캐스팅
+                        if ((document.get("favorites") as MutableMap<String, String>).containsKey(
+                                uid
+                            )
+                        ) {
+                            val item =
+                                document.toObject(ProductItem::class.java) // 가져온 Document를 ProductItem으로 캐스팅
                             firebaseDatabaseInstance
                                 .getReference("products")
                                 .child("img_path")
@@ -462,11 +465,12 @@ class FirebaseRepository {
                                 .get()
                                 .addOnSuccessListener {
                                     var urlMap: HashMap<String, String>? // 이미지 url을 가져올 해시맵
-                                    urlMap = if (it.value == null) { // 가져온 이미지가 없으면, 또는 이미지가 저장된게 없으면
-                                        HashMap() // Empty hashmap 생성
-                                    } else { // 이미지가 한개라도 있으면
-                                        it.value as HashMap<String, String> // DataSnapshot에서 이미지 Url들을 HashMap 형태로 캐스팅해서 가져옴
-                                    }
+                                    urlMap =
+                                        if (it.value == null) { // 가져온 이미지가 없으면, 또는 이미지가 저장된게 없으면
+                                            HashMap() // Empty hashmap 생성
+                                        } else { // 이미지가 한개라도 있으면
+                                            it.value as HashMap<String, String> // DataSnapshot에서 이미지 Url들을 HashMap 형태로 캐스팅해서 가져옴
+                                        }
 
                                     item.imgPath = urlMap!!
                                     item.documentId = document.id // Document Id는 따로 받아옴
@@ -558,6 +562,69 @@ class FirebaseRepository {
             transaction.set(doc, board!!)
             callback() // 트랜잭션이 끝나면 액티비티를 종료하기 위한 callback을 호출
         }
+    }
+
+    // 채팅을 보내는 메소드
+    fun sendMessage(chatRoomUid: String?, users: HashMap<String, Boolean>, comment: ChatModel.Comment, complete: () -> Unit) {
+        if (chatRoomUid == null) { // 채팅방이 없다면 새로운 채팅방 생성
+            // 새로운 채팅 맵 생성
+            val commentMap = HashMap<String, ChatModel.Comment>().apply {
+                put(comment.uid, comment)
+            }
+            firebaseDatabaseInstance.reference.child("chatrooms").push().setValue(ChatModel(users, commentMap)).addOnCompleteListener {
+                // 메세지 전송 완료시 complete 콜백
+                complete()
+            }
+        }else { // 채팅방이 있다면 기존 채팅방에 채팅기록 추가
+            firebaseDatabaseInstance.reference.child("chatrooms").child(chatRoomUid).child("comments").push().setValue(comment).addOnCompleteListener {
+                // 메세지 전송 완료시 complete 콜백
+                complete()
+            }
+        }
+    }
+
+    fun getComments(chatRoomUid: String?, complete: (ArrayList<ChatModel.Comment>) -> Unit) {
+        if (chatRoomUid != null) {
+            firebaseDatabaseInstance.getReference("chatrooms").child(chatRoomUid).child("comments").orderByChild("timestamp").addValueEventListener(object: ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val chatList = ArrayList<ChatModel.Comment>() // 채팅 기록 리스트
+                    // 채팅방 채팅 내역들을 가져와서 chatList에 추가
+                    snapshot.children.forEach { item ->
+                        val comment = item.getValue(ChatModel.Comment::class.java)
+                        comment?.let { chatList.add(it) }
+                    }
+                    complete(chatList)
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    Log.d("FirebaseRepository", "getComments is Canceled.")
+                }
+            })
+        }
+    }
+
+
+    // 본인이 들어가 있는 채팅방을 돌면서 상대방이 있는지 확인하고, 있다면 채팅방의 Uid를 가져옴
+    fun checkChatRoom(destUid: String, callback: (String?) -> Unit) {
+        Log.d("FirebaseRepository", "checkChatRoom Callback Called123")
+        firebaseDatabaseInstance.getReference("chatrooms")
+            .orderByChild("users/" + Firebase.auth.uid!!).equalTo(true)
+            .addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    snapshot.children.forEach { item ->
+                        val chatModel = item.getValue(ChatModel::class.java)
+                        if (chatModel?.users?.containsKey(destUid)!!) {
+                            Log.d("FirebaseRepository", "checkChatRoom Callback Called")
+                            callback(item.key) // 채팅방 Uid 전달
+                            return@forEach
+                        }
+                    }
+                }
+                override fun onCancelled(error: DatabaseError) {
+                    TODO("Not yet implemented")
+                }
+            }
+            )
     }
 
 

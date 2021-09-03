@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable
+            name="comment"
+            type="com.app.buna.sharingmarket.model.items.chat.ChatModel.Comment" />
+        <variable
+            name="destModel"
+            type="com.app.buna.sharingmarket.model.items.chat.UserModel" />
+    </data>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraint_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp">
+        <ImageView
+            android:id="@+id/profile_image_view"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:src="@drawable/default_profile"/>
+        <TextView
+            android:id="@+id/nickname_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toRightOf="@+id/profile_image_view"
+            app:layout_constraintTop_toTopOf="parent"
+            android:textSize="16sp"
+            android:textColor="@color/black"
+            android:layout_marginLeft="14dp"
+            android:layout_marginTop="6dp"
+            android:text="@{destModel.userName}"/>
+
+        <TextView
+            android:id="@+id/my_timestamp_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintRight_toLeftOf="@+id/comment_text_view"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginRight="6dp"
+            android:textColor="@color/gray_50"
+            android:text="오후 8:47"/>
+
+        <TextView
+            android:id="@+id/comment_text_view"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="14dp"
+            android:layout_marginTop="6dp"
+            android:background="@drawable/chat_bubble_me"
+            android:clickable="true"
+            android:maxLength="@integer/max_chat_length"
+            android:paddingHorizontal="8dp"
+            android:paddingVertical="6dp"
+            android:text="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="@+id/profile_image_view"
+            app:layout_constraintRight_toLeftOf="@+id/timestamp_text_view"
+            app:layout_constraintTop_toBottomOf="@+id/nickname_text_view" />
+        <!--@{comment.message}-->
+        <TextView
+            android:id="@+id/other_timestamp_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toRightOf="@+id/comment_text_view"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginLeft="6dp"
+            android:textColor="@color/gray_50"
+            android:text="오후 8:47"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

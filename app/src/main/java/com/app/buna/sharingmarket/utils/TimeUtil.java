@@ -7,7 +7,7 @@ public class TimeUtil {
         long curTime = System.currentTimeMillis(); // curTime : 현재 시간
         long diffTime = (curTime - regTime) / 1000; // 시간 차이를 구해서 1000으로 나눔
 
-        String msg = null;
+        String msg;
 
         if (diffTime < TIME_MAXIMUM.SEC) {
             // sec

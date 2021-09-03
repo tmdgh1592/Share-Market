@@ -129,7 +129,7 @@
                         android:layout_marginLeft="4dp"
                         android:ellipsize="end"
                         android:maxLines="1"
-                        android:maxLength="20"
+                        android:maxWidth="200dp"
                         app:layout_constrainedWidth="true"
                         android:text="@{model.getLocationAndTime()}"
                         android:textColor="@color/gray_70"

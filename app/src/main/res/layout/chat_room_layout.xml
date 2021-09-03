@@ -5,7 +5,7 @@
     <data>
         <variable
             name="model"
-            type="com.app.buna.sharingmarket.model.items.ChatRoom" />
+            type="com.app.buna.sharingmarket.model.items.chat.ChatRoom" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

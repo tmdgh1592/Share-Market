@@ -116,7 +116,7 @@ class LocationHelper(val fragment: Fragment, val context: Context) {
             FancyChocoBar(fragment.requireActivity()).showSnackBar(context.getString(R.string.require_location_permission))
             return null
         }
-        return currentLatLng!!
+        return currentLatLng
     }
 
 }

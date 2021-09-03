@@ -1,4 +1,4 @@
-package com.app.buna.sharingmarket.model.items
+package com.app.buna.sharingmarket.model.items.chat
 
 data class ChatRoom(
     val lastMessage: String,

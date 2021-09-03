@@ -52,6 +52,7 @@ class BoardActivity : AppCompatActivity() {
         // 게시판 작성자 프로필 설정
         vm.getProfile(vm.item.uid) { profileUrl ->
             if (profileUrl != null){
+                vm.profileUrl = profileUrl
                 Glide.with(this).load(Uri.parse(profileUrl)).circleCrop().into(binding?.profileImageView!!)
             }
         }
@@ -87,6 +88,7 @@ class BoardActivity : AppCompatActivity() {
         }
 
         // ''1:1 채팅하기 버튼'' or ''거래 완료''
+        // 거래 완료
         if (vm?.getUid() == vm?.item.uid) { // 본인인 경우에 ''거래 완료''로 표시
             if (vm?.item.isComplete) { // 거래가 완료된 게시물인 경우
                 binding?.chatBtn?.apply {
@@ -126,14 +128,25 @@ class BoardActivity : AppCompatActivity() {
                     }
                 }
             }
-        }else { // 본인이 아닌 경우에는 채팅 버튼으로 전환
+        }else { // 1:1 채팅하기 = 본인이 아닌 경우에는 채팅 버튼으로 전환
             binding?.chatBtn?.text = getString(R.string.one_to_one_chat)
             if (vm?.item.isComplete == true) { // 거래 완료된 게시물이면 클릭 못하게 변경
                 binding?.chatBtn?.isEnabled = false
                 binding?.chatBtn?.isClickable = false
-            }else {
+            }else { // 거래 완료된 게시물이 아니면 채팅 가능
                 binding?.chatBtn?.isEnabled = true
                 binding?.chatBtn?.isClickable = true
+                binding?.chatBtn?.setOnClickListener {
+                    // 1:1 채팅을 위해 게시글 작성자 uid를 넘기면서 화면 전환
+                    val intent = Intent(this, ChatActivity::class.java)
+                    intent.let {
+                        it.putExtra("userName", vm.item.owner) // 채팅할 상대방 닉네임 전달
+                        it.putExtra("profileImageUrl", vm.profileUrl) // 채팅 상대방 프로필 Url 전달
+                        it.putExtra("destUid", vm.item.uid) // 채팅 상대방 uid 전달
+                    }
+
+                    startActivity(intent)
+                }
             }
         }
 

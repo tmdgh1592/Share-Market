@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.app.buna.sharingmarket.R
-import com.app.buna.sharingmarket.databinding.ProductItemBinding
+import com.app.buna.sharingmarket.databinding.BoardItemBinding
 import com.app.buna.sharingmarket.model.items.ProductItem
 import com.app.buna.sharingmarket.viewmodel.MainViewModel
 import com.bumptech.glide.Glide
@@ -19,7 +19,7 @@ class ProductRecyclerAdapter(var viewModel: MainViewModel, val context: Context)
 
     var productItemList = ArrayList<ProductItem>()
 
-    class ProductViewHolder(val binding: ProductItemBinding) :
+    class ProductViewHolder(val binding: BoardItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
         val productImageView = binding?.productImageView
         val typeTextView = binding?.productType
@@ -32,7 +32,7 @@ class ProductRecyclerAdapter(var viewModel: MainViewModel, val context: Context)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductViewHolder {
-        val binding = ProductItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding = BoardItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ProductViewHolder(binding)
     }
 

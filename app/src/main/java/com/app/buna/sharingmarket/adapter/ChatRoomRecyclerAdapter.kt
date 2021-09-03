@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.app.buna.sharingmarket.databinding.ChatRoomLayoutBinding
-import com.app.buna.sharingmarket.model.items.ChatRoom
+import com.app.buna.sharingmarket.model.items.chat.ChatRoom
 
 class ChatRoomRecyclerAdapter : RecyclerView.Adapter<ChatRoomRecyclerAdapter.ChatRoomViewHolder>(){
     var chatRoomList: ArrayList<ChatRoom> = ArrayList()

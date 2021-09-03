@@ -2,7 +2,9 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
+
     <data>
+
         <variable
             name="viewModel"
             type="com.app.buna.sharingmarket.viewmodel.MainViewModel" />
@@ -11,7 +13,7 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".fragment.main.MainHomeFragment">
+        tools:context=".fragment.main.MainMyFragment">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/tool_bar"
@@ -32,228 +34,243 @@
                 android:textSize="@dimen/toolbar_title_size" />
         </androidx.appcompat.widget.Toolbar>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="?attr/actionBarSize">
+            android:layout_height="wrap_content"
+            android:scrollbars="none"
+            android:layout_marginTop="?attr/actionBarSize"
+            android:paddingBottom="10dp">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:layout_marginTop="30dp">
-                <!-- profile image view -->
-                <de.hdodenhof.circleimageview.CircleImageView
-                    android:id="@+id/profile_image_view"
-                    android:layout_width="65dp"
-                    android:layout_height="65dp"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:layout_marginHorizontal="@dimen/layout_frame_horizontal_margin"
-                    android:clickable="true"
-                    android:src="@drawable/default_profile"/>
-                <!-- edit icon image view-->
-                <ImageView
-                    android:layout_width="16dp"
-                    android:layout_height="16dp"
-                    app:layout_constraintBottom_toBottomOf="@+id/profile_image_view"
-                    app:layout_constraintRight_toLeftOf="@+id/nickname_text_view"
-                    android:layout_marginRight="18dp"
-                    android:src="@drawable/photo_edit_icon"/>
-                <!-- nickname text view-->
-                <TextView
-                    android:id="@+id/nickname_text_view"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintLeft_toRightOf="@+id/profile_image_view"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:layout_marginTop="@dimen/layout_frame_vertical_margin"
-                    android:layout_marginLeft="@dimen/layout_frame_horizontal_margin"
-                    android:textColor="@color/black"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    android:text="@{viewModel.getUserName()}"/>
-                <!-- location text view -->
-                <TextView
-                    android:id="@+id/location"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintLeft_toRightOf="@+id/profile_image_view"
-                    app:layout_constraintTop_toBottomOf="@+id/nickname_text_view"
-                    android:layout_marginLeft="@dimen/layout_frame_horizontal_margin"
-                    android:text="@{viewModel.getJibun()}"
-                    android:textSize="14sp"/>
-                <!-- 정보 수정 버튼 -->
-                <LinearLayout
-                    android:id="@+id/edit_location_btn"
+                android:layout_height="match_parent">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:layout_constraintTop_toBottomOf="@+id/profile_image_view"
-                    android:layout_marginHorizontal="@dimen/layout_frame_horizontal_margin"
                     android:layout_marginTop="30dp"
-                    android:layout_marginBottom="@dimen/layout_frame_vertical_margin"
-                    android:paddingVertical="10dp"
-                    android:gravity="center"
-                    android:background="@drawable/btn_in_my"
-                    android:foreground="?android:attr/selectableItemBackgroundBorderless"
-                    android:clickable="true"
-                    android:orientation="horizontal">
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+                    <!-- profile image view -->
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/profile_image_view"
+                        android:layout_width="65dp"
+                        android:layout_height="65dp"
+                        android:layout_marginHorizontal="@dimen/layout_frame_horizontal_margin"
+                        android:clickable="true"
+                        android:src="@drawable/default_profile"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                    <!-- edit icon image view-->
                     <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:src="@drawable/icon_edit_location"
-                        android:layout_gravity="center"
-                        android:layout_marginRight="4dp"/>
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:layout_marginRight="18dp"
+                        android:src="@drawable/photo_edit_icon"
+                        app:layout_constraintBottom_toBottomOf="@+id/profile_image_view"
+                        app:layout_constraintRight_toLeftOf="@+id/nickname_text_view" />
+                    <!-- nickname text view-->
                     <TextView
+                        android:id="@+id/nickname_text_view"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="14sp"
-                        android:textColor="@color/black_70"
+                        android:layout_marginLeft="@dimen/layout_frame_horizontal_margin"
+                        android:layout_marginTop="@dimen/layout_frame_vertical_margin"
+                        android:text="@{viewModel.getUserName()}"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
                         android:textStyle="bold"
-                        android:text="@string/edit_location"/>
-
-                </LinearLayout>
-                <!-- 내가 쓴 글 버튼 -->
-                <LinearLayout
-                    android:id="@+id/my_board_btn"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintTop_toBottomOf="@+id/edit_location_btn"
-                    android:layout_marginHorizontal="@dimen/layout_frame_horizontal_margin"
-                    android:layout_marginVertical="@dimen/layout_frame_vertical_margin"
-                    android:paddingVertical="10dp"
-                    android:gravity="center"
-                    android:background="@drawable/btn_in_my"
-                    android:foreground="?android:attr/selectableItemBackgroundBorderless"
-                    android:clickable="true">
-                    <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:src="@drawable/icon_my_board"
-                        android:layout_gravity="center"
-                        android:layout_marginRight="8dp"/>
+                        app:layout_constraintLeft_toRightOf="@+id/profile_image_view"
+                        app:layout_constraintTop_toTopOf="parent" />
+                    <!-- location text view -->
                     <TextView
+                        android:id="@+id/location"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/layout_frame_horizontal_margin"
+                        android:text="@{viewModel.getJibun()}"
                         android:textSize="14sp"
-                        android:textColor="@color/black_70"
-                        android:textStyle="bold"
-                        android:text="@string/my_board"/>
-                </LinearLayout>
-                <!-- 관심 게시글 버튼-->
-                <LinearLayout
-                    android:id="@+id/my_heart_btn"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintTop_toBottomOf="@+id/my_board_btn"
-                    android:layout_marginHorizontal="@dimen/layout_frame_horizontal_margin"
-                    android:layout_marginVertical="@dimen/layout_frame_vertical_margin"
-                    android:paddingVertical="10dp"
-                    android:gravity="center"
-                    android:background="@drawable/btn_in_my"
-                    android:foreground="?android:attr/selectableItemBackgroundBorderless"
-                    android:clickable="true">
-                    <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:src="@drawable/like_heart"
-                        android:layout_gravity="center"
-                        android:layout_marginRight="8dp"/>
-                    <TextView
-                        android:layout_width="wrap_content"
+                        app:layout_constraintLeft_toRightOf="@+id/profile_image_view"
+                        app:layout_constraintTop_toBottomOf="@+id/nickname_text_view" />
+                    <!-- 정보 수정 버튼 -->
+                    <LinearLayout
+                        android:id="@+id/edit_location_btn"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textSize="14sp"
-                        android:textColor="@color/black_70"
-                        android:textStyle="bold"
-                        android:text="@string/my_heart_board"/>
-                </LinearLayout>
+                        android:layout_marginHorizontal="@dimen/layout_frame_horizontal_margin"
+                        android:layout_marginTop="30dp"
+                        android:layout_marginBottom="@dimen/layout_frame_vertical_margin"
+                        android:background="@drawable/btn_in_my"
+                        android:clickable="true"
+                        android:foreground="?android:attr/selectableItemBackgroundBorderless"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:paddingVertical="10dp"
+                        app:layout_constraintTop_toBottomOf="@+id/profile_image_view">
 
-                <View
-                    android:id="@+id/divider_1"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/gray_20"
-                    app:layout_constraintTop_toBottomOf="@+id/my_heart_btn"
-                    android:layout_marginVertical="20dp"
-                    android:layout_marginHorizontal="@dimen/layout_frame_horizontal_margin"/>
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_gravity="center"
+                            android:layout_marginRight="4dp"
+                            android:src="@drawable/icon_edit_location" />
 
-                <!-- 관심 게시글 버튼-->
-                <LinearLayout
-                    android:id="@+id/share_app_btn"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintTop_toBottomOf="@+id/divider_1"
-                    android:layout_marginHorizontal="@dimen/layout_frame_horizontal_margin"
-                    android:layout_marginVertical="@dimen/layout_frame_vertical_margin"
-                    android:paddingVertical="10dp"
-                    android:gravity="center"
-                    android:background="@drawable/btn_in_my"
-                    android:foreground="?android:attr/selectableItemBackgroundBorderless"
-                    android:clickable="true">
-                    <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:src="@drawable/icon_share"
-                        android:layout_gravity="center"
-                        android:layout_marginRight="8dp"/>
-                    <TextView
-                        android:layout_width="wrap_content"
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/edit_location"
+                            android:textColor="@color/black_70"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+                    <!-- 내가 쓴 글 버튼 -->
+                    <LinearLayout
+                        android:id="@+id/my_board_btn"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textSize="14sp"
-                        android:textColor="@color/black_70"
-                        android:textStyle="bold"
-                        android:text="@string/share_app"/>
-                </LinearLayout>
+                        android:layout_marginHorizontal="@dimen/layout_frame_horizontal_margin"
+                        android:layout_marginVertical="@dimen/layout_frame_vertical_margin"
+                        android:background="@drawable/btn_in_my"
+                        android:clickable="true"
+                        android:foreground="?android:attr/selectableItemBackgroundBorderless"
+                        android:gravity="center"
+                        android:paddingVertical="10dp"
+                        app:layout_constraintTop_toBottomOf="@+id/edit_location_btn">
 
-                <!-- 관심 게시글 버튼-->
-                <LinearLayout
-                    android:id="@+id/unregister_btn"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintTop_toBottomOf="@+id/share_app_btn"
-                    android:layout_marginHorizontal="@dimen/layout_frame_horizontal_margin"
-                    android:layout_marginVertical="@dimen/layout_frame_vertical_margin"
-                    android:paddingVertical="10dp"
-                    android:gravity="center"
-                    android:background="@drawable/btn_in_my"
-                    android:foreground="?android:attr/selectableItemBackgroundBorderless"
-                    android:clickable="true">
-                    <TextView
-                        android:layout_width="wrap_content"
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_gravity="center"
+                            android:layout_marginRight="8dp"
+                            android:src="@drawable/icon_my_board" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/my_board"
+                            android:textColor="@color/black_70"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+                    <!-- 관심 게시글 버튼-->
+                    <LinearLayout
+                        android:id="@+id/my_heart_btn"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/unregister"
-                        android:textColor="@color/black_70"
-                        android:textSize="14sp"
-                        android:textStyle="bold" />
-                </LinearLayout>
+                        android:layout_marginHorizontal="@dimen/layout_frame_horizontal_margin"
+                        android:layout_marginVertical="@dimen/layout_frame_vertical_margin"
+                        android:background="@drawable/btn_in_my"
+                        android:clickable="true"
+                        android:foreground="?android:attr/selectableItemBackgroundBorderless"
+                        android:gravity="center"
+                        android:paddingVertical="10dp"
+                        app:layout_constraintTop_toBottomOf="@+id/my_board_btn">
 
-                <!-- 관심 게시글 버튼-->
-                <LinearLayout
-                    android:id="@+id/logout_btn"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintTop_toBottomOf="@+id/unregister_btn"
-                    android:layout_marginHorizontal="@dimen/layout_frame_horizontal_margin"
-                    android:layout_marginVertical="@dimen/layout_frame_vertical_margin"
-                    android:paddingVertical="10dp"
-                    android:gravity="center"
-                    android:background="@drawable/btn_in_my"
-                    android:foreground="?android:attr/selectableItemBackgroundBorderless"
-                    android:clickable="true">
-                    <TextView
-                        android:layout_width="wrap_content"
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_gravity="center"
+                            android:layout_marginRight="8dp"
+                            android:src="@drawable/like_heart" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/my_heart_board"
+                            android:textColor="@color/black_70"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <View
+                        android:id="@+id/divider_1"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginHorizontal="@dimen/layout_frame_horizontal_margin"
+                        android:layout_marginVertical="20dp"
+                        android:background="@color/gray_20"
+                        app:layout_constraintTop_toBottomOf="@+id/my_heart_btn" />
+
+                    <!-- 관심 게시글 버튼-->
+                    <LinearLayout
+                        android:id="@+id/share_app_btn"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textSize="14sp"
-                        android:textColor="@color/black_70"
-                        android:textStyle="bold"
-                        android:text="@string/logout"/>
-                </LinearLayout>
+                        android:layout_marginHorizontal="@dimen/layout_frame_horizontal_margin"
+                        android:layout_marginVertical="@dimen/layout_frame_vertical_margin"
+                        android:background="@drawable/btn_in_my"
+                        android:clickable="true"
+                        android:foreground="?android:attr/selectableItemBackgroundBorderless"
+                        android:gravity="center"
+                        android:paddingVertical="10dp"
+                        app:layout_constraintTop_toBottomOf="@+id/divider_1">
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_gravity="center"
+                            android:layout_marginRight="8dp"
+                            android:src="@drawable/icon_share" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/share_app"
+                            android:textColor="@color/black_70"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <!-- 관심 게시글 버튼-->
+                    <LinearLayout
+                        android:id="@+id/unregister_btn"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="@dimen/layout_frame_horizontal_margin"
+                        android:layout_marginVertical="@dimen/layout_frame_vertical_margin"
+                        android:background="@drawable/btn_in_my"
+                        android:clickable="true"
+                        android:foreground="?android:attr/selectableItemBackgroundBorderless"
+                        android:gravity="center"
+                        android:paddingVertical="10dp"
+                        app:layout_constraintTop_toBottomOf="@+id/share_app_btn">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/unregister"
+                            android:textColor="@color/black_70"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <!-- 관심 게시글 버튼-->
+                    <LinearLayout
+                        android:id="@+id/logout_btn"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="@dimen/layout_frame_horizontal_margin"
+                        android:layout_marginVertical="@dimen/layout_frame_vertical_margin"
+                        android:background="@drawable/btn_in_my"
+                        android:clickable="true"
+                        android:foreground="?android:attr/selectableItemBackgroundBorderless"
+                        android:gravity="center"
+                        android:paddingVertical="10dp"
+                        app:layout_constraintTop_toBottomOf="@+id/unregister_btn">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/logout"
+                            android:textColor="@color/black_70"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
 
 
+                </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-
+        </ScrollView>
     </FrameLayout>
 </layout>

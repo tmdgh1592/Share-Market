@@ -6,13 +6,13 @@
     <data>
         <variable
             name="viewModel"
-            type="com.app.buna.sharingmarket.viewmodel.ChatRoomViewModel" />
+            type="com.app.buna.sharingmarket.viewmodel.ChatRoomsViewModel" />
     </data>
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".fragment.main.MainHomeFragment">
+        tools:context=".fragment.main.MainChatFragment">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/tool_bar"
@@ -40,7 +40,8 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/chat_room_recycler_view"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                tools:listitem="@layout/chat_room_layout"/>
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

@@ -20,6 +20,7 @@ import com.kakao.sdk.template.model.*
 class BoardViewModel(application: Application, val context: Context) : AndroidViewModel(application) {
 
     lateinit var item: ProductItem
+    var profileUrl: String? = null
 
     class Factory(val application: Application, val context: Context) : ViewModelProvider.Factory {
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {

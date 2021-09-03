@@ -2,27 +2,27 @@ package com.app.buna.sharingmarket.fragment.main
 
 import android.os.Bundle
 import android.view.*
+import android.widget.LinearLayout.VERTICAL
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.app.buna.sharingmarket.R
 import com.app.buna.sharingmarket.activity.MainActivity
 import com.app.buna.sharingmarket.adapter.ChatRoomRecyclerAdapter
 import com.app.buna.sharingmarket.callbacks.IFirebaseGetChatRoomCallback
 import com.app.buna.sharingmarket.databinding.FragmentMainChatBinding
-import com.app.buna.sharingmarket.model.items.ChatRoom
-import com.app.buna.sharingmarket.viewmodel.ChatRoomViewModel
-import com.app.buna.sharingmarket.viewmodel.MainViewModel
-import com.google.android.material.snackbar.Snackbar
+import com.app.buna.sharingmarket.model.items.chat.ChatRoom
+import com.app.buna.sharingmarket.viewmodel.ChatRoomsViewModel
 import org.koin.android.ext.android.get
 
 class MainChatFragment : Fragment() {
 
     private var binding: FragmentMainChatBinding? = null
-    private val vm: ChatRoomViewModel by lazy {
-        ViewModelProvider(this, ChatRoomViewModel.Factory(get(), requireContext()))
-            .get(ChatRoomViewModel::class.java)
+    private val vm: ChatRoomsViewModel by lazy {
+        ViewModelProvider(this, ChatRoomsViewModel.Factory(get(), requireContext()))
+            .get(ChatRoomsViewModel::class.java)
     }
     private lateinit var toolbar: Toolbar
 
@@ -48,6 +48,7 @@ class MainChatFragment : Fragment() {
         binding?.chatRoomRecyclerView?.apply {
             adapter = ChatRoomRecyclerAdapter()
             layoutManager = LinearLayoutManager(requireContext())
+            addItemDecoration(DividerItemDecoration(requireContext(), VERTICAL))
         }
         // 테스트 데이터
         val list = ArrayList<ChatRoom>()

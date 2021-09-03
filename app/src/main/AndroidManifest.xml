@@ -25,7 +25,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ShareMarket"
         android:usesCleartextTraffic="true">
-        <activity android:name=".activity.MyHeartsActivity"></activity>
+        <activity android:name=".activity.ChatActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize"></activity>
+        <activity android:name=".activity.MyHeartsActivity" />
         <activity android:name=".activity.MyBoardsActivity" />
         <activity android:name=".activity.UpdateActivity" />
         <activity android:name=".activity.BoardActivity">
