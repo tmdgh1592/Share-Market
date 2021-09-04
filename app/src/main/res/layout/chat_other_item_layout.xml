@@ -17,7 +17,7 @@
         android:id="@+id/constraint_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="6dp">
+        android:layout_marginTop="8dp">
 
         <ImageView
             android:id="@+id/profile_image_view"
@@ -35,11 +35,11 @@
             android:layout_marginTop="2dp"
             android:text="@{destModel.userName}"
             android:textColor="@color/black"
-            android:textSize="16sp"
+            android:textSize="14sp"
             app:layout_constraintLeft_toRightOf="@+id/profile_image_view"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -49,25 +49,22 @@
             app:layout_constraintTop_toBottomOf="@id/nickname_text_view"
             app:layout_constraintRight_toLeftOf="@+id/guideline"
             android:layout_marginLeft="12dp"
-            android:layout_marginTop="8dp">
+            android:layout_marginTop="6dp">
 
-            <TextView
+            <com.app.buna.sharingmarket.customview.WrapWidthTextView
                 android:id="@+id/comment_text_view"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:background="@drawable/chat_bubble_other"
                 android:clickable="true"
                 android:maxLength="@integer/max_chat_length"
                 android:paddingHorizontal="8dp"
                 android:paddingVertical="6dp"
-                android:text="dddddddddddddddgfdddjjjzjjjjjddad"
+                android:text="@{comment.message}"
                 android:textAlignment="textStart"
                 android:textColor="@color/black"
-                android:textSize="16sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toLeftOf="@id/other_timestamp_text_view"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/other_timestamp_text_view"
@@ -77,10 +74,8 @@
                 android:layout_marginLeft="8dp"
                 android:text="오후 8:47"
                 android:textColor="@color/gray_50"
-                app:layout_constraintLeft_toRightOf="@+id/comment_text_view"
-                app:layout_constraintBottom_toBottomOf="parent"
                 android:textSize="11sp"/>
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline"
