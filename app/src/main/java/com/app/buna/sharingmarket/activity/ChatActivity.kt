@@ -1,7 +1,9 @@
 package com.app.buna.sharingmarket.activity
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
+import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
@@ -39,12 +41,13 @@ class ChatActivity : AppCompatActivity() {
         viewModel.registerChatRoomUid(intent.getStringExtra("destUid")) {
             viewModel.getChatList { newChatList ->
                 if (newChatList.isNotEmpty()) {
+                     // 리사이클러뷰에 새로운 채팅 데이터를 전달
                     (binding.chatRecyclerView.adapter as ChatRecyclerAdatper).update(newChatList)
-                    binding?.chatRecyclerView.smoothScrollToPosition((binding.chatRecyclerView.adapter as ChatRecyclerAdatper).itemCount - 1)
+                    // 채팅 스크롤 맨 밑으로 이동
+                    binding?.chatRecyclerView.scrollToPosition((binding.chatRecyclerView.adapter as ChatRecyclerAdatper).itemCount-1)
                 }
             }
         }
-
     }
 
     fun initView() {
@@ -52,8 +55,12 @@ class ChatActivity : AppCompatActivity() {
         binding?.submitBtn.setOnClickListener {
             // 메세지를 과도하게 보내는 것을 방지하기 위함
             binding?.submitBtn.isClickable = false
-            viewModel.sendMesage {
-                // 메세지가 다 전송되면
+            viewModel.sendMesage { firstChatList ->
+                if (firstChatList != null) {
+                     // 맨 처음에 채팅을 보내면 해당 채팅 가져오도록 설정
+                    (binding.chatRecyclerView.adapter as ChatRecyclerAdatper).update(firstChatList)
+                }
+                // 메세지가 다 전송되면 채팅전송 버튼 다시 활성화
                 binding?.submitBtn.isClickable = true
             }
             binding?.chatEditTextView.text.clear()
@@ -65,8 +72,11 @@ class ChatActivity : AppCompatActivity() {
             adapter = ChatRecyclerAdatper(viewModel.destChatModel!!)
             layoutManager = LinearLayoutManager(this@ChatActivity)
         }
+
+        // 채팅 맨 밑으로 이동
+        binding?.chatRecyclerView.scrollToPosition((binding.chatRecyclerView.adapter as ChatRecyclerAdatper).itemCount-1)
     }
-    
+
 
     override fun onDestroy() {
         viewModel

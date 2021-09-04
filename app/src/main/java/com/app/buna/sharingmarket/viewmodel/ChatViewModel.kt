@@ -25,8 +25,8 @@ class ChatViewModel(application: Application, val context: Context) : AndroidVie
     //상대방과 채팅한 기록이 있는지 확인 후 있으면 채팅방 uid 가져옴
     var chatRoomUid: String? = null
 
-    fun sendMesage(complete: () -> Unit) {
-        if (message != null && message != "" && destChatModel != null) {
+    fun sendMesage(complete: (firstChatList: ArrayList<ChatModel.Comment>?) -> Unit) {
+        if (message != null && message.trim() != "" && destChatModel != null) {
             //채팅방 유저 맵
             val users = HashMap<String, Boolean>().apply {
                 put(Firebase.auth.uid.toString(), true)
@@ -35,13 +35,19 @@ class ChatViewModel(application: Application, val context: Context) : AndroidVie
             // 전송할 채팅 모델 생성
             val comment = ChatModel.Comment(
                 Firebase.auth.uid.toString(),
-                message,
+                message.trimStart(),
                 System.currentTimeMillis()
             )
             // message 전송
-            FirebaseRepository.instance.sendMessage(chatRoomUid, users, comment) {
+            FirebaseRepository.instance.sendMessage(chatRoomUid, users, comment) { roomUid ->
                 // 전송 완료시 전송 완료 콜백
-                complete()
+                if (roomUid != null) {
+                    chatRoomUid = roomUid
+                    FirebaseRepository.instance.getComments(chatRoomUid) { chatList ->
+                        complete(chatList)
+                    }
+                }
+                complete(null)
             }
         }
     }

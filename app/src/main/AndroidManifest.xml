@@ -70,8 +70,7 @@
         </activity>
         <activity android:name=".activity.AddressApiWebView" />
         <activity
-            android:name=".activity.InitialActivity"
-            android:hardwareAccelerated="true">
+            android:name=".activity.InitialActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -83,8 +82,7 @@
                     android:scheme="kakao50431e61e927759909b150e64f67ff83" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.Splash"
-            android:hardwareAccelerated="true">
+        <activity android:name=".activity.Splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

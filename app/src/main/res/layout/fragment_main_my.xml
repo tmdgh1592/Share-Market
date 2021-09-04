@@ -83,9 +83,9 @@
                         app:layout_constraintLeft_toRightOf="@+id/profile_image_view"
                         app:layout_constraintTop_toTopOf="parent" />
                     <!-- location text view -->
-                    <TextView
+                    <com.app.buna.sharingmarket.customview.WrapWidthTextView
                         android:id="@+id/location"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/layout_frame_horizontal_margin"
                         android:text="@{viewModel.getJibun()}"
