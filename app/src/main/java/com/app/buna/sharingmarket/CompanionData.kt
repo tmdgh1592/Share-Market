@@ -15,20 +15,27 @@ class REQUEST_CODE {
     }
 }
 
-class CONST {
+class Const {
     companion object {
         const val SPLASH_DURATION: Long = 2000 // 스플래시 화면 전환 1500ms
         const val MAX_PHOTO_SIZE: Int = 5 // 사진 선택 최대개수
     }
 }
 
-class TAGS {
+class CommentType {
+    companion object {
+        const val COMMENT = 0 // 단순 문자인 경우
+        const val PICTURE = 1 // 사진인 경우
+    }
+}
+
+class Tags {
     companion object {
         const val TAG: String = "TAG"
     }
 }
 
-class SOSOCK {
+class Sosock {
     companion object {
         const val PERSONAL = "PERSONAL"
         const val AGENCY = "AGENCY"
@@ -36,14 +43,14 @@ class SOSOCK {
     }
 }
 
-class MENU_ID {
+class MenuId {
     companion object {
         const val DELETE = 0
         const val UPDATE = 1
     }
 }
 
-class TIME_MAXIMUM {
+class TimeMaximum {
     companion object {
         const val SEC = 60L
         const val MIN = 60L

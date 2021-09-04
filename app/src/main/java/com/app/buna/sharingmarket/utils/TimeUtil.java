@@ -1,6 +1,6 @@
 package com.app.buna.sharingmarket.utils;
 
-import com.app.buna.sharingmarket.TIME_MAXIMUM;
+import com.app.buna.sharingmarket.TimeMaximum;
 
 public class TimeUtil {
     public static String getTimeAgo(long regTime) { // regTime : 예전 시간
@@ -9,19 +9,19 @@ public class TimeUtil {
 
         String msg;
 
-        if (diffTime < TIME_MAXIMUM.SEC) {
+        if (diffTime < TimeMaximum.SEC) {
             // sec
             msg = "방금 전";
-        } else if ((diffTime /= TIME_MAXIMUM.SEC) < TIME_MAXIMUM.MIN) {
+        } else if ((diffTime /= TimeMaximum.SEC) < TimeMaximum.MIN) {
             // min
             msg = diffTime + "분 전";
-        } else if ((diffTime /= TIME_MAXIMUM.MIN) < TIME_MAXIMUM.HOUR) {
+        } else if ((diffTime /= TimeMaximum.MIN) < TimeMaximum.HOUR) {
             // hour
             msg = (diffTime) + "시간 전";
-        } else if ((diffTime /= TIME_MAXIMUM.HOUR) < TIME_MAXIMUM.DAY) {
+        } else if ((diffTime /= TimeMaximum.HOUR) < TimeMaximum.DAY) {
             // day
             msg = (diffTime) + "일 전";
-        } else if ((diffTime /= TIME_MAXIMUM.DAY) < TIME_MAXIMUM.MONTH) {
+        } else if ((diffTime /= TimeMaximum.DAY) < TimeMaximum.MONTH) {
             // day
             msg = (diffTime) + "달 전";
         } else {

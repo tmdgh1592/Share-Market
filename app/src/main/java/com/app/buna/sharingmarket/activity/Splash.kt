@@ -4,7 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import androidx.appcompat.app.AppCompatActivity
-import com.app.buna.sharingmarket.CONST
+import com.app.buna.sharingmarket.Const
 import com.app.buna.sharingmarket.R
 
 class Splash : AppCompatActivity() {
@@ -18,6 +18,6 @@ class Splash : AppCompatActivity() {
 
             startActivity(intent)
             finish()
-        }, CONST.SPLASH_DURATION) // 일정 시간 후에 화면 전환
+        }, Const.SPLASH_DURATION) // 일정 시간 후에 화면 전환
     }
 }

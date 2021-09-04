@@ -9,7 +9,7 @@
             type="com.app.buna.sharingmarket.viewmodel.InitialViewModel" />
         <variable
             name="sosock"
-            type="com.app.buna.sharingmarket.SOSOCK" />
+            type="com.app.buna.sharingmarket.Sosock" />
         <variable
             name="context"
             type="android.content.Context" />

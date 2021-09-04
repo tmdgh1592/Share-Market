@@ -83,7 +83,8 @@
                     android:scheme="kakao50431e61e927759909b150e64f67ff83" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.Splash">
+        <activity android:name=".activity.Splash"
+            android:hardwareAccelerated="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

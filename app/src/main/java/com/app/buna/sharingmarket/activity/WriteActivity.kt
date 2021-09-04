@@ -13,7 +13,7 @@ import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.app.buna.sharingmarket.CONST
+import com.app.buna.sharingmarket.Const
 import com.app.buna.sharingmarket.R
 import com.app.buna.sharingmarket.REQUEST_CODE
 import com.app.buna.sharingmarket.callbacks.IFirebaseRepositoryCallback
@@ -80,7 +80,7 @@ class WriteActivity : AppCompatActivity(), IFirebaseRepositoryCallback {
                 .requestCode(REQUEST_CODE.IMAGE_PICKER_REQUEST_CODE)
                 .withActivity(this)
                 .cameraDirect(false) // 열자마자 바로 카메라로 이동할지 여부
-                .limit(CONST.MAX_PHOTO_SIZE) // 이미지 선택 개수 제한
+                .limit(Const.MAX_PHOTO_SIZE) // 이미지 선택 개수 제한
                 .show()
         }
 
@@ -203,7 +203,7 @@ class WriteActivity : AppCompatActivity(), IFirebaseRepositoryCallback {
                 //// imgPath.addAll(newData) // image path 받아오기
 
                 for (data in newData) { // 새로운 데이터가 5개를 초과하는지 확인하면서 반복문을 돌림
-                    if ((totalSize + 1) > CONST.MAX_PHOTO_SIZE) {
+                    if ((totalSize + 1) > Const.MAX_PHOTO_SIZE) {
                         FancyToastUtil(this).showFail("이미지는 총 5개만 가져올 수 있어요!")
                         break
                     }

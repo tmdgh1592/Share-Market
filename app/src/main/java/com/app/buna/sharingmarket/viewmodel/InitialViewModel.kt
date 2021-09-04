@@ -3,14 +3,13 @@ package com.app.buna.sharingmarket.viewmodel
 import android.app.Application
 import android.content.Context
 import android.util.Log
-import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.app.buna.sharingmarket.R
-import com.app.buna.sharingmarket.SOSOCK
+import com.app.buna.sharingmarket.Sosock
 import com.app.buna.sharingmarket.fragment.initial.InitialThirdFragment
 import com.app.buna.sharingmarket.model.items.LocationItem
 import com.app.buna.sharingmarket.utils.LocationHelper
@@ -150,9 +149,9 @@ class InitialViewModel(application: Application) :
     // 소속 이미지 클릭시 소속 변경
     fun changeSoSock(sosock: String) {
         when(sosock) {
-            SOSOCK.PERSONAL -> mySoSock.value = SOSOCK.PERSONAL
-            SOSOCK.AGENCY -> mySoSock.value = SOSOCK.AGENCY
-            SOSOCK.COMPANY -> mySoSock.value = SOSOCK.COMPANY
+            Sosock.PERSONAL -> mySoSock.value = Sosock.PERSONAL
+            Sosock.AGENCY -> mySoSock.value = Sosock.AGENCY
+            Sosock.COMPANY -> mySoSock.value = Sosock.COMPANY
         }
     }
 

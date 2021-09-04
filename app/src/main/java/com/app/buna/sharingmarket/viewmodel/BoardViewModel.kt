@@ -9,7 +9,7 @@ import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.app.buna.sharingmarket.TAGS.Companion.TAG
+import com.app.buna.sharingmarket.Tags.Companion.TAG
 import com.app.buna.sharingmarket.model.items.ProductItem
 import com.app.buna.sharingmarket.model.items.SliderItem
 import com.app.buna.sharingmarket.repository.Firebase.FirebaseRepository

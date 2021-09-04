@@ -17,6 +17,14 @@
     <color name="white">#FFFFFFFF</color>
     <color name="pressed_white">#F9F9F9</color>
     <color name="enabled_white">#E1E1E1</color>
+
+
+    <!--chat bubble-->
+    <color name="chat_me_bubble">#fffffde7</color>
+    <color name="chat_me_bubble_pressed">#FFFCD8</color>
+    <color name="chat_other_bubble">#FFFFFF</color>
+    <color name="chat_other_bubble_pressed">#FBFBFB</color>
+
     <!--my color-->
     <color name="app_green">#FF9ACE97</color>
     <color name="app_pressed_green">#8AC886</color>

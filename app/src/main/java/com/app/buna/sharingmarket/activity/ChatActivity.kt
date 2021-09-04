@@ -60,6 +60,7 @@ class ChatActivity : AppCompatActivity() {
             viewModel.message = ""
         }
 
+
         binding?.chatRecyclerView.apply {
             adapter = ChatRecyclerAdatper(viewModel.destChatModel!!)
             layoutManager = LinearLayoutManager(this@ChatActivity)

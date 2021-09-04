@@ -6,7 +6,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.app.buna.sharingmarket.CONST
+import com.app.buna.sharingmarket.Const
 import com.app.buna.sharingmarket.callbacks.IFirebaseRepositoryCallback
 import com.app.buna.sharingmarket.model.items.ProductItem
 import com.app.buna.sharingmarket.repository.Firebase.FirebaseRepository
@@ -16,10 +16,10 @@ class WriteViewModel(application: Application) : AndroidViewModel(application) {
 
     var category: String? = null
     var isGive: Boolean? = null
-    var imagePaths = ArrayList<String>(CONST.MAX_PHOTO_SIZE)
+    var imagePaths = ArrayList<String>(Const.MAX_PHOTO_SIZE)
     var imagePathHash = HashMap<String, Boolean>()
     var imageCount: MutableLiveData<Int> = MutableLiveData(0)
-    var fileNameForDelete = ArrayList<String>(CONST.MAX_PHOTO_SIZE)
+    var fileNameForDelete = ArrayList<String>(Const.MAX_PHOTO_SIZE)
 
     class Factory(val application: Application): ViewModelProvider.Factory{
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {

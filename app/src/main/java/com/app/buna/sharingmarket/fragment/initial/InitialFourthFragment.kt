@@ -15,7 +15,7 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.app.buna.sharingmarket.R
-import com.app.buna.sharingmarket.SOSOCK
+import com.app.buna.sharingmarket.Sosock
 import com.app.buna.sharingmarket.databinding.FragmentFourthInitialBinding
 import com.app.buna.sharingmarket.repository.Local.PreferenceUtil
 import com.app.buna.sharingmarket.viewmodel.InitialViewModel
@@ -86,9 +86,9 @@ class InitialFourthFragment : Fragment() {
             // 선택한 소속에 대한 설명
             when(vm.mySoSock.value) {
                 // 제대로 된 소속을 선택한 경우
-                SOSOCK.PERSONAL -> binding?.belongInformation?.text = context?.getString(R.string.personal_information)
-                SOSOCK.AGENCY -> binding?.belongInformation?.text = context?.getString(R.string.agency_information)
-                SOSOCK.COMPANY -> binding?.belongInformation?.text = context?.getString(R.string.company_information)
+                Sosock.PERSONAL -> binding?.belongInformation?.text = context?.getString(R.string.personal_information)
+                Sosock.AGENCY -> binding?.belongInformation?.text = context?.getString(R.string.agency_information)
+                Sosock.COMPANY -> binding?.belongInformation?.text = context?.getString(R.string.company_information)
 
                 //예외 처리
                 else -> {
