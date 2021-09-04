@@ -72,9 +72,9 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
                 android:layout_marginLeft="8dp"
-                android:text="오후 8:47"
+                android:text="@{comment.usingTimeStamp}"
                 android:textColor="@color/gray_50"
-                android:textSize="11sp"/>
+                android:textSize="12sp"/>
         </LinearLayout>
 
         <androidx.constraintlayout.widget.Guideline

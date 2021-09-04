@@ -32,9 +32,9 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
                 android:layout_marginRight="8dp"
-                android:text="오후 8:47"
+                android:text="@{comment.usingTimeStamp}"
                 android:textColor="@color/gray_50"
-                android:textSize="11sp" />
+                android:textSize="12sp" />
 
             <TextView
                 android:id="@+id/comment_text_view"
