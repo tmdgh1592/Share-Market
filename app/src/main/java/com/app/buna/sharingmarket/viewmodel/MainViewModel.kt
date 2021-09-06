@@ -20,6 +20,7 @@ import com.app.buna.sharingmarket.repository.Firebase.FirebaseRepository
 import com.app.buna.sharingmarket.repository.Local.PreferenceUtil
 import com.app.buna.sharingmarket.utils.NetworkStatus
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.installations.FirebaseInstallations
 import com.google.firebase.ktx.Firebase
 
 class MainViewModel(application: Application, val context: Context) :
@@ -109,4 +110,17 @@ class MainViewModel(application: Application, val context: Context) :
 
     fun saveLocationInFirebase(jibun: String) = FirebaseRepository.instance.saveUserInfo("jibun", jibun, true)
     fun saveLocationInPref(jibun: String) = PreferenceUtil.putString(context, "jibun", jibun)
+
+    // 푸시토큰 발급
+    fun registerPushToken() {
+        var uid = Firebase.auth.uid
+        var tokenMap = mutableMapOf<String, Any>()
+        FirebaseInstallations.getInstance().getToken(true).addOnCompleteListener {
+            val pushToken = it.result.token
+            tokenMap["pushtoken"] = pushToken!!
+            FirebaseRepository.instance.registerToken(uid, tokenMap)
+
+        }
+    }
+
 }

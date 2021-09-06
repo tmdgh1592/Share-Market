@@ -26,6 +26,7 @@ class CommentType {
     companion object {
         const val COMMENT = 0 // 단순 문자인 경우
         const val PICTURE = 1 // 사진인 경우
+        const val DATE_DIVIDER = 2 // 날짜 구분선인 경우
     }
 }
 

@@ -3,10 +3,13 @@ package com.app.buna.sharingmarket.repository.Firebase
 import android.annotation.SuppressLint
 import android.net.Uri
 import android.util.Log
+import com.app.buna.sharingmarket.callbacks.IFirebaseGetChatRoomCallback
 import com.app.buna.sharingmarket.callbacks.IFirebaseGetStoreDataCallback
 import com.app.buna.sharingmarket.callbacks.IFirebaseRepositoryCallback
 import com.app.buna.sharingmarket.model.items.ProductItem
+import com.app.buna.sharingmarket.model.items.UserModel
 import com.app.buna.sharingmarket.model.items.chat.ChatModel
+import com.app.buna.sharingmarket.model.items.chat.ChatUserModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.*
@@ -292,8 +295,12 @@ class FirebaseRepository {
                     }
                 }
         }
+    }
 
-
+    fun registerToken(uid: String?, tokenMap: Map<String, Any>) {
+        if(uid != null && tokenMap != null) {
+            firebaseStoreInstance.collection("pushToken").document(uid).set(tokenMap)
+        }
     }
 
     // 하트 클릭시 변경
@@ -573,25 +580,36 @@ class FirebaseRepository {
     ) {
         if (chatRoomUid == null) { // 채팅방이 없다면 새로운 채팅방 생성
             // 새로운 채팅 맵 생성
-            var key: String? = firebaseDatabaseInstance.reference.child("chatrooms").push().key
+            var roomUid: String? = firebaseDatabaseInstance.reference.child("chatrooms").push().key
             val commentMap = HashMap<String, ChatModel.Comment>().apply {
-                put(key!!, comment)
+                put(roomUid!!, comment)
             }
 
-            firebaseDatabaseInstance.reference.child("chatrooms").child(key!!).child("comments")
+            firebaseDatabaseInstance.reference.child("chatrooms").child(roomUid!!).child("comments")
                 .setValue(commentMap).addOnCompleteListener {
-                firebaseDatabaseInstance.reference.child("chatrooms").child(key!!).child("users")
-                    .setValue(users).addOnSuccessListener {
-                    // 메세지 전송 완료시 complete 콜백
-                    complete(key)
+                    firebaseDatabaseInstance.reference.child("chatrooms").child(roomUid!!)
+                        .child("users")
+                        .setValue(users).addOnSuccessListener {
+                            // 메세지 전송 완료시 chatRoomUid를 저장하기 위해 complete 콜백
+                            complete(roomUid)
+                            // 마지막 메세지와 시간 저장
+                            firebaseDatabaseInstance.reference.child("chatrooms").child(roomUid)
+                                .child("lastMessage").setValue(comment.message)
+                            firebaseDatabaseInstance.reference.child("chatrooms").child(roomUid)
+                                .child("lastTimestamp").setValue(comment.timeStamp)
+                        }
                 }
-            }
         } else { // 채팅방이 있다면 기존 채팅방에 채팅기록 추가
             firebaseDatabaseInstance.reference.child("chatrooms").child(chatRoomUid)
                 .child("comments").push().setValue(comment).addOnCompleteListener {
                     // 메세지 전송 완료시 complete 콜백
                     complete(null)
                 }
+            // 마지막 메세지와 시간 저장
+            firebaseDatabaseInstance.reference.child("chatrooms").child(chatRoomUid)
+                .child("lastMessage").setValue(comment.message)
+            firebaseDatabaseInstance.reference.child("chatrooms").child(chatRoomUid)
+                .child("lastTimestamp").setValue(comment.timeStamp)
         }
     }
 
@@ -638,6 +656,50 @@ class FirebaseRepository {
                 }
             }
             )
+    }
+
+    // 채팅방 리스트를 보여주기 위한 ChatModel 리스트를 콜백으로 전달하는 함수
+    fun getChatModelList(callback: IFirebaseGetChatRoomCallback) {
+
+        firebaseDatabaseInstance.getReference("chatrooms").orderByChild("users/${Firebase.auth.uid}")
+            .equalTo(true)
+            .addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val chatModels = ArrayList<ChatModel>()
+                    snapshot.children.forEach { item ->
+                        if (item.exists()) { // 데이터가 존재한다면
+                            chatModels.add(item.getValue(ChatModel::class.java)!!) // Chat Model 리스트에 추가
+                        }
+                    }
+                    callback.complete(chatModels) // 콜백을 통해 채팅 모델 리스트 전달
+                }
+                override fun onCancelled(error: DatabaseError) {
+                    TODO("Not yet implemented")
+                }
+            })
+    }
+
+    fun getUserModel(uid: String, complete: (ChatUserModel) -> Unit) {
+        firebaseDatabaseInstance.getReference("users/$uid")
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    if (snapshot.exists()) {
+                        val userModel: UserModel? = snapshot.getValue(UserModel::class.java)
+                        if (userModel != null) {
+                            val destUserModel =
+                                ChatUserModel(userModel.nickname, userModel.profile_url, uid)
+                            complete(destUserModel)
+                        }
+
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    TODO("Not yet implemented")
+                }
+            }
+            )
+
     }
 
 

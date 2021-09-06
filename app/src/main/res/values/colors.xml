@@ -23,7 +23,8 @@
     <color name="chat_me_bubble">#fffffde7</color>
     <color name="chat_me_bubble_pressed">#FFFCD8</color>
     <color name="chat_other_bubble">#FFFFFF</color>
-    <color name="chat_other_bubble_pressed">#FBFBFB</color>
+    <color name="chat_other_bubble_pressed">#FCFCFC</color>
+    <color name="chat_divider_color">#FFFFFF</color>
 
     <!--my color-->
     <color name="app_green">#FF9ACE97</color>

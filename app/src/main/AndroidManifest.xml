@@ -25,9 +25,29 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ShareMarket"
         android:usesCleartextTraffic="true">
-        <activity android:name=".activity.ChatActivity"
+
+        <service
+            android:name=".service.push.MyFirebaseMessagingService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_channel_id"
+            android:value="@string/default_notification_channel_id" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/app_icon" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_color"
+            android:resource="@color/white" />
+
+        <activity
+            android:name=".activity.ChatActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize"></activity>
+            android:windowSoftInputMode="adjustResize" />
         <activity android:name=".activity.MyHeartsActivity" />
         <activity android:name=".activity.MyBoardsActivity" />
         <activity android:name=".activity.UpdateActivity" />
@@ -69,11 +89,12 @@
             </intent-filter>
         </activity>
         <activity android:name=".activity.AddressApiWebView" />
-        <activity
-            android:name=".activity.InitialActivity">
+        <activity android:name=".activity.InitialActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+                <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.LAUNCHER" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
@@ -82,13 +103,7 @@
                     android:scheme="kakao50431e61e927759909b150e64f67ff83" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.Splash">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+        <activity android:name=".activity.Splash" />
         <activity
             android:name=".activity.MainActivity"
             android:hardwareAccelerated="true"

@@ -175,7 +175,11 @@
 
     <string name="delete">삭제</string>
     <string name="update">수정</string>
-    <!--kakao login-->
+
+    <!-- Notification Channel Id -->
+    <string name="default_notification_channel_id">100</string>
+
+    <!-- kakao login -->
     <string name="kakao_app_key">88e95ac2b0aa09e4bf047d1b0bd99e6f</string>
     <string name="kakao_scheme">kakao88e95ac2b0aa09e4bf047d1b0bd99e6f</string>
     <string name="kakao_link">kakaolink.com</string>

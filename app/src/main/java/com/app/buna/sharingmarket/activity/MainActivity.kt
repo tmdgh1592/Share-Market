@@ -1,7 +1,6 @@
 package com.app.buna.sharingmarket.activity
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -13,11 +12,11 @@ import androidx.lifecycle.ViewModelProvider
 import com.app.buna.sharingmarket.R
 import com.app.buna.sharingmarket.REQUEST_CODE
 import com.app.buna.sharingmarket.databinding.ActivityMainBinding
-import com.app.buna.sharingmarket.fragment.initial.InitialThirdFragment
 import com.app.buna.sharingmarket.fragment.main.MainCategoryFragment
 import com.app.buna.sharingmarket.fragment.main.MainChatFragment
 import com.app.buna.sharingmarket.fragment.main.MainHomeFragment
 import com.app.buna.sharingmarket.fragment.main.MainMyFragment
+import com.app.buna.sharingmarket.utils.NetworkStatus
 import com.app.buna.sharingmarket.viewmodel.MainViewModel
 import com.google.android.material.tabs.TabLayout
 import org.koin.android.ext.android.get
@@ -38,6 +37,9 @@ class MainActivity : AppCompatActivity() {
         initBinding()
         initView()
 
+        if (NetworkStatus.isConnectedInternet(this)) {
+            vm.registerPushToken()
+        }
     }
 
     /*Binding 초기화*/

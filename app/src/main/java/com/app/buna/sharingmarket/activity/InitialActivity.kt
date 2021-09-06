@@ -26,9 +26,6 @@ class InitialActivity : AppCompatActivity() {
 
     private var auth: FirebaseAuth? = null
     var callbackManager: CallbackManager? = null
-    private val viewModel: InitialViewModel by lazy {
-        ViewModelProvider(this, InitialViewModel.Factory(get())).get(InitialViewModel::class.java)
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

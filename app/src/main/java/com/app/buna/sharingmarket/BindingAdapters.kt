@@ -1,24 +1,11 @@
 package com.app.buna.sharingmarket
 
-import android.app.Application
-import android.content.res.Resources
-import android.graphics.Color
 import android.net.Uri
-import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.cardview.widget.CardView
-import androidx.core.content.ContextCompat
-import androidx.core.content.res.ResourcesCompat
 import androidx.databinding.BindingAdapter
-import androidx.lifecycle.MutableLiveData
-import androidx.recyclerview.widget.RecyclerView
-import com.app.buna.sharingmarket.adapter.ProductRecyclerAdapter
-import com.app.buna.sharingmarket.model.items.ProductItem
 import com.bumptech.glide.Glide
-import com.elyeproj.loaderviewlibrary.LoaderTextView
-import com.facebook.login.widget.LoginButton
 import com.google.android.gms.common.SignInButton
 import de.hdodenhof.circleimageview.CircleImageView
 
@@ -75,8 +62,8 @@ object BindingAdapters {
 
     @BindingAdapter("chat_profile_img")
     @JvmStatic
-    fun bindChatProfileImage(imageView: CircleImageView, uri: String) {
-        if (uri != null || uri != "") {
+    fun bindChatProfileImage(imageView: CircleImageView, uri: String?) {
+        if (uri != null && uri != "") {
             Glide.with(imageView.context).load(Uri.parse(uri)).fitCenter().into(imageView)
         }
     }

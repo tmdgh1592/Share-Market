@@ -45,8 +45,13 @@ class MainHomeFragment(val category: String = "all") : Fragment() {
 
     fun initView() {
         with(binding) {
-            this?.productRecyclerView?.adapter = ProductRecyclerAdapter(vm, requireContext())
-            this?.productRecyclerView?.layoutManager = LinearLayoutManager(requireContext())
+            val boardRecyclerAdapter = ProductRecyclerAdapter(vm, requireContext())
+            boardRecyclerAdapter.setHasStableIds(true)
+            this?.productRecyclerView?.apply {
+                adapter = boardRecyclerAdapter
+                layoutManager = LinearLayoutManager(requireContext())
+                setHasFixedSize(true)
+            }
 
             vm?.getProductData(category, object : IFirebaseGetStoreDataCallback {
                 override fun complete(data: ArrayList<ProductItem>) {

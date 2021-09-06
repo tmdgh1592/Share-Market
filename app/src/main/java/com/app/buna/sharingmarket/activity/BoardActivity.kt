@@ -130,7 +130,7 @@ class BoardActivity : AppCompatActivity() {
             }
         }else { // 1:1 채팅하기 = 본인이 아닌 경우에는 채팅 버튼으로 전환
             binding?.chatBtn?.text = getString(R.string.one_to_one_chat)
-            if (vm?.item.isComplete == true) { // 거래 완료된 게시물이면 클릭 못하게 변경
+            if (vm?.item.isComplete) { // 거래 완료된 게시물이면 클릭 못하게 변경
                 binding?.chatBtn?.isEnabled = false
                 binding?.chatBtn?.isClickable = false
             }else { // 거래 완료된 게시물이 아니면 채팅 가능

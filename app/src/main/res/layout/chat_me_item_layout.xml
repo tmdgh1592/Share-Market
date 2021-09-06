@@ -13,7 +13,8 @@
         android:id="@+id/constraint_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="6dp">
+        android:layout_marginVertical="4dp"
+        android:layout_marginRight="@dimen/layout_frame_horizontal_margin">
 
         <LinearLayout
             android:id="@+id/chat_bubble_layout"
@@ -27,12 +28,11 @@
             android:gravity="right">
 
             <TextView
-                android:id="@+id/other_timestamp_text_view"
+                android:id="@+id/my_timestamp_text_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
                 android:layout_marginRight="8dp"
-                android:text="@{comment.usingTimeStamp}"
                 android:textColor="@color/gray_50"
                 android:textSize="12sp" />
 
@@ -57,7 +57,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.15" />
+            app:layout_constraintGuide_percent="0.1" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

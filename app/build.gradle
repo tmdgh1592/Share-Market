@@ -53,6 +53,9 @@ android {
 }
 
 dependencies {
+    implementation 'com.google.firebase:firebase-functions-ktx:20.0.0'
+    implementation 'com.google.firebase:firebase-messaging-ktx:22.0.0'
+
 
     /* Koin */
     def koin_version = '2.2.0-alpha-1'
@@ -70,6 +73,9 @@ dependencies {
     implementation platform('com.google.firebase:firebase-bom:28.3.0')
     implementation 'com.google.firebase:firebase-auth-ktx'
     implementation 'com.google.android.gms:play-services-auth:19.2.0'
+
+    //okHttp
+    implementation 'com.squareup.okhttp3:okhttp:3.14.1'
 
     /* kakao login */
     implementation "com.kakao.sdk:v2-user:2.0.0"

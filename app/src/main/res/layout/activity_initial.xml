@@ -4,8 +4,4 @@
     android:id="@+id/initial_frame_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.InitialActivity">
-
-
-
-</FrameLayout>
+    tools:context=".activity.InitialActivity"/>

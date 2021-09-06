@@ -109,6 +109,10 @@ class ProductRecyclerAdapter(var viewModel: MainViewModel, val context: Context)
         holder.bind(item)
     }
 
+    override fun getItemId(position: Int): Long {
+        return productItemList[position].hashCode().toLong()
+    }
+
     override fun getItemCount(): Int {
         if (productItemList != null) return productItemList.size
         return 0

@@ -1,6 +1,7 @@
 package com.app.buna.sharingmarket.fragment.main
 
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import android.widget.LinearLayout.VERTICAL
 import androidx.appcompat.widget.Toolbar
@@ -13,7 +14,7 @@ import com.app.buna.sharingmarket.activity.MainActivity
 import com.app.buna.sharingmarket.adapter.ChatRoomRecyclerAdapter
 import com.app.buna.sharingmarket.callbacks.IFirebaseGetChatRoomCallback
 import com.app.buna.sharingmarket.databinding.FragmentMainChatBinding
-import com.app.buna.sharingmarket.model.items.chat.ChatRoom
+import com.app.buna.sharingmarket.model.items.chat.ChatModel
 import com.app.buna.sharingmarket.viewmodel.ChatRoomsViewModel
 import org.koin.android.ext.android.get
 
@@ -42,22 +43,35 @@ class MainChatFragment : Fragment() {
 
     fun initView() {
         // * 툴바 관련
-        toolbar = binding?.toolBar!!.also { (requireActivity() as MainActivity).setSupportActionBar(it) } // 액션바 지정
+        toolbar =
+            binding?.toolBar!!.also { (requireActivity() as MainActivity).setSupportActionBar(it) } // 액션바 지정
         (requireActivity() as MainActivity).supportActionBar?.setDisplayShowTitleEnabled(false) // 타이틀 안보이게 하기
 
         binding?.chatRoomRecyclerView?.apply {
-            adapter = ChatRoomRecyclerAdapter()
+            adapter = ChatRoomRecyclerAdapter(vm)
             layoutManager = LinearLayoutManager(requireContext())
             addItemDecoration(DividerItemDecoration(requireContext(), VERTICAL))
         }
-        // 테스트 데이터
-        val list = ArrayList<ChatRoom>()
-        list.add(ChatRoom("야 롤 언제 들어와 tlqkffusdk","https://firebasestorage.googleapis.com/v0/b/sharing-market.appspot.com/o/profiles%2Falsrudgns.png?alt=media&token=1eee39c3-7fe9-4505-a16c-c1cb7cbaa23a", "1", "민경훈", "ㅇㅁㄴㅇ", 1L))
-        (binding?.chatRoomRecyclerView?.adapter as ChatRoomRecyclerAdapter).update(list)
 
         vm.getChatRoomList(object : IFirebaseGetChatRoomCallback {
-            override fun complete(chatRoomList: ArrayList<ChatRoom>) {
-                (binding?.chatRoomRecyclerView?.adapter as ChatRoomRecyclerAdapter).update(chatRoomList)
+            override fun complete(chatRoomList: ArrayList<ChatModel>) {
+                vm.chatModels = chatRoomList
+                var count = 0 // Firebase는 비동기로 데이터를 가져오기 때문에 count 변수가 가져올 전체 데이터 개수가 되면 그 때 adapter를 update해줘야 함.
+                chatRoomList.forEach { chatModel ->
+                    val destUid = vm.findDestUid(chatModel.users) // 채팅 상대방 uid
+
+                    if (destUid != null) {
+                        vm.getUserModel(destUid) { userModel -> // 상대방 Uid를 찾아서 이 Uid로 해당 유저 정보 가져오기
+                            vm.destUserModel.add(userModel)
+                            count++
+
+                            if (count == chatRoomList.size){ // 가져올 데이터를 모두 가져왔다면
+                                (binding?.chatRoomRecyclerView?.adapter as ChatRoomRecyclerAdapter).update(chatRoomList, vm.destUserModel)
+                            }
+                        }
+
+                    }
+                }
             }
         })
 

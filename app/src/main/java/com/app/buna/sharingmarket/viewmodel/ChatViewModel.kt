@@ -2,13 +2,11 @@ package com.app.buna.sharingmarket.viewmodel
 
 import android.app.Application
 import android.content.Context
-import android.util.Log
-import android.widget.LinearLayout
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.app.buna.sharingmarket.model.items.chat.ChatModel
-import com.app.buna.sharingmarket.model.items.chat.UserModel
+import com.app.buna.sharingmarket.model.items.chat.ChatUserModel
 import com.app.buna.sharingmarket.repository.Firebase.FirebaseRepository
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -19,7 +17,7 @@ class ChatViewModel(application: Application, val context: Context) : AndroidVie
             return ChatViewModel(application, context) as T
         }
     }
-    var destChatModel: UserModel? = null // 채팅하는 상대 유저 데이터
+    var destChatModel: ChatUserModel? = null // 채팅하는 상대 유저 데이터
     var message: String = "" // 전송할 채팅 바인딩 데이터
 
     //상대방과 채팅한 기록이 있는지 확인 후 있으면 채팅방 uid 가져옴
