@@ -6,21 +6,18 @@ import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
-import com.app.buna.sharingmarket.REQUEST_CODE
 import com.app.buna.sharingmarket.R
+import com.app.buna.sharingmarket.REQUEST_CODE
 import com.app.buna.sharingmarket.fragment.initial.InitialFirstFragment
 import com.app.buna.sharingmarket.fragment.initial.InitialFourthFragment
 import com.app.buna.sharingmarket.fragment.initial.InitialThirdFragment
 import com.app.buna.sharingmarket.repository.Local.PreferenceUtil
-import com.app.buna.sharingmarket.viewmodel.InitialViewModel
 import com.facebook.CallbackManager
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
-import org.koin.android.ext.android.get
 
 class InitialActivity : AppCompatActivity() {
 

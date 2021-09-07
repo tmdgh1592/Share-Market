@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.app.buna.sharingmarket.R
-import com.app.buna.sharingmarket.activity.MyBoardsActivity
 import com.app.buna.sharingmarket.activity.MyHeartsActivity
 import com.app.buna.sharingmarket.databinding.MyBoardItemBinding
 import com.app.buna.sharingmarket.model.items.ProductItem

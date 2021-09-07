@@ -1,11 +1,9 @@
 package com.app.buna.sharingmarket.adapter
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowManager
 import android.widget.BaseAdapter
 import com.app.buna.sharingmarket.databinding.CategoryItemBinding
 import com.app.buna.sharingmarket.model.items.CategoryItem

@@ -20,7 +20,6 @@ import com.app.buna.sharingmarket.repository.Firebase.FirebaseRepository
 import com.app.buna.sharingmarket.repository.Local.PreferenceUtil
 import com.app.buna.sharingmarket.utils.NetworkStatus
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.installations.FirebaseInstallations
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.FirebaseMessaging
 

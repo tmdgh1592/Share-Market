@@ -1,9 +1,14 @@
 package com.app.buna.sharingmarket
 
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
 import android.net.Uri
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
 import com.google.android.gms.common.SignInButton
@@ -64,7 +69,19 @@ object BindingAdapters {
     @JvmStatic
     fun bindChatProfileImage(imageView: CircleImageView, uri: String?) {
         if (uri != null && uri != "") {
-            Glide.with(imageView.context).load(Uri.parse(uri)).fitCenter().into(imageView)
+            Glide.with(imageView.context).load(Uri.parse(uri)).error(R.drawable.default_profile).fitCenter().into(imageView)
+        }
+    }
+
+    @BindingAdapter("bubble_click")
+    @JvmStatic
+    fun bindClickChatBubble(layout: ConstraintLayout, message: String) {
+        layout.setOnClickListener { view ->
+            val clipboardManager = view.context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+            val clipData = ClipData.newPlainText("message", message)
+            clipboardManager.setPrimaryClip(clipData)
+
+            Toast.makeText(view.context, view.context.getString(R.string.clip_success), Toast.LENGTH_SHORT).show()
         }
     }
 }

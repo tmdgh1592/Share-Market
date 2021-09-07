@@ -2,7 +2,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="65dp"
     android:layout_height="65dp"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/picked_photo_border"
     android:layout_marginLeft="@dimen/layout_frame_horizontal_margin">
 

@@ -6,8 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.app.buna.sharingmarket.databinding.FragmentThirdInitialBinding
 import com.app.buna.sharingmarket.activity.InitialActivity
+import com.app.buna.sharingmarket.databinding.FragmentThirdInitialBinding
 import com.app.buna.sharingmarket.repository.Local.PreferenceUtil
 import com.app.buna.sharingmarket.viewmodel.ThirdInitialViewModel
 import org.koin.android.ext.android.get

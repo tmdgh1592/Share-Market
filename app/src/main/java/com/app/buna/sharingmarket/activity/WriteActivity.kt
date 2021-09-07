@@ -31,7 +31,6 @@ import com.github.hamzaahmedkhan.spinnerdialog.SpinnerDialogFragment.Companion.n
 import com.github.hamzaahmedkhan.spinnerdialog.SpinnerModel
 import com.opensooq.supernova.gligar.GligarPicker
 import kotlinx.android.synthetic.main.picked_photo_view.view.*
-import java.lang.Exception
 
 private var binding: ActivityWriteBinding? = null
 private var vm: WriteViewModel? = null

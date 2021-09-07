@@ -2,14 +2,12 @@ package com.app.buna.sharingmarket.fragment.dialog
 
 import android.content.DialogInterface
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout.VERTICAL
 import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration

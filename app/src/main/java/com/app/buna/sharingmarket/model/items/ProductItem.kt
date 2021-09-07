@@ -3,7 +3,6 @@ package com.app.buna.sharingmarket.model.items
 import android.os.Parcelable
 import com.app.buna.sharingmarket.utils.TimeUtil
 import com.google.firebase.firestore.Exclude
-import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize

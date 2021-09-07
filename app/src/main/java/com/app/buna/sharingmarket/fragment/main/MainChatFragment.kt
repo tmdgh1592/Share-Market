@@ -1,7 +1,6 @@
 package com.app.buna.sharingmarket.fragment.main
 
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import android.widget.LinearLayout.VERTICAL
 import androidx.appcompat.widget.Toolbar

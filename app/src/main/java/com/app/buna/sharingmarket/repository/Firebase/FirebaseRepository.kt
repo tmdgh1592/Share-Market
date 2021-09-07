@@ -298,7 +298,7 @@ class FirebaseRepository {
     }
 
     fun registerToken(uid: String?, tokenMap: Map<String, Any>) {
-        if(uid != null && tokenMap != null) {
+        if (uid != null && tokenMap != null) {
             firebaseStoreInstance.collection("pushToken").document(uid).set(tokenMap)
         }
     }
@@ -584,6 +584,11 @@ class FirebaseRepository {
             val commentMap = HashMap<String, ChatModel.Comment>().apply {
                 put(roomUid!!, comment)
             }
+            val pushStateMap = HashMap<String, Boolean>().apply { // 유저 푸시 상태
+                users.keys.forEach { userName ->
+                    put(userName, true)
+                }
+            }
 
             firebaseDatabaseInstance.reference.child("chatrooms").child(roomUid!!).child("comments")
                 .setValue(commentMap).addOnCompleteListener {
@@ -592,6 +597,8 @@ class FirebaseRepository {
                         .setValue(users).addOnSuccessListener {
                             // 메세지 전송 완료시 chatRoomUid를 저장하기 위해 complete 콜백
                             complete(roomUid)
+                            firebaseDatabaseInstance.reference.child("chatrooms").child(roomUid)
+                                .child("pushState").setValue(pushStateMap)
                             // 마지막 메세지와 시간 저장
                             firebaseDatabaseInstance.reference.child("chatrooms").child(roomUid)
                                 .child("lastMessage").setValue(comment.message)
@@ -661,7 +668,8 @@ class FirebaseRepository {
     // 채팅방 리스트를 보여주기 위한 ChatModel 리스트를 콜백으로 전달하는 함수
     fun getChatModelList(callback: IFirebaseGetChatRoomCallback) {
 
-        firebaseDatabaseInstance.getReference("chatrooms").orderByChild("users/${Firebase.auth.uid}")
+        firebaseDatabaseInstance.getReference("chatrooms")
+            .orderByChild("users/${Firebase.auth.uid}")
             .equalTo(true)
             .addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
@@ -673,6 +681,7 @@ class FirebaseRepository {
                     }
                     callback.complete(chatModels) // 콜백을 통해 채팅 모델 리스트 전달
                 }
+
                 override fun onCancelled(error: DatabaseError) {
                     TODO("Not yet implemented")
                 }
@@ -705,14 +714,63 @@ class FirebaseRepository {
     // 채팅을 보내면 푸시를 보내기 위해 Token을 얻기 위한 콜백 함수
     // uid: push를 보낼 사용자의 Uid
     fun getPushToken(uid: String, complete: (String) -> Unit) {
-        firebaseStoreInstance.collection("pushToken").document(uid).get().addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                val token = task.result.get("pushtoken") as String
-                Log.d("ddd", token)
-                complete(token)
+        firebaseStoreInstance.collection("pushToken").document(uid).get()
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    val token = task.result.get("pushtoken") as String
+                    complete(token)
+                }
             }
-        }
 
+    }
+
+    // 상대방이 푸시알림을 받을 수 있는 상태인지 체크하는 함수
+    fun canReceivePush(roomUid: String, destUid: String, callback: (Boolean) -> Unit) {
+        firebaseDatabaseInstance.getReference("chatrooms").child(roomUid).child("pushState")
+            .addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    snapshot.children.forEach { snapshot ->
+                        if (snapshot.key.equals(destUid)) { // 상대방이라면
+                            val canReceive = snapshot.value as Boolean
+                            callback(canReceive)
+                            return@forEach
+                        }
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    TODO("Not yet implemented")
+                }
+            })
+    }
+
+    // 푸시 알림 상태 toggle
+    fun togglePushState(
+        nowState: Boolean,
+        roomUid: String,
+        uid: String,
+        callback: (Boolean) -> Unit
+    ) {
+        firebaseDatabaseInstance.getReference("chatrooms").child(roomUid).child("pushState")
+            .child(uid).setValue(!nowState).addOnCompleteListener {
+                if (it.isSuccessful) {
+                    callback(!nowState)
+                }
+            }
+    }
+
+    // 푸시 알림 상태 설정
+    fun setPushState(state: Boolean, roomUid: String, uid: String) {
+        firebaseDatabaseInstance.getReference("chatrooms").child(roomUid).child("pushState")
+            .child(uid).setValue(state)
+    }
+
+    // 푸시 알림 상태 가져오기
+    fun getPushState(roomUid: String, uid: String, complete: (Boolean) -> Unit) {
+        firebaseDatabaseInstance.getReference("chatrooms").child(roomUid).child("pushState")
+            .child(uid).get().addOnCompleteListener {
+                complete(it.result.value as Boolean)
+            }
     }
 
 

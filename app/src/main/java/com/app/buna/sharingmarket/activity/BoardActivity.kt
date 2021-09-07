@@ -36,7 +36,8 @@ class BoardActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        vm?.item = intent.getParcelableExtra<ProductItem>("product_item") // MainHomeFragment에서 전달받은 데이터
+        vm?.item =
+            intent.getParcelableExtra<ProductItem>("product_item") // MainHomeFragment에서 전달받은 데이터
         initBinding()
         initView()
     }
@@ -51,9 +52,10 @@ class BoardActivity : AppCompatActivity() {
 
         // 게시판 작성자 프로필 설정
         vm.getProfile(vm.item.uid) { profileUrl ->
-            if (profileUrl != null){
+            if (profileUrl != null) {
                 vm.profileUrl = profileUrl
-                Glide.with(this).load(Uri.parse(profileUrl)).circleCrop().into(binding?.profileImageView!!)
+                Glide.with(this).load(Uri.parse(profileUrl)).error(R.drawable.default_profile).circleCrop()
+                    .into(binding?.profileImageView!!)
             }
         }
 
@@ -82,7 +84,8 @@ class BoardActivity : AppCompatActivity() {
                     imageView.layoutParams.width = RelativeLayout.LayoutParams.MATCH_PARENT
                     imageView.requestLayout()
 
-                    Glide.with(this).load(vm?.item.imgPath.values.first()).centerCrop().into(imageView)
+                    Glide.with(this).load(vm?.item.imgPath.values.first()).error(R.drawable.default_item).centerCrop()
+                        .into(imageView)
                 }
             }
         }
@@ -95,7 +98,12 @@ class BoardActivity : AppCompatActivity() {
                     /*val btnDrawable = DrawableCompat.wrap(background)
                     DrawableCompat.setTint(btnDrawable, ContextCompat.getColor(this@BoardActivity, R.color.gray_50))
                     background = btnDrawable*/
-                    backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(this@BoardActivity, R.color.gray_50))
+                    backgroundTintList = ColorStateList.valueOf(
+                        ContextCompat.getColor(
+                            this@BoardActivity,
+                            R.color.gray_50
+                        )
+                    )
                     text = getString(R.string.share_not_done)
                     // 거래 완료 상태를 해제할지 물어봄
                     setOnClickListener {
@@ -128,12 +136,12 @@ class BoardActivity : AppCompatActivity() {
                     }
                 }
             }
-        }else { // 1:1 채팅하기 = 본인이 아닌 경우에는 채팅 버튼으로 전환
+        } else { // 1:1 채팅하기 = 본인이 아닌 경우에는 채팅 버튼으로 전환
             binding?.chatBtn?.text = getString(R.string.one_to_one_chat)
             if (vm?.item.isComplete) { // 거래 완료된 게시물이면 클릭 못하게 변경
                 binding?.chatBtn?.isEnabled = false
                 binding?.chatBtn?.isClickable = false
-            }else { // 거래 완료된 게시물이 아니면 채팅 가능
+            } else { // 거래 완료된 게시물이 아니면 채팅 가능
                 binding?.chatBtn?.isEnabled = true
                 binding?.chatBtn?.isClickable = true
                 binding?.chatBtn?.setOnClickListener {
@@ -161,8 +169,7 @@ class BoardActivity : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         super.onCreateOptionsMenu(menu)
-        val inflater: MenuInflater = menuInflater
-        inflater.inflate(R.menu.menu_board_tool_bar, menu)
+        menuInflater.inflate(R.menu.menu_board_tool_bar, menu)
         return true
     }
 
@@ -248,7 +255,7 @@ class BoardActivity : AppCompatActivity() {
     override fun onBackPressed() {
         //super.onBackPressed()
         Log.d("BoardActivity", "onbackpressed")
-        if (!vm?.item.favorites.containsKey(vm?.getUid())){
+        if (!vm?.item.favorites.containsKey(vm?.getUid())) {
             setResult(RESULT_OK)
         }
         finish()

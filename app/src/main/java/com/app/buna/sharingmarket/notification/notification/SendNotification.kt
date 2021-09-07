@@ -3,11 +3,7 @@ package com.app.buna.sharingmarket.notification.notification
 import android.content.Context
 import android.util.Log
 import com.app.buna.sharingmarket.R
-import com.google.android.gms.auth.api.identity.BeginSignInRequest.GoogleIdTokenRequestOptions.builder
 import com.google.auth.oauth2.GoogleCredentials
-import com.google.firebase.FirebaseApp
-import com.google.firebase.FirebaseOptions
-import com.google.firebase.installations.remote.InstallationResponse.builder
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -25,7 +21,13 @@ class SendNotification {
         val JSON: MediaType = MediaType.parse("application/json; charset=utf-8")!!
 
         // 푸시알림 데이터 전달 (regToken : 상대방 토큰)
-        fun sendNotification(context: Context, regToken: String, title: String, message: String) {
+        fun sendNotification(
+            context: Context,
+            regToken: String,
+            nickname: String, // 본인 닉네임
+            message: String, // 메세지 내용
+            profileUrl: String? // 이미지 url
+        ) {
             CoroutineScope(Dispatchers.Default).launch { // 코루틴을 통해 백그라운드에서 작업 수행
                 try {
                     val client = OkHttpClient()
@@ -33,14 +35,17 @@ class SendNotification {
                     val dataJson = JSONObject() // "token(상대방)", "notification(title, message)"
                     val notiJson = JSONObject() // "title", "body"
 
-                    notiJson.put("title", title)
-                    notiJson.put("body", message)
+                    notiJson.put("title", nickname) // 보내는 사람 닉네임
+                    notiJson.put("body", message) // 메세지 내용
+                    notiJson.put("image", profileUrl) // 프로필
+
 
                     dataJson.put("token", regToken)
                     dataJson.put("notification", notiJson)
 
                     messageJson.put("message", dataJson)
-                    val body = RequestBody.create(JSON, messageJson.toString()) // Request에 필요한 Body생성
+                    val body =
+                        RequestBody.create(JSON, messageJson.toString()) // Request에 필요한 Body생성
 
                     val request = Request.Builder()
                         .addHeader(
@@ -71,8 +76,7 @@ class SendNotification {
                 .createScoped("https://www.googleapis.com/auth/cloud-platform")
 
             googleCredentials.refreshIfExpired() // 토큰 최대 유지 시간 : 3600second(60분)
-            val token = googleCredentials.accessToken.tokenValue
-            return token
+            return googleCredentials.accessToken.tokenValue
         }
     }
 

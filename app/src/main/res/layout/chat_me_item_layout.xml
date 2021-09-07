@@ -11,21 +11,23 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraint_layout"
+        bubble_click="@{comment.message}"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginVertical="4dp"
-        android:layout_marginRight="@dimen/layout_frame_horizontal_margin">
+        android:layout_marginRight="@dimen/layout_frame_horizontal_margin"
+        android:clickable="true">
 
         <LinearLayout
             android:id="@+id/chat_bubble_layout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:gravity="right"
             android:orientation="horizontal"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="@id/guideline"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:gravity="right">
+            app:layout_constraintTop_toTopOf="parent">
 
             <TextView
                 android:id="@+id/my_timestamp_text_view"

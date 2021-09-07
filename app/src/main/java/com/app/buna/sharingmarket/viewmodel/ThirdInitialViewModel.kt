@@ -8,8 +8,8 @@ import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.app.buna.sharingmarket.REQUEST_CODE
 import com.app.buna.sharingmarket.R
+import com.app.buna.sharingmarket.REQUEST_CODE
 import com.app.buna.sharingmarket.activity.InitialActivity
 import com.app.buna.sharingmarket.fragment.initial.InitialFourthFragment
 import com.app.buna.sharingmarket.repository.Local.PreferenceUtil
