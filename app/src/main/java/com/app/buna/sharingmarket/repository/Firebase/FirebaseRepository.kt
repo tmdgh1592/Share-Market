@@ -702,5 +702,18 @@ class FirebaseRepository {
 
     }
 
+    // 채팅을 보내면 푸시를 보내기 위해 Token을 얻기 위한 콜백 함수
+    // uid: push를 보낼 사용자의 Uid
+    fun getPushToken(uid: String, complete: (String) -> Unit) {
+        firebaseStoreInstance.collection("pushToken").document(uid).get().addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                val token = task.result.get("pushtoken") as String
+                Log.d("ddd", token)
+                complete(token)
+            }
+        }
+
+    }
+
 
 }

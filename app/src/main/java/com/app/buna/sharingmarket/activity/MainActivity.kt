@@ -16,6 +16,7 @@ import com.app.buna.sharingmarket.fragment.main.MainCategoryFragment
 import com.app.buna.sharingmarket.fragment.main.MainChatFragment
 import com.app.buna.sharingmarket.fragment.main.MainHomeFragment
 import com.app.buna.sharingmarket.fragment.main.MainMyFragment
+import com.app.buna.sharingmarket.repository.Local.PreferenceUtil
 import com.app.buna.sharingmarket.utils.NetworkStatus
 import com.app.buna.sharingmarket.viewmodel.MainViewModel
 import com.google.android.material.tabs.TabLayout
@@ -37,7 +38,7 @@ class MainActivity : AppCompatActivity() {
         initBinding()
         initView()
 
-        if (NetworkStatus.isConnectedInternet(this)) {
+        if (NetworkStatus.isConnectedInternet(this) && PreferenceUtil.getInt(this, "push") == 0) {
             vm.registerPushToken()
         }
     }

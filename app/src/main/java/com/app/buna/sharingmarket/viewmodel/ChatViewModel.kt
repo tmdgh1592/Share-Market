@@ -7,9 +7,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.app.buna.sharingmarket.model.items.chat.ChatModel
 import com.app.buna.sharingmarket.model.items.chat.ChatUserModel
+import com.app.buna.sharingmarket.notification.notification.SendNotification
 import com.app.buna.sharingmarket.repository.Firebase.FirebaseRepository
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+
 
 class ChatViewModel(application: Application, val context: Context) : AndroidViewModel(application) {
     class Factory(val application: Application, val context: Context) : ViewModelProvider.Factory {
@@ -47,6 +49,13 @@ class ChatViewModel(application: Application, val context: Context) : AndroidVie
                 }
                 complete(null)
             }
+
+            if (destChatModel != null) {
+                FirebaseRepository.instance.getPushToken(destChatModel!!.uid) { destPushToken ->
+                    sendPushGson(destPushToken, destChatModel!!.userName, comment.message)
+                }
+            }
+
         }
     }
 
@@ -59,6 +68,16 @@ class ChatViewModel(application: Application, val context: Context) : AndroidVie
 
     fun getChatList(complete: (ArrayList<ChatModel.Comment>) -> Unit) {
         FirebaseRepository.instance.getComments(chatRoomUid, complete)
+    }
+
+    fun sendPushGson(destPushToken: String, nickname: String, message: String) {
+        SendNotification.sendNotification(
+            context,
+            destPushToken,
+            nickname,
+            message
+        )
+
     }
 
 }

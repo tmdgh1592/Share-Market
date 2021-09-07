@@ -22,6 +22,7 @@ import com.app.buna.sharingmarket.utils.NetworkStatus
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.installations.FirebaseInstallations
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.messaging.FirebaseMessaging
 
 class MainViewModel(application: Application, val context: Context) :
     AndroidViewModel(application) {
@@ -115,10 +116,13 @@ class MainViewModel(application: Application, val context: Context) :
     fun registerPushToken() {
         var uid = Firebase.auth.uid
         var tokenMap = mutableMapOf<String, Any>()
-        FirebaseInstallations.getInstance().getToken(true).addOnCompleteListener {
-            val pushToken = it.result.token
-            tokenMap["pushtoken"] = pushToken!!
-            FirebaseRepository.instance.registerToken(uid, tokenMap)
+        FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                val token = task.result
+                tokenMap["pushtoken"] =  token
+                FirebaseRepository.instance.registerToken(uid, tokenMap)
+                PreferenceUtil.putInt(context, "push", 1)
+            }
 
         }
     }
