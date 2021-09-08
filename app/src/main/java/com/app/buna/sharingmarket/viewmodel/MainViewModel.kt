@@ -33,13 +33,18 @@ class MainViewModel(application: Application, val context: Context) :
     }
 
     val productItems = MutableLiveData<ArrayList<ProductItem>>(ArrayList())
-    var surveyOptionId: Int? = null
-    var surveyText: String? = null
+    var surveyOptionId: Int? = null // 설문조사 radio 옵션
+    var surveyText: String? = null // 설문조사 문구
+
 
 
     // View Model의 product
     fun getProductData(category: String, callback: IFirebaseGetStoreDataCallback) {
-        FirebaseRepository.instance.getProductData(category, callback)
+        FirebaseRepository.instance.getBoardData(category, callback)
+    }
+
+    fun getBoardByKeyword(keyword: String, callback: IFirebaseGetStoreDataCallback) {
+        FirebaseRepository.instance.getBoardByKeyword(keyword, callback)
     }
 
     fun clickProduct(position: Int) {

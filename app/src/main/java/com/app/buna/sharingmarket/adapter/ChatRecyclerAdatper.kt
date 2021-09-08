@@ -7,9 +7,7 @@ import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.app.buna.sharingmarket.CommentType
-import com.app.buna.sharingmarket.databinding.ChatDateDividerLayoutBinding
-import com.app.buna.sharingmarket.databinding.ChatMeItemLayoutBinding
-import com.app.buna.sharingmarket.databinding.ChatOtherItemLayoutBinding
+import com.app.buna.sharingmarket.databinding.*
 import com.app.buna.sharingmarket.model.items.chat.ChatModel
 import com.app.buna.sharingmarket.model.items.chat.ChatUserModel
 import com.app.buna.sharingmarket.utils.BaseDiffUtil
@@ -32,7 +30,7 @@ class ChatRecyclerAdatper(val destModel: ChatUserModel) :
         abstract fun bind(position: Int)
     }
 
-    inner class MyChatViewHolder(val binding: ChatMeItemLayoutBinding) : BaseViewHolder(binding) {
+    inner class MyChatViewHolder(val binding: LayoutChatMeItemBinding) : BaseViewHolder(binding) {
         override fun bind(position: Int) {
             binding.comment = chatList[position]
 
@@ -67,7 +65,7 @@ class ChatRecyclerAdatper(val destModel: ChatUserModel) :
         }
     }
 
-    inner class OtherChatViewHolder(val binding: ChatOtherItemLayoutBinding) :
+    inner class OtherChatViewHolder(val binding: LayoutChatOtherItemBinding) :
         BaseViewHolder(binding) {
         override fun bind(position: Int) {
             binding.comment = chatList[position]
@@ -107,7 +105,7 @@ class ChatRecyclerAdatper(val destModel: ChatUserModel) :
         }
     }
 
-    inner class ChatDividerViewHolder(val binding: ChatDateDividerLayoutBinding) :
+    inner class ChatDividerViewHolder(val binding: LayoutChatDateDividerBinding) :
         BaseViewHolder(binding) {
         override fun bind(position: Int) {
             val date = chatList[position].usingTimeStamp.split(" ")[0] // ex) -> 2021.09.05
@@ -127,21 +125,21 @@ class ChatRecyclerAdatper(val destModel: ChatUserModel) :
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
         return when (viewType) {
             TYPE_ME -> MyChatViewHolder(
-                ChatMeItemLayoutBinding.inflate(
+                LayoutChatMeItemBinding.inflate(
                     LayoutInflater.from(parent.context),
                     parent,
                     false
                 )
             )
             TYPE_OTHER -> OtherChatViewHolder(
-                ChatOtherItemLayoutBinding.inflate(
+                LayoutChatOtherItemBinding.inflate(
                     LayoutInflater.from(
                         parent.context
                     ), parent, false
                 )
             )
             TYPE_DIVIDER -> ChatDividerViewHolder(
-                ChatDateDividerLayoutBinding.inflate(
+                LayoutChatDateDividerBinding.inflate(
                     LayoutInflater.from(parent.context),
                     parent,
                     false

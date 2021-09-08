@@ -25,22 +25,20 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ShareMarket"
         android:usesCleartextTraffic="true">
-
-
-        <!-- 푸시 알림을 수신하기 위한 서비스 -->
-        <service
-            android:name=".notification.service.MyFirebaseMessagingService">
+        <activity android:name=".activity.SearchActivity"></activity>
+        <activity android:name=".fragment.dialog.SearchBoardDialog" /> <!-- 푸시 알림을 수신하기 위한 서비스 -->
+        <service android:name=".notification.service.MyFirebaseMessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
+
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_channel_id"
             android:value="@string/default_notification_channel_id" />
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
             android:resource="@drawable/app_icon" />
-
 
         <activity
             android:name=".activity.ChatActivity"
@@ -102,6 +100,7 @@
         <activity android:name=".activity.Splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

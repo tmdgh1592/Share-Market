@@ -41,7 +41,7 @@
                 android:id="@+id/chat_room_recycler_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                tools:listitem="@layout/chat_room_layout"/>
+                tools:listitem="@layout/layout_chat_room"/>
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

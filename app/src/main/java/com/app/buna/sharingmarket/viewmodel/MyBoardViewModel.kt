@@ -22,7 +22,7 @@ class MyBoardViewModel(application: Application, val context: Context) : Android
 
     // 내가 쓴 글 불러오기
     fun getMyBoards(callback: IFirebaseGetStoreDataCallback) {
-        FirebaseRepository.instance.getProductData(callback)
+        FirebaseRepository.instance.getBoardData(callback)
     }
 
     fun getMyHearts(callback: IFirebaseGetStoreDataCallback){

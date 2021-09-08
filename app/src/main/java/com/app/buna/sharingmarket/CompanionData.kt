@@ -12,6 +12,7 @@ class REQUEST_CODE {
         const val DELETE_BOARD_CODE_FROM_MY_BOARD = 6001
         const val DELETE_BOARD_CODE_FROM_MY_HEART = 6002
         const val UPDATE_BOARD_CODE = 6002
+        const val SEARCH_BOARD_CODE = 6003
     }
 }
 

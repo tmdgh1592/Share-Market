@@ -347,7 +347,7 @@ class FirebaseRepository {
 // *** Firebase 딜레이를 고려해서 Listener로 완료된 것을 항상 계산하고 코딩해야함. ***
 
     // Firebase 스토리지에서 게시글을 가져오기
-    fun getProductData(category: String, callback: IFirebaseGetStoreDataCallback) {
+    fun getBoardData(category: String, callback: IFirebaseGetStoreDataCallback) {
         productList.clear()
         var boardCount = 0 // 지금까지 가져온 게시글 개수를 파악하기 위한 변수!!
 
@@ -371,7 +371,7 @@ class FirebaseRepository {
                                         urlMap = HashMap() // Empty hashmap 생성
                                     } else { // 이미지가 한개라도 있으면
                                         urlMap =
-                                            it.getValue() as HashMap<String, String> // DataSnapshot에서 이미지 Url들을 HashMap 형태로 캐스팅해서 가져옴
+                                            it.value as HashMap<String, String> // DataSnapshot에서 이미지 Url들을 HashMap 형태로 캐스팅해서 가져옴
                                     }
 
                                     item.imgPath = urlMap!!
@@ -379,7 +379,7 @@ class FirebaseRepository {
 
                                     productList.add(item)
 
-                                    // 이미지를 모두 가져왔다면 callback 함수로 list 전달
+                                    // 게시판 데이터를를 모두 가져왔다면 callback 함수로 list 전달
                                     if (boardCount == task.result.size()) {
                                         callback.complete(productList)
                                     }
@@ -394,8 +394,60 @@ class FirebaseRepository {
         getData(category)
     }
 
+
+    // 검색 용도) 키워드를 사용해 Firebase 스토리지에서 게시글을 가져오기
+    fun getBoardByKeyword(keyword: String = "all", callback: IFirebaseGetStoreDataCallback) {
+        productList.clear()
+        var boardCount = 0 // 지금까지 가져온 게시글 개수를 파악하기 위한 변수!!
+
+        // FireStore에서 Board 데이터 및 FireDB에서 이미지 경로 가져오는 메소드
+        // category 값이 "all"이거나 선택한 category값인 경우에 가져옴
+        fun getData(keyword: String) {
+            firebaseStoreInstance.collection("Boards").get().addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    for (document in task.result) { // 게시글 개수만큼 반복
+                        val boardTitle = document.get("title").toString() // 게시글 타이틀
+
+                        // 검색한 키워드가 게시글의 제목에 포함되어 있으면
+                        // 또는 전체 가져오기를 선택했다면
+                        if(keyword == "all" || boardTitle.contains(keyword)) {
+                            val item = document.toObject(ProductItem::class.java) // 가져온 Document를 ProductItem으로 캐스팅
+                            firebaseDatabaseInstance
+                                .getReference("products")
+                                .child("img_path")
+                                .child(document.id)
+                                .get()
+                                .addOnSuccessListener {
+                                    var urlMap: HashMap<String, String>? = if (it.value == null) { // 가져온 이미지가 없으면, 또는 이미지가 저장된게 없으면
+                                        HashMap() // Empty hashmap 생성
+                                    } else { // 이미지가 한개라도 있으면
+                                        it.value as HashMap<String, String> // DataSnapshot에서 이미지 Url들을 HashMap 형태로 캐스팅해서 가져옴
+                                    } // 이미지 url을 가져올 해시맵
+
+                                    item.imgPath = urlMap!!
+                                    item.documentId = document.id // Document Id는 따로 받아옴
+
+                                    productList.add(item)
+
+                                    // 게시판 데이터를를 모두 가져왔다면 callback 함수로 list 전달
+                                    if (boardCount == task.result.size()) {
+                                        callback.complete(productList)
+                                    }
+
+                                }
+                        }
+                        boardCount += 1 // position 1 증가시키기
+                    }
+                }
+            }
+        }
+        // keywrod를 바탕으로 데이터를 가져옴
+        getData(keyword)
+    }
+
+
     // 내가 쓴 게시글 목록들 가져오는 함수
-    fun getProductData(callback: IFirebaseGetStoreDataCallback) {
+    fun getBoardData(callback: IFirebaseGetStoreDataCallback) {
         productList.clear()
 
         // FireStore에서 Board 데이터 및 FireDB에서 이미지 경로 가져오는 메소드
@@ -429,7 +481,7 @@ class FirebaseRepository {
 
                                     productList.add(item)
 
-                                    // 이미지를 모두 가져왔다면 callback 함수로 list 전달
+                                    // 게시판 데이터를를 모두 가져왔다면 callback 함수로 list 전달
                                     if (boardCount == task.result.size()) {
                                         callback.complete(productList)
                                     }

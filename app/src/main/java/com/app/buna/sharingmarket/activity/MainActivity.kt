@@ -53,15 +53,15 @@ class MainActivity : AppCompatActivity() {
     /*view 초기화*/
     fun initView() {
         // 초기 실행 fragment
-        replaceFragment(MainHomeFragment.instance) // Home Fragment
+        replaceFragment(MainHomeFragment.instance()) // Home Fragment
 
         // * 탭 레이아웃 관련
         tabLayout = binding?.mainTabLayout!!.apply {
-            addOnTabSelectedListener(object: TabLayout.OnTabSelectedListener {
+            addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
                 override fun onTabSelected(tab: TabLayout.Tab?) {
-                    when(tab?.position) {
+                    when (tab?.position) {
                         // 0 : 홈
-                        0 -> replaceFragment(MainHomeFragment.instance)
+                        0 -> replaceFragment(MainHomeFragment.instance())
                         // 1 : 카테고리
                         1 -> replaceFragment(MainCategoryFragment.instance)
                         // 2 : 채팅
@@ -76,9 +76,9 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 override fun onTabReselected(tab: TabLayout.Tab?) {
-                    when(tab?.position) {
+                    when (tab?.position) {
                         // 0 : 홈
-                        0 -> replaceFragment(MainHomeFragment.instance)
+                        0 -> replaceFragment(MainHomeFragment.instance())
                         // 1 : 카테고리
                         1 -> replaceFragment(MainCategoryFragment.instance)
                         // 2 : 채팅
@@ -102,24 +102,29 @@ class MainActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode != RESULT_OK) return
-        when(resultCode) {
+        when (requestCode) {
             REQUEST_CODE.DELETE_BOARD_CODE_FROM_MAIN -> { // 게시글을 삭제 했다면
                 Log.d("MainActivity -> onActivityResult", "replace MainHomeFragment")
                 //replaceFragment(MainHomeFragment()) // 게시글을 새로 불러오기 위해 HomeFragment 다시 실행
-            } REQUEST_CODE.API_COMPLETED_FINISH -> {// 다음 주소에서 주소 선택했을 때 :: AddressApiWebView
+            }
+            REQUEST_CODE.API_COMPLETED_FINISH -> {// 다음 주소에서 주소 선택했을 때 :: AddressApiWebView
                 var jibun: String? = data?.getStringExtra("jibun")
                 Log.d("Main", jibun)
                 if (jibun != null && jibun != "") {
 
                 }
             }
+            REQUEST_CODE.SEARCH_BOARD_CODE -> {
+                val searchKeyword = data?.getStringExtra("keyword")
+                supportFragmentManager.beginTransaction().replace(R.id.main_frame_layout, MainHomeFragment.instance(searchKeyword)).commit()
+            }
         }
-            
+
     }
 
     override fun onBackPressed() {
         val curTime = System.currentTimeMillis()
-        if((curTime - regTime) > 2000) {
+        if ((curTime - regTime) > 2000) {
             Toast.makeText(this, getString(R.string.back_press), Toast.LENGTH_SHORT).show()
             regTime = curTime
             return

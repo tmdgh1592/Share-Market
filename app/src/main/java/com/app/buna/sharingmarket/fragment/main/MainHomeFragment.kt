@@ -2,6 +2,7 @@ package com.app.buna.sharingmarket.fragment.main
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
@@ -10,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.app.buna.sharingmarket.R
 import com.app.buna.sharingmarket.REQUEST_CODE
 import com.app.buna.sharingmarket.activity.MainActivity
+import com.app.buna.sharingmarket.activity.SearchActivity
 import com.app.buna.sharingmarket.activity.WriteActivity
 import com.app.buna.sharingmarket.adapter.ProductRecyclerAdapter
 import com.app.buna.sharingmarket.callbacks.IFirebaseGetStoreDataCallback
@@ -22,6 +24,11 @@ import io.github.yavski.fabspeeddial.FabSpeedDial
 import org.koin.android.ext.android.get
 
 class MainHomeFragment(val category: String = "all") : Fragment() {
+
+    private var keyword: String? = null
+    constructor(category: String = "all", keyword: String?) : this(category) {
+        this.keyword = keyword
+    }
 
     private var binding: FragmentMainHomeBinding? = null
     private val vm: MainViewModel by lazy {
@@ -53,12 +60,38 @@ class MainHomeFragment(val category: String = "all") : Fragment() {
                 setHasFixedSize(true)
             }
 
-            vm?.getProductData(category, object : IFirebaseGetStoreDataCallback {
-                override fun complete(data: ArrayList<ProductItem>) {
-                    (binding?.productRecyclerView?.adapter as ProductRecyclerAdapter).updateData(data)
-                    vm?.productItems.value = (data)
-                }
-            })
+
+            // 키워드 검색을 한 경우
+            if (keyword != null) {
+                Log.d("search keyword", keyword)
+
+                // 게시글의 제목에 keyword가 들어가 있는 게시글들을 가져옴
+                vm?.getBoardByKeyword(keyword!!, object : IFirebaseGetStoreDataCallback {
+                    override fun complete(data: ArrayList<ProductItem>) {
+                        if (data.size == 0) { // 키워드로 찾으려는 결과가 없다면
+                            /* 리사이클러뷰 대신에 No Result View를 보여줌 */
+                            binding?.noResultView?.visibility = View.VISIBLE
+                            binding?.productRecyclerView?.visibility = View.GONE
+                        }else { // 키워드로 찾으려는 결과가 하나라도 있다면
+                            /* 리사이클러뷰를 보여줌 */
+                            binding?.noResultView?.visibility = View.GONE
+                            binding?.productRecyclerView?.visibility = View.VISIBLE
+
+                            (binding?.productRecyclerView?.adapter as ProductRecyclerAdapter).updateData(data)
+                            vm?.productItems.value = (data)
+                        }
+                    }
+                })
+            } else { // 키워드 검색없이 HomeFragment에 들어온 경우
+                vm?.getProductData(category, object : IFirebaseGetStoreDataCallback {
+                    override fun complete(data: ArrayList<ProductItem>) {
+                        (binding?.productRecyclerView?.adapter as ProductRecyclerAdapter).updateData(
+                            data
+                        )
+                        vm?.productItems.value = (data)
+                    }
+                })
+            }
 
         }
 
@@ -66,7 +99,8 @@ class MainHomeFragment(val category: String = "all") : Fragment() {
         // * 툴바 관련
         if (category == "all") { // 모두 보여주는 경우엔 Home Toolbar를 보여줌
             setHasOptionsMenu(true)
-            toolbar = binding?.toolBar!!.also { (requireActivity() as MainActivity).setSupportActionBar(it) } // 액션바 지정
+            toolbar =
+                binding?.toolBar!!.also { (requireActivity() as MainActivity).setSupportActionBar(it) } // 액션바 지정
             (requireActivity() as MainActivity).supportActionBar?.setDisplayShowTitleEnabled(false) // 레이아웃에서 타이틀 직접 만들었으므로 이건 False
             binding?.mainFab?.visibility = View.VISIBLE // Fab버튼 보여주기
         } else { // 카테고리에서 선택한 경우에는 toolbar의 text를 category로 변경해준다.
@@ -89,7 +123,10 @@ class MainHomeFragment(val category: String = "all") : Fragment() {
                         val intent = Intent(context, WriteActivity::class.java).apply {
                             addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP or Intent.FLAG_ACTIVITY_CLEAR_TOP)
                         }
-                        (requireActivity() as MainActivity).startActivityForResult(intent, REQUEST_CODE.DELETE_BOARD_CODE_FROM_MAIN) // 게시글 작성 액티비티 실행
+                        (requireActivity() as MainActivity).startActivityForResult(
+                            intent,
+                            REQUEST_CODE.DELETE_BOARD_CODE_FROM_MAIN
+                        ) // 게시글 작성 액티비티 실행
                     }
                     R.id.action_exchange -> { // fab 쇼핑버튼 버튼 클릭시
                         Snackbar.make(toolbar, "쇼핑하기", Snackbar.LENGTH_SHORT).show()
@@ -118,11 +155,20 @@ class MainHomeFragment(val category: String = "all") : Fragment() {
         when (item.itemId) {
             R.id.action_category -> { // Toolbar 카테고리 버튼 클릭
                 (requireActivity() as MainActivity).supportFragmentManager.beginTransaction()
-                    .replace(R.id.main_frame_layout, MainCategoryFragment.instance).commit() // 카테고리 Fragment로 이동
-                (requireActivity() as MainActivity).tabLayout.getTabAt(1)?.select() // 탭도 같이 움직일 수 있도록 select() 호출
+                    .replace(R.id.main_frame_layout, MainCategoryFragment.instance)
+                    .commit() // 카테고리 Fragment로 이동
+                (requireActivity() as MainActivity).tabLayout.getTabAt(1)
+                    ?.select() // 탭도 같이 움직일 수 있도록 select() 호출
             }
             R.id.action_search -> { // Toolbar 검색 버튼 클릭
-                Snackbar.make(toolbar, "Account 검색 pressed", Snackbar.LENGTH_SHORT).show()
+                // 검색 화면을 보여주기 위한 다이얼로그
+                val searchIntent = Intent(requireContext(), SearchActivity::class.java).apply {
+                    addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
+                }
+                (requireContext() as MainActivity).startActivityForResult(
+                    searchIntent,
+                    REQUEST_CODE.SEARCH_BOARD_CODE
+                )
             }
         }
 
@@ -130,7 +176,8 @@ class MainHomeFragment(val category: String = "all") : Fragment() {
     }
 
     companion object {
-        val instance = MainHomeFragment()
+        fun instance() = MainHomeFragment()
+        fun instance(keyword: String?) = MainHomeFragment(keyword = keyword)
     }
 
 

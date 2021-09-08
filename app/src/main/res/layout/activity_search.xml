@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.app.buna.sharingmarket.viewmodel.SearchViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".activity.SearchActivity">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="12dp"
+            android:layout_marginVertical="6dp"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toTopOf="parent"
+            android:background="@drawable/edit_text_gray_border">
+
+            <AutoCompleteTextView
+                android:id="@+id/auto_complete_text_view"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginHorizontal="12dp"
+                android:background="@null"
+                android:completionThreshold="2"
+                android:hint="@string/auto_complete_text_view_comment"
+                android:text="@={viewModel.keyword}"
+                android:maxLines="1"
+                android:paddingVertical="16dp"
+                android:textColor="@color/black_70"
+                android:textColorHint="@color/gray_40"
+                android:textSize="16sp"
+                android:inputType="text"
+                android:imeOptions="actionDone"
+                />
+
+            <ImageView
+                android:id="@+id/search_keyword_btn"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/toolbar_search_icon"
+                app:tint="@color/gray_40"
+                android:layout_gravity="center"
+                android:layout_marginRight="12dp"
+                android:clickable="true"
+                android:background="?android:attr/selectableItemBackgroundBorderless"/>
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
