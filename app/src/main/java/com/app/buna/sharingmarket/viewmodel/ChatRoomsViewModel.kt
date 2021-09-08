@@ -32,14 +32,9 @@ class ChatRoomsViewModel(application: Application, val context: Context) : Andro
     }
 
     fun findDestUid(users: HashMap<String, Boolean>): String? {
-        var destUid: String? = null
-        users.keys.forEach { uid ->
-            if (uid != getMyUid()) { // 본인 Uid가 아닌 상대방 Uid인 경우에 destUid Found!!
-                destUid = uid
-                return@forEach
-            }
-        }
-        return destUid
+        // haspmap에서 본인 uid가 아닌 key값을 가져옴
+        val filteredMap = users.filterKeys { !it.contains(getMyUid()!!) }
+        return filteredMap.keys.first() // 상대방 uid를 return함.
     }
 
     // User의 데이터 Model을 반환

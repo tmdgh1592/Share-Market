@@ -68,7 +68,6 @@ class MainChatFragment : Fragment() {
                                 (binding?.chatRoomRecyclerView?.adapter as ChatRoomRecyclerAdapter).update(chatRoomList, vm.destUserModel)
                             }
                         }
-
                     }
                 }
             }
