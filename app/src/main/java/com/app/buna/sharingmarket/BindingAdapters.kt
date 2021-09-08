@@ -73,9 +73,9 @@ object BindingAdapters {
         }
     }
 
-    @BindingAdapter("bubble_click")
+    @BindingAdapter("text_click")
     @JvmStatic
-    fun bindClickChatBubble(layout: ConstraintLayout, message: String) {
+    fun bindClickChatBubble(layout: TextView, message: String) {
         layout.setOnClickListener { view ->
             val clipboardManager = view.context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
             val clipData = ClipData.newPlainText("message", message)

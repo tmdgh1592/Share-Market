@@ -11,7 +11,6 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraint_layout"
-        bubble_click="@{comment.message}"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginVertical="4dp"
@@ -48,6 +47,7 @@
                 android:paddingHorizontal="8dp"
                 android:paddingVertical="6dp"
                 android:text="@{comment.message}"
+                text_click="@{comment.message}"
                 android:textAlignment="textStart"
                 android:textColor="@color/black"
                 android:textSize="16sp" />

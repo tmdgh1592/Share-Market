@@ -104,7 +104,7 @@
         <activity
             android:name=".activity.MainActivity"
             android:hardwareAccelerated="true"
-            android:usesCleartextTraffic="true" />
+            android:usesCleartextTraffic="true"/>
     </application>
 
 </manifest>

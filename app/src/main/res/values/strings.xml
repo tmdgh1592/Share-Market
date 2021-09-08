@@ -169,6 +169,7 @@
     <string name="push_access">앞으로 채팅 알림을 받습니다.</string>
     <string name="push_block">앞으로 채팅 알림을 받지 않습니다.</string>
     <string name="push_ticker">쉐어마켓에서 메세지가 도착했어요!</string>
+    <string name="push_content">알림을 펼쳐서 내용을 확인하세요!</string>
 
     <!-- Clipboard Copy -->
     <string name="clip_success">클립보드에 저장되었습니다.</string>
