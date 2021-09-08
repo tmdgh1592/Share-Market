@@ -248,12 +248,12 @@ class MainMyFragment : Fragment() {
                                         requireActivity().finish()
                                     }
                                 } else if (vm.surveyOptionId!! == 5 && surveyBinding?.surveyType5EditText?.text!!.length < 10) {
-                                    FancyChocoBar(requireActivity()).showOrangeSnackBar(getString(R.string.survey_submit_condition_1))
+                                    FancyToastUtil(requireContext()).showWarning(getString(R.string.survey_submit_condition_1))
                                 } else {
-                                    FancyChocoBar(requireActivity()).showOrangeSnackBar(getString(R.string.survey_submit_condition_2))
+                                    FancyToastUtil(requireContext()).showWarning(getString(R.string.survey_submit_condition_2))
                                 }
                             } else {
-                                FancyChocoBar(requireActivity()).showOrangeSnackBar(getString(R.string.survey_submit_condition_2))
+                                FancyToastUtil(requireContext()).showWarning(getString(R.string.survey_submit_condition_2))
                             }
                         }
                         val negBtn = surveyDialog.getButton(AlertDialog.BUTTON_NEGATIVE)

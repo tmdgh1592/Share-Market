@@ -22,6 +22,14 @@ class Const {
     }
 }
 
+class Channel {
+    companion object {
+        const val CHANNEL_ID = "1000"
+        const val CHANNEL_DESC = "푸시 알림을 전달받기 위한 채널입니다."
+        const val NOTI_ID = 1000
+    }
+}
+
 class CommentType {
     companion object {
         const val COMMENT = 0 // 단순 문자인 경우

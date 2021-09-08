@@ -89,9 +89,7 @@
         <activity android:name=".activity.InitialActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
@@ -100,11 +98,16 @@
                     android:scheme="kakao50431e61e927759909b150e64f67ff83" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.Splash" />
+        <activity android:name=".activity.Splash">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".activity.MainActivity"
             android:hardwareAccelerated="true"
-            android:usesCleartextTraffic="true"/>
+            android:usesCleartextTraffic="true" />
     </application>
 
 </manifest>

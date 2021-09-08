@@ -7,24 +7,30 @@ import com.shashank.sony.fancytoastlib.FancyToast
 class FancyToastUtil(val context: Context) {
 
     fun showSuccess(text: String) {
-        FancyToast.makeText(
+        FancyToast.makeText(context, text, FancyToast.LENGTH_LONG, FancyToast.SUCCESS, R.drawable.app_icon, false).show()
+        /*FancyToast.makeText(
             context,
             text,
             FancyToast.LENGTH_LONG,
             FancyToast.SUCCESS,
             R.drawable.app_icon,
             false
-        ).show()
+        ).show()*/
     }
 
     fun showFail(text: String) {
-        FancyToast.makeText(
+        FancyToast.makeText(context, text, FancyToast.LENGTH_LONG, FancyToast.ERROR, R.drawable.app_icon, false).show()
+        /*FancyToast.makeText(
             context,
             text,
             FancyToast.LENGTH_LONG,
             FancyToast.ERROR,
             R.drawable.app_icon,
             false
-        ).show()
+        ).show()*/
+    }
+
+    fun showWarning(text: String) {
+        FancyToast.makeText(context, text, FancyToast.LENGTH_LONG, FancyToast.WARNING, R.drawable.app_icon, false).show()
     }
 }

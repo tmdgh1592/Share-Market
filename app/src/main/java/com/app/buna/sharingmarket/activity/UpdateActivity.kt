@@ -119,28 +119,29 @@ class UpdateActivity : AppCompatActivity(), IFirebaseRepositoryCallback {
             val content = binding?.contentEditText?.text.toString()
 
             if (title.isEmpty()) { // 제목이 비어 있는 경우
-                FancyChocoBar(this).showOrangeSnackBar(getString(R.string.title_empty))
+                FancyToastUtil(this).showWarning(getString(R.string.title_empty))
                 return@setOnClickListener
             } else if (title.length < 2) { // 제목 길이가 2글자 미만인 경우
-                FancyChocoBar(this).showOrangeSnackBar(getString(R.string.title_not_enough))
+                FancyToastUtil(this).showWarning(getString(R.string.title_not_enough))
                 return@setOnClickListener
             } else if (content.isEmpty()) { // 내용이 비어 있는 경우
-                FancyChocoBar(this).showOrangeSnackBar(getString(R.string.content_empty))
+                FancyToastUtil(this).showWarning(getString(R.string.content_empty))
+                //FancyChocoBar(this).showOrangeSnackBar(getString(R.string.content_empty))
                 return@setOnClickListener
             } else if (content.length < 10) { // 내용이 충분하지 않은 경우
-                FancyChocoBar(this).showOrangeSnackBar(getString(R.string.content_not_enough))
+                FancyToastUtil(this).showWarning(getString(R.string.content_not_enough))
                 return@setOnClickListener
             } else if (writeVM?.category == null) { // 카테고리가 선택되지 않은 경우
-                FancyChocoBar(this).showOrangeSnackBar(getString(R.string.category_empty))
+                FancyToastUtil(this).showWarning(getString(R.string.category_empty))
                 return@setOnClickListener
             } else if (writeVM?.isGive == null) { // 라디오 버튼을 선택하지 않은 경우
-                FancyChocoBar(this).showOrangeSnackBar(getString(R.string.option_empty))
+                FancyToastUtil(this).showWarning(getString(R.string.option_empty))
                 return@setOnClickListener
             } else if (!NetworkStatus.isConnectedInternet(this)) { // 인터넷 연결이 되어있지 않은 경우
-                FancyChocoBar(this).showOrangeSnackBar(getString(R.string.internet_check))
+                FancyToastUtil(this).showWarning(getString(R.string.internet_check))
                 return@setOnClickListener
             } else if (location == null) { // 지역 데이터를 가져오지 못한 경우
-                FancyChocoBar(this).showAlertSnackBar(getString(R.string.upload_fail))
+                FancyToastUtil(this).showFail(getString(R.string.upload_fail))
                 return@setOnClickListener
             }
 

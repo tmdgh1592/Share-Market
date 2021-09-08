@@ -18,6 +18,7 @@ import com.app.buna.sharingmarket.adapter.LocationRecyclerAdapter
 import com.app.buna.sharingmarket.databinding.FragmentSecondInitialBinding
 import com.app.buna.sharingmarket.repository.Local.PreferenceUtil
 import com.app.buna.sharingmarket.utils.FancyChocoBar
+import com.app.buna.sharingmarket.utils.FancyToastUtil
 import com.app.buna.sharingmarket.utils.NetworkStatus
 import com.app.buna.sharingmarket.viewmodel.InitialViewModel
 import org.koin.android.ext.android.get
@@ -65,7 +66,7 @@ class InitialSecondFragment : Fragment() {
                 }
                 activity?.startActivityForResult(intent, API_COMPLETED_FINISH) // 주소 검색 액티비티 실행
             } else {
-                FancyChocoBar(requireActivity()).showOrangeSnackBar(getString(R.string.internet_check))
+                FancyToastUtil(requireContext()).showFail(getString(R.string.internet_check))
             }
         }
 
