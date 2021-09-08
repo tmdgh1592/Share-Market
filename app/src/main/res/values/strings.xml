@@ -187,7 +187,7 @@
     <string name="update">수정</string>
 
     <!-- Notification Channel Id -->
-    <string name="default_notification_channel_id">100</string>
+    <string name="default_notification_channel_id">1000</string>
 
     <!-- kakao login -->
     <string name="kakao_app_key">88e95ac2b0aa09e4bf047d1b0bd99e6f</string>

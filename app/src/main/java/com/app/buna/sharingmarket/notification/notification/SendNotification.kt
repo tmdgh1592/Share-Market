@@ -32,18 +32,34 @@ class SendNotification {
                 try {
                     val client = OkHttpClient()
                     val messageJson = JSONObject() // "key -> message"
-                    val dataJson = JSONObject() // "token(상대방)", "notification(title, message)"
-                    val notiJson = JSONObject() // "title", "body"
+                    val messageObject = JSONObject() // "token(상대방)", "notification(title, message)"
+                    val dataObject = JSONObject() // "title", "body"
 
-                    notiJson.put("title", nickname) // 보내는 사람 닉네임
-                    notiJson.put("body", message) // 메세지 내용
-                    notiJson.put("image", profileUrl) // 프로필
+                    dataObject.put("title", nickname) // 보내는 사람 닉네임
+                    dataObject.put("body", message) // 메세지 내용
+                    dataObject.put("image", profileUrl) // 프로필
+
+                    // key값을 "notification"으로 하지 않고 "data"로 하는 이유는 background에서 실행시 onMessageReceive()가 call되지 않음.
+                    messageObject.put("data", dataObject)
+                    messageObject.put("token", regToken) // 상대방 Token 입력
+
+                    messageJson.put("message", messageObject)
+
+                    // Json 구조
+                    /*
+                    * {
+                    *     "message" : {
+                    *           "data" : {
+                    *                "title" : nickname
+                    *                "body" : message
+                    *                "image" : profileUrl
+                    *           },
+                    *           "token" : regToken
+                    *     }
+                    * }
+                    * */
 
 
-                    dataJson.put("token", regToken)
-                    dataJson.put("notification", notiJson)
-
-                    messageJson.put("message", dataJson)
                     val body =
                         RequestBody.create(JSON, messageJson.toString()) // Request에 필요한 Body생성
 
@@ -60,6 +76,7 @@ class SendNotification {
                     val response = client.newCall(request).execute()
                     Log.d("response code", response.code().toString())
                     Log.d("response message", response.message())
+                    response.body()?.close()
 
                 } catch (e: Exception) {
                     Log.d("error", e.message)

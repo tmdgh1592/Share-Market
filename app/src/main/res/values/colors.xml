@@ -13,6 +13,7 @@
     <color name="gray_40">#66535353</color>
     <color name="gray_70">#B3535353</color>
     <color name="gray_20">#33535353</color>
+    <color name="gray_10">#1A535353</color>
 
     <color name="white">#FFFFFFFF</color>
     <color name="pressed_white">#F9F9F9</color>

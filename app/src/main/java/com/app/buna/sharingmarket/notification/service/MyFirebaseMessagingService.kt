@@ -30,7 +30,10 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         super.onNewToken(token)
     }
 
+
+
     @SuppressLint("LongLogTag")
+    // onMessageReceived는 앱이 foreground에 있을때만 call(호출)됨.
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         super.onMessageReceived(remoteMessage)
         Log.d("MyFirebaseMessagingService", "message received")
@@ -52,15 +55,15 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
     }
 
     private fun sendNotification(notificationManager: NotificationManager, remoteMessage: RemoteMessage) {
-        val title = remoteMessage.notification?.title // 닉네임
-        val message = remoteMessage.notification?.body // 메세지 내용
-        val profileUri = remoteMessage.notification?.imageUrl // 프로필 Url
+        val title = remoteMessage.data["title"] // 닉네임
+        val message = remoteMessage.data["body"] // 메세지 내용
+        val profileUri = remoteMessage.data["image"] // 프로필 Url
 
         // 푸시알림 클릭시 Activity 중복 실행을 막음
         val notificationIntent = Intent(this, Splash::class.java).apply {
             action = Intent.ACTION_MAIN // 태스크의 첫(메인) 액티비티로 지정한다
             addCategory(Intent.CATEGORY_LAUNCHER) // 액티비티가 어플리케이션의 런처에 첫 액티비티가 될 수 있다.
-            flags = Intent.FLAG_ACTIVITY_NEW_TASK // 새로운 태스크를 생성해서 new task에 액티비티 스택이 다시 쌓인다.
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK // 동일한 affinity가 있다면 그 task에  새로운 태스크를 생성해서 new task에 액티비티 스택이 다시 쌓인다.
         }
         
         // 메세지 클릭시 앱으로 이동하기 위한 PendingIntent
