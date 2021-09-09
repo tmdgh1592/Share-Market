@@ -8,7 +8,9 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.app.buna.sharingmarket.REQUEST_CODE
 import com.app.buna.sharingmarket.activity.ChatActivity
+import com.app.buna.sharingmarket.activity.MainActivity
 import com.app.buna.sharingmarket.callbacks.IFirebaseGetChatRoomCallback
 import com.app.buna.sharingmarket.model.items.chat.ChatModel
 import com.app.buna.sharingmarket.model.items.chat.ChatUserModel
@@ -53,7 +55,7 @@ class ChatRoomsViewModel(application: Application, val context: Context) : Andro
             putExtra("destUid", destUserModel.uid) // 채팅할 상대방 Uid를 전달 받음
             addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP or Intent.FLAG_ACTIVITY_CLEAR_TOP)
         }
-        view.context.startActivity(intent)
+        (view.context as MainActivity).startActivityForResult(intent, REQUEST_CODE.REFRESH_MAIN_CHAT_FRAGMENT)
     }
 
 }

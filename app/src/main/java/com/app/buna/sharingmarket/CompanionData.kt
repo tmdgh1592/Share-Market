@@ -14,6 +14,7 @@ class REQUEST_CODE {
         const val UPDATE_BOARD_CODE = 6002 // 게시글 업데이트
         const val SEARCH_BOARD_CODE = 6003 // 키워드로 상품 검색
         const val REFRESH_MAIN_HOME_FRAGMENT = 6004 // 화면 갱신
+        const val REFRESH_MAIN_CHAT_FRAGMENT = 6005
     }
 }
 

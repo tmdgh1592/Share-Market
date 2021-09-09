@@ -54,11 +54,14 @@ class MainChatFragment : Fragment() {
             addItemDecoration(DividerItemDecoration(requireContext(), VERTICAL))
         }
 
+        // 채팅방을 가져오는 함수
+        // Firebase의 addValueEventListener가 있기 때문에 채팅방의 내용이 갱신될때마다 가져옴 (Observer pattern)
         vm.getChatRoomList(object : IFirebaseGetChatRoomCallback {
             override fun complete(chatRoomList: ArrayList<ChatModel>) {
-                vm.chatModels = chatRoomList
+                vm.chatModels = chatRoomList // chatRoomList -> 채팅방에 사용할 데이터 리스트
                 var count = 0 // Firebase는 비동기로 데이터를 가져오기 때문에 count 변수가 가져올 전체 데이터 개수가 되면 그 때 adapter를 update해줘야 함.
-                chatRoomList.forEach { chatModel ->
+                //vm.chatModels.sortByDescending { it.lastTimestamp } // 가장 최근 채팅을 가져오기 위해 lastTimeStamp 순으로 오름차순 정렬
+                vm.chatModels.forEach { chatModel ->
                     val destUid = vm.findDestUid(chatModel.users) // 채팅 상대방 uid
 
                     if (destUid != null) {
@@ -67,7 +70,8 @@ class MainChatFragment : Fragment() {
                             count++
 
                             if (count == chatRoomList.size){ // 가져올 데이터를 모두 가져왔다면
-                                vm.destUserModelLiveData.postValue(vm.destUserModel)
+                                 // Recycler View에 알려줌
+                                (binding?.chatRoomRecyclerView?.adapter as ChatRoomRecyclerAdapter).update(vm.chatModels, vm.destUserModel)
                             }
                         }
                     }
@@ -75,9 +79,6 @@ class MainChatFragment : Fragment() {
             }
         })
 
-        vm.destUserModelLiveData.observe(viewLifecycleOwner, Observer {
-            (binding?.chatRoomRecyclerView?.adapter as ChatRoomRecyclerAdapter).update(vm.chatModels, it)
-        })
 
     }
 

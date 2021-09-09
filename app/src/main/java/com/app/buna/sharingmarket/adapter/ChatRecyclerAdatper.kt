@@ -1,5 +1,7 @@
 package com.app.buna.sharingmarket.adapter
 
+import android.app.AlertDialog
+import android.content.Context
 import android.net.Uri
 import android.util.Log
 import android.view.LayoutInflater
@@ -9,6 +11,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.app.buna.sharingmarket.CommentType
 import com.app.buna.sharingmarket.R
+import com.app.buna.sharingmarket.activity.ChatActivity
 import com.app.buna.sharingmarket.databinding.*
 import com.app.buna.sharingmarket.model.items.chat.ChatModel
 import com.app.buna.sharingmarket.model.items.chat.ChatUserModel
@@ -19,7 +22,7 @@ import com.google.firebase.ktx.Firebase
 import java.util.*
 import kotlin.collections.ArrayList
 
-class ChatRecyclerAdatper(val destModel: ChatUserModel) :
+class ChatRecyclerAdatper(val destModel: ChatUserModel, val context: Context) :
     RecyclerView.Adapter<ChatRecyclerAdatper.BaseViewHolder>() {
     var chatList = ArrayList<ChatModel.Comment>()
     private val TYPE_ME = 0
@@ -78,6 +81,10 @@ class ChatRecyclerAdatper(val destModel: ChatUserModel) :
             if (!destModel.profileImageUrl.isNullOrEmpty()) { // 상대방이 프로필을 설정했다면
                 Glide.with(binding.root).load(Uri.parse(destModel.profileImageUrl)).circleCrop()
                     .into(binding.profileImageView)
+                binding?.profileImageView.setOnClickListener {
+                    // 프로필 클릭시 확장해서 보여주기
+                    (context as ChatActivity).showProfile(Uri.parse(destModel.profileImageUrl))
+                }
             } else { // 프로필을 설정하지 않았다면 기본 프로필
                 Glide.with(binding.root).load(R.drawable.default_profile).circleCrop()
                     .into(binding.profileImageView)

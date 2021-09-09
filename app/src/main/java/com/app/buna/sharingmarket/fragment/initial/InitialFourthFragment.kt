@@ -27,7 +27,6 @@ class InitialFourthFragment : Fragment() {
 
     private var binding: FragmentFourthInitialBinding? = null
     val vm: InitialViewModel by lazy {
-        Log.d("Initial", "1")
         ViewModelProvider(this, InitialViewModel.FactoryWithFragment(requireActivity().application, requireContext(), this)).get(
             InitialViewModel::class.java
         )

@@ -2,83 +2,87 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="20dp">
+        android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            android:fontFamily="@font/wemef_semibold"
-            android:text="@string/unregister"
-            android:textColor="@color/black"
-            android:textSize="@dimen/toolbar_title_size" />
-
-        <RadioGroup
-            android:id="@+id/survey_radio_group"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@+id/title"
-            android:layout_marginTop="18dp">
+            android:layout_height="match_parent"
+            android:padding="20dp">
 
-            <RadioButton
-                android:id="@+id/survey_type_1"
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/wemef_semibold"
+                android:text="@string/unregister"
+                android:textColor="@color/black"
+                android:textSize="@dimen/toolbar_title_size"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <RadioGroup
+                android:id="@+id/survey_radio_group"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/survey_type_1" />
+                android:layout_marginTop="18dp"
+                app:layout_constraintTop_toBottomOf="@+id/title">
 
-            <RadioButton
-                android:id="@+id/survey_type_2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/survey_type_2" />
+                <RadioButton
+                    android:id="@+id/survey_type_1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/survey_type_1" />
 
-            <RadioButton
-                android:id="@+id/survey_type_3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/survey_type_3" />
+                <RadioButton
+                    android:id="@+id/survey_type_2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/survey_type_2" />
 
-            <RadioButton
-                android:id="@+id/survey_type_4"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/survey_type_4" />
+                <RadioButton
+                    android:id="@+id/survey_type_3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/survey_type_3" />
 
-            <RadioButton
-                android:id="@+id/survey_type_5"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/survey_type_5" />
-        </RadioGroup>
+                <RadioButton
+                    android:id="@+id/survey_type_4"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/survey_type_4" />
 
-        <LinearLayout
-            android:id="@+id/survey_type_5_layout"
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            app:layout_constraintTop_toBottomOf="@+id/survey_radio_group"
-            android:background="@drawable/edit_text_gray_border"
-            android:visibility="gone">
+                <RadioButton
+                    android:id="@+id/survey_type_5"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/survey_type_5" />
+            </RadioGroup>
 
-            <EditText
-                android:id="@+id/survey_type_5_edit_text"
+            <LinearLayout
+                android:id="@+id/survey_type_5_layout"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
-                android:maxLength="100"
-                android:layout_marginHorizontal="10dp"
-                android:layout_marginVertical="6dp"
-                android:hint="@string/survey_type_5_edit_hint"
-                android:textColor="@color/black"
-                android:textSize="14sp"
-                android:gravity="left|top"
-                android:background="@null" />
-        </LinearLayout>
+                android:background="@drawable/edit_text_gray_border"
+                android:visibility="gone"
+                app:layout_constraintTop_toBottomOf="@+id/survey_radio_group">
+
+                <EditText
+                    android:id="@+id/survey_type_5_edit_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:layout_marginHorizontal="10dp"
+                    android:layout_marginVertical="6dp"
+                    android:background="@null"
+                    android:gravity="left|top"
+                    android:hint="@string/survey_type_5_edit_hint"
+                    android:maxLength="100"
+                    android:textColor="@color/black"
+                    android:textSize="14sp" />
+            </LinearLayout>
 
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
 </layout>

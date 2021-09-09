@@ -18,6 +18,8 @@ import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 
 class InitialActivity : AppCompatActivity() {
 
@@ -113,7 +115,7 @@ class InitialActivity : AppCompatActivity() {
 
         val sosock = PreferenceUtil.getString(this, "sosock", "")
 
-        if (user != null && sosock != "") {
+        if (user != null && sosock != "" && Firebase.auth.currentUser != null) {
             startActivity(Intent(this, MainActivity::class.java), ActivityOptions.makeSceneTransitionAnimation(this).toBundle())
             finish()
             overridePendingTransition(R.anim.anim_fade_in, R.anim.anim_fade_out);

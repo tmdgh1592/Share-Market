@@ -10,11 +10,13 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.app.buna.sharingmarket.R
+import com.app.buna.sharingmarket.activity.ChatActivity
 import com.app.buna.sharingmarket.model.items.chat.ChatModel
 import com.app.buna.sharingmarket.model.items.chat.ChatUserModel
 import com.app.buna.sharingmarket.notification.notification.SendNotification
 import com.app.buna.sharingmarket.repository.Firebase.FirebaseRepository
 import com.app.buna.sharingmarket.repository.Local.PreferenceUtil
+import com.app.buna.sharingmarket.utils.FancyToastUtil
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
@@ -33,7 +35,7 @@ class ChatViewModel(application: Application, val context: Context) : AndroidVie
     //상대방과 채팅한 기록이 있는지 확인 후 있으면 채팅방 uid 가져옴
     var chatRoomUid: String? = null
 
-    fun sendMesage(complete: (firstChatList: ArrayList<ChatModel.Comment>?) -> Unit) {
+    fun sendMesage(complete: (firstChatList: ArrayList<ChatModel.Comment>?) -> Unit, success: (Boolean) -> Unit) {
         if (message != null && message.trim() != "" && destChatModel != null) {
             //채팅방 유저 맵
             val users = HashMap<String, Boolean>().apply {
@@ -55,14 +57,17 @@ class ChatViewModel(application: Application, val context: Context) : AndroidVie
                         complete(chatList)
                     }
                 }
-                complete(null)
             }
 
             // 상대방 유저 모델이 null이 아니고 상대방이 푸시 승인 상태라면
             if (destChatModel != null && destPushState.value!!) {
-                FirebaseRepository.instance.getPushToken(destChatModel!!.uid) { destPushToken ->
-                    sendPushGson(destPushToken, getNickname(), comment.message)
-                }
+                FirebaseRepository.instance.getPushToken(destChatModel!!.uid, { destPushToken ->
+                    if (destPushToken != null) {
+                        sendPushGson(destPushToken, getNickname(), comment.message)
+                    } else { // 사용자가 회원탈퇴하면 token이 null값이 됨
+
+                    }
+                }, success)
             }
 
         }
@@ -103,12 +108,8 @@ class ChatViewModel(application: Application, val context: Context) : AndroidVie
         )
     }
 
-    fun clipMessage(context: Context) {
-        val clipboardManager = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-        val clipData = ClipData.newPlainText("message", message)
-        clipboardManager.setPrimaryClip(clipData)
-
-        Toast.makeText(context, context.getString(R.string.clip_success), Toast.LENGTH_SHORT).show()
+    fun removeChatRoom(complete: () -> Unit) {
+        FirebaseRepository.instance.removeChatRoom(chatRoomUid, complete)
     }
 
     fun getUid() = Firebase.auth.uid

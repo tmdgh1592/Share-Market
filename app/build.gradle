@@ -70,7 +70,10 @@ dependencies {
     implementation 'com.google.firebase:firebase-messaging'
     implementation 'com.google.firebase:firebase-analytics'
 
-    /**/
+    /* Image Alert Dialog */
+    implementation 'com.github.chathuralakmal:AndroidImagePopup:1.2.2'
+
+    /*ok http*/
     implementation 'com.google.auth:google-auth-library-oauth2-http:1.1.0'
 
     /* Koin */

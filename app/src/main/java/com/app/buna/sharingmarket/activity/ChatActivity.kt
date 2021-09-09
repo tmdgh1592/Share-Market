@@ -1,5 +1,6 @@
 package com.app.buna.sharingmarket.activity
 
+import android.net.Uri
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -17,6 +18,7 @@ import com.app.buna.sharingmarket.model.items.chat.ChatUserModel
 import com.app.buna.sharingmarket.utils.FancyToastUtil
 import com.app.buna.sharingmarket.utils.NetworkStatus
 import com.app.buna.sharingmarket.viewmodel.ChatViewModel
+import com.ceylonlabs.imageviewpopup.ImagePopup
 import kotlinx.android.synthetic.main.activity_chat.*
 import org.koin.android.ext.android.get
 
@@ -46,10 +48,10 @@ class ChatActivity : AppCompatActivity() {
         viewModel.registerChatRoomUid(intent.getStringExtra("destUid")) {
             viewModel.getChatList { newChatList ->
                 if (newChatList.isNotEmpty()) {
-                     // 리사이클러뷰에 새로운 채팅 데이터를 전달
+                    // 리사이클러뷰에 새로운 채팅 데이터를 전달
                     (binding.chatRecyclerView.adapter as ChatRecyclerAdatper).update(newChatList)
                     // 채팅 스크롤 맨 밑으로 이동
-                    binding?.chatRecyclerView.scrollToPosition((binding.chatRecyclerView.adapter as ChatRecyclerAdatper).itemCount-1)
+                    binding?.chatRecyclerView.scrollToPosition((binding.chatRecyclerView.adapter as ChatRecyclerAdatper).itemCount - 1)
                 }
             }
         }
@@ -67,7 +69,7 @@ class ChatActivity : AppCompatActivity() {
             if (NetworkStatus.isConnectedInternet(this)) { // 인터넷이 연결되어 있을 때만
                 // 메세지를 과도하게 보내는 것을 방지하기 위함
                 binding?.submitBtn.isClickable = false
-                viewModel.sendMesage { firstChatList ->
+                viewModel.sendMesage({ firstChatList ->
                     if (firstChatList != null) {
                         // 맨 처음에 채팅을 보내면 해당 채팅 가져오도록 설정
                         (binding.chatRecyclerView.adapter as ChatRecyclerAdatper).update(
@@ -76,7 +78,14 @@ class ChatActivity : AppCompatActivity() {
                     }
                     /*// 메세지가 다 전송되면 채팅전송 버튼 다시 활성화
                     binding?.submitBtn.isClickable = true*/
-                }
+                }, { success ->
+                    if (!success) { // 토큰이 유효하지 않아 메세지 보내기에 실패했을 때 (채팅방을 삭제하기 위한 setResult)
+                        viewModel.removeChatRoom { // 해당 채팅방을 DB에서 제거
+                            setResult(RESULT_OK)
+                            finish()
+                        }
+                    }
+                })
                 binding?.chatEditTextView.text.clear()
                 viewModel.message = ""
 
@@ -93,7 +102,7 @@ class ChatActivity : AppCompatActivity() {
 
 
         binding?.chatRecyclerView.apply {
-            adapter = ChatRecyclerAdatper(viewModel.destChatModel!!).apply {
+            adapter = ChatRecyclerAdatper(viewModel.destChatModel!!, this@ChatActivity).apply {
                 setHasStableIds(true)
             }
             layoutManager = LinearLayoutManager(this@ChatActivity)
@@ -101,7 +110,7 @@ class ChatActivity : AppCompatActivity() {
         }
 
         // 채팅 맨 밑으로 이동
-        binding?.chatRecyclerView.scrollToPosition((binding.chatRecyclerView.adapter as ChatRecyclerAdatper).itemCount-1)
+        binding?.chatRecyclerView.scrollToPosition((binding.chatRecyclerView.adapter as ChatRecyclerAdatper).itemCount - 1)
 
     }
 
@@ -110,13 +119,25 @@ class ChatActivity : AppCompatActivity() {
 
         // 상대방 uid를 통해 roomUid를 찾음
         viewModel.getChatRoomUid(destUid) { roomUid ->
-            if(roomUid != null) { // 상대방과의 채팅방이 있다면
+            if (roomUid != null) { // 상대방과의 채팅방이 있다면
                 // 상대방 uid를 통해 상대방의 push 허용 상태를 가져옴
                 viewModel.canReceivePush(destUid) { result ->
                     viewModel.destPushState.postValue(result)
                 }
             }
         }
+    }
+
+    fun showProfile(profileUri: Uri) {
+        val profilePopup = ImagePopup(this).apply {
+            windowWidth = 800
+            windowHeight = 800
+            isHideCloseIcon = true
+            isImageOnClickClose = true
+            initiatePopupWithPicasso(profileUri)
+        }
+        profilePopup.viewPopup()
+
     }
 
     override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
@@ -144,12 +165,14 @@ class ChatActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when(item.itemId) {
+        when (item.itemId) {
             R.id.item_noti -> {
                 if (viewModel.myPushState.value!!) { // 현재 푸시를 받는 상태인데 푸시를 차단하고 싶어서 버튼을 누른 경우
-                    Toast.makeText(this, getString(R.string.push_block), Toast.LENGTH_LONG).show() // 푸시알림 차단 메세지 출력
+                    Toast.makeText(this, getString(R.string.push_block), Toast.LENGTH_LONG)
+                        .show() // 푸시알림 차단 메세지 출력
                 } else { // 현재 푸시를 차단한 상태인데 푸시를 받겠다고 버튼을 누른 경우
-                    Toast.makeText(this, getString(R.string.push_access), Toast.LENGTH_LONG).show() // 푸시알림 승인 메세지 출력
+                    Toast.makeText(this, getString(R.string.push_access), Toast.LENGTH_LONG)
+                        .show() // 푸시알림 승인 메세지 출력
                 }
                 viewModel.myPushState.postValue(viewModel.myPushState.value?.not())
             }
@@ -181,7 +204,12 @@ class ChatActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         // 나갈 때 푸시 알림 상태 바꿈 (바로 서버에서 상태를 바꾸면 채팅방 내에서도 푸시알림이 전송됨.)
-        viewModel.setPushState(viewModel.myPushState.value!!, viewModel.chatRoomUid!!, viewModel.getUid()!!)
+        if (viewModel.chatRoomUid != null && viewModel.myPushState != null)
+        viewModel.setPushState(
+            viewModel.myPushState.value!!,
+            viewModel.chatRoomUid!!,
+            viewModel.getUid()!!
+        )
 
         // 채팅방에서 나갈 때 채팅수신 승인 상태라면
         if (viewModel.myPushState.value == true && viewModel.chatRoomUid != null) {

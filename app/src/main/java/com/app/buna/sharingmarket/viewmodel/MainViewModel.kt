@@ -92,6 +92,7 @@ class MainViewModel(application: Application, val context: Context) :
             Firebase.auth.currentUser!!.delete().addOnSuccessListener {
                 Log.d("MainViewModel", "User account deleted")
                 PreferenceUtil.putInt(context, "fragment_page", 0) // 현재까지 진행한 fragment_page를 초기화면으로 돌림
+                PreferenceUtil.putInt(context, "push", 0) // 푸시 값으로 초기화
                 activityFinishCallback() // 액티비티 종료 콜백
             }.addOnFailureListener { exception ->
                 print(exception.message)

@@ -137,7 +137,7 @@
     <string name="survey_type_1">회원탈퇴 후 재가입을 위해서</string>
     <string name="survey_type_2">유저간의 거래 활성도가 낮아서</string>
     <string name="survey_type_3">앱을 사용하기 불편해서</string>
-    <string name="survey_type_4">더 이상 앱을 사용하기 않아서</string>
+    <string name="survey_type_4">앱을 더 이상 사용하기 않아서</string>
     <string name="survey_type_5">기타 사유</string>
     <string name="survey_type_5_edit_hint">탈퇴하시려는 사유를 10자 이상 작성해주세요 :D</string>
     <!--unregister survey alert dialog-->
@@ -173,6 +173,7 @@
     <string name="push_block">앞으로 채팅 알림을 받지 않습니다.</string>
     <string name="push_ticker">쉐어마켓에서 메세지가 도착했어요!</string>
     <string name="push_content">알림을 펼쳐서 내용을 확인하세요!</string>
+    <string name="dest_is_null">존재하지 않은 사용자입니다.</string>
 
     <!-- Clipboard Copy -->
     <string name="clip_success">클립보드에 저장되었습니다.</string>

@@ -624,6 +624,17 @@ class FirebaseRepository {
         }
     }
 
+    // 채팅방을 삭제하는 함수
+    fun removeChatRoom(roomUid: String?, complete: () -> Unit) {
+        if (roomUid != null) {
+            firebaseDatabaseInstance.getReference("chatrooms").child(roomUid!!).removeValue().addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    complete()
+                }
+            }
+        }
+    }
+
     // 채팅을 보내는 메소드
     fun sendMessage(
         chatRoomUid: String?,
@@ -765,12 +776,17 @@ class FirebaseRepository {
 
     // 채팅을 보내면 푸시를 보내기 위해 Token을 얻기 위한 콜백 함수
     // uid: push를 보낼 사용자의 Uid
-    fun getPushToken(uid: String, complete: (String) -> Unit) {
+    fun getPushToken(uid: String, complete: (String?) -> Unit, success: (Boolean) -> Unit) {
         firebaseStoreInstance.collection("pushToken").document(uid).get()
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    val token = task.result.get("pushtoken") as String
-                    complete(token)
+                    if (task.result.get("pushtoken") != null) {
+                        val token = task.result.get("pushtoken") as String
+                        complete(token)
+                        success(true)
+                    } else {
+                        success(false) // push token이 존재하지 않을 때, ex)상대방이 탈퇴한 경우
+                    }
                 }
             }
 
