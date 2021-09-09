@@ -234,7 +234,7 @@
             android:layout_marginRight="@dimen/layout_frame_horizontal_margin"
             android:layout_marginTop="@dimen/layout_frame_vertical_margin"
             android:layout_marginBottom="@dimen/layout_frame_vertical_margin"
-            android:hint="@string/content"
+            android:hint="@string/content_share_hint"
             android:text="@{viewModel.item.content}"
             android:textSize="@dimen/write_edit_text_size"
             android:background="@null"

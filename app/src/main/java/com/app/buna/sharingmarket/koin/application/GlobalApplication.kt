@@ -16,7 +16,7 @@ class GlobalApplication : Application() {
 
         KakaoSdk.init(this, getString(R.string.kakao_app_key))
 
-        /*Koin*/
+        /* Koin */
         startKoin {
             androidLogger(Level.NONE)
             androidContext(this@GlobalApplication)

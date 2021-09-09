@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.app.buna.sharingmarket.R
 import com.app.buna.sharingmarket.REQUEST_CODE
+import com.app.buna.sharingmarket.WriteType
 import com.app.buna.sharingmarket.activity.MainActivity
 import com.app.buna.sharingmarket.activity.SearchActivity
 import com.app.buna.sharingmarket.activity.WriteActivity
@@ -115,8 +116,8 @@ class MainHomeFragment(val category: String = "all") : Fragment() {
 
 
         /* Fab 버튼 관련 */
-        val speedDialView = binding?.mainFab
-        speedDialView?.setMenuListener(object : FabSpeedDial.MenuListener {
+
+        binding?.mainFab?.setMenuListener(object : FabSpeedDial.MenuListener {
             override fun onPrepareMenu(p0: NavigationMenu?): Boolean {
                 return true
             }
@@ -126,12 +127,18 @@ class MainHomeFragment(val category: String = "all") : Fragment() {
                     R.id.action_write -> { // fab 무료나눔 버튼 클릭시
                         // 게시글 작성(WriteActivity) 실행을 위한 Intent
                         val intent = Intent(context, WriteActivity::class.java).apply {
+                            putExtra("write_type", WriteType.SHARE)
                             addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP or Intent.FLAG_ACTIVITY_CLEAR_TOP)
                         }
                         (requireActivity() as MainActivity).startActivity(intent) // 게시글 작성 액티비티 실행
                     }
                     R.id.action_exchange -> { // fab 쇼핑버튼 버튼 클릭시
-                        Snackbar.make(toolbar, "쇼핑하기", Snackbar.LENGTH_SHORT).show()
+                        // 게시글 작성(WriteActivity) 실행을 위한 Intent
+                        val intent = Intent(context, WriteActivity::class.java).apply {
+                            putExtra("write_type", WriteType.EXCHANGE)
+                            addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP or Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                        }
+                        (requireActivity() as MainActivity).startActivity(intent) // 게시글 작성 액티비티 실행
                     }
                 }
                 return false

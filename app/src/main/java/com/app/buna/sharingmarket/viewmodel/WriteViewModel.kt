@@ -16,6 +16,7 @@ class WriteViewModel(application: Application) : AndroidViewModel(application) {
 
     var category: String? = null
     var isGive: Boolean? = null
+    var isExchange: Boolean = false
     var imagePaths = ArrayList<String>(Const.MAX_PHOTO_SIZE)
     var imagePathHash = HashMap<String, Boolean>()
     var imageCount: MutableLiveData<Int> = MutableLiveData(0)

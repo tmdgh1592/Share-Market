@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.text.Spannable
 import android.text.SpannableStringBuilder
 import android.text.style.StyleSpan
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -26,6 +27,7 @@ class InitialFourthFragment : Fragment() {
 
     private var binding: FragmentFourthInitialBinding? = null
     val vm: InitialViewModel by lazy {
+        Log.d("Initial", "1")
         ViewModelProvider(this, InitialViewModel.FactoryWithFragment(get(), requireContext(), this)).get(
             InitialViewModel::class.java
         )

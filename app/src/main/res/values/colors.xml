@@ -41,7 +41,7 @@
     <!--type color-->
     <color name="give_color">#CDDC39</color>
     <color name="need_color">#FFC107</color>
-    <color name="exchange_color">#FFF280</color>
+    <color name="exchange_color">#FF78A6</color>
     <color name="complete_color">#606060</color>
 
     <!--gallery image picker for profile color-->

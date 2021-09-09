@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.*
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.widget.RadioGroup
 import androidx.annotation.IdRes
 import androidx.appcompat.app.AlertDialog
@@ -16,6 +17,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.app.buna.sharingmarket.Const
 import com.app.buna.sharingmarket.R
 import com.app.buna.sharingmarket.REQUEST_CODE
+import com.app.buna.sharingmarket.WriteType
 import com.app.buna.sharingmarket.callbacks.IFirebaseRepositoryCallback
 import com.app.buna.sharingmarket.databinding.ActivityWriteBinding
 import com.app.buna.sharingmarket.model.items.ProductItem
@@ -53,6 +55,17 @@ class WriteActivity : AppCompatActivity(), IFirebaseRepositoryCallback {
     }
 
     fun initView() {
+
+        // 만약 교환하기 글쓰기일때 뷰 세팅
+        if (intent.getIntExtra("write_type", WriteType.SHARE)!! == WriteType.EXCHANGE) {
+            binding?.toolbarText?.text = getString(R.string.exchange_activity_toolbar_title)
+            binding?.contentEditText?.hint = getString(R.string.content_exchange_hint)
+            binding?.typeRadioGroup?.visibility = View.GONE
+            binding?.divider4?.visibility = View.GONE
+            vm?.isGive = false
+            vm?.isExchange = true
+        }
+
         // 카테고리 Spinner 아이템 선택 리스너
         val categoryList = ArrayList<SpinnerModel>()
         resources.getStringArray(R.array.category_title).forEach {
@@ -143,7 +156,7 @@ class WriteActivity : AppCompatActivity(), IFirebaseRepositoryCallback {
                 likeCount = 0, // 좋아요 개수
                 isComplete = false, // 거래 완료된지 여부
                 isGive = vm?.isGive!!, // 주는건지 받는건지
-                isExchange = false, // 무료나눔 Activity이기 때문에 교환은 false 처리
+                isExchange = vm?.isExchange!!, // 무료나눔 Activity이기 때문에 교환은 false 처리
                 fileNamesForDelete = vm?.fileNameForDelete!!
             )
             vm?.uploadProduct(item, this)

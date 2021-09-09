@@ -24,6 +24,13 @@ class Const {
     }
 }
 
+class WriteType {
+    companion object {
+        const val SHARE = 0
+        const val EXCHANGE = 1
+    }
+}
+
 class Channel {
     companion object {
         const val CHANNEL_ID = "1000"

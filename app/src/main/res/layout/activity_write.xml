@@ -33,6 +33,7 @@
                 android:layout_marginRight="@dimen/toolbar_icon_margin"
                 android:background="?attr/selectableItemBackgroundBorderless"/>
             <TextView
+                android:id="@+id/toolbar_text"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:text="@string/write_activity_toolbar_title"
@@ -231,7 +232,7 @@
             android:layout_marginRight="@dimen/layout_frame_horizontal_margin"
             android:layout_marginTop="@dimen/layout_frame_vertical_margin"
             android:layout_marginBottom="@dimen/layout_frame_vertical_margin"
-            android:hint="@string/content"
+            android:hint="@string/content_share_hint"
             android:textSize="@dimen/write_edit_text_size"
             android:background="@null"
             android:gravity="top|left"

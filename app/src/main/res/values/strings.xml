@@ -46,13 +46,15 @@
     <string name="update_fail">알 수 없는 오류로 게시글 수정에 실패하였습니다.</string>
 
     <string name="write_activity_toolbar_title">무료나눔 글쓰기</string>
+    <string name="exchange_activity_toolbar_title">교환해요 글쓰기</string>
     <string name="update_activity_toolbar_title">게시글 수정</string>
 
     <string name="done">완료</string>
 
     <string name="title">제목</string>
     <string name="category">카테고리</string>
-    <string name="content">나눔하실 물건에 대한 설명을 작성해주세요 :D\n\nEx) 안 쓰는 키보드 무료로 나눠드립니다!\n무료인 대신 택배는 착불입니다.\n채팅으로 연락주세요~^^</string>
+    <string name="content_share_hint">나눔하실 물건에 대한 설명을 작성해주세요 :D\n\nEx) 안 쓰는 키보드 무료로 나눠드립니다!\n무료인 대신 택배는 착불입니다.\n채팅으로 연락주세요~^^</string>
+    <string name="content_exchange_hint">교환하실 물건에 대한 설명을 작성해주세요 :D\n\nEx) 적정한 가격대의 소파 교환하실 분 찾습니다.\n가격대는 20만원대 생각하고 있습니다!\n채팅 부탁드려요~^^</string>
 
     <string name="give">드릴게요!</string>
     <string name="need">필요해요!</string>
