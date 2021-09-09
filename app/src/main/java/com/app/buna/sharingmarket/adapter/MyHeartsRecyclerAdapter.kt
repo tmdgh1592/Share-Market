@@ -9,7 +9,7 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.app.buna.sharingmarket.R
 import com.app.buna.sharingmarket.activity.MyHeartsActivity
-import com.app.buna.sharingmarket.databinding.MyBoardItemBinding
+import com.app.buna.sharingmarket.databinding.ItemMyBoardBinding
 import com.app.buna.sharingmarket.model.items.ProductItem
 import com.app.buna.sharingmarket.viewmodel.MyBoardViewModel
 
@@ -18,7 +18,7 @@ class MyHeartsRecyclerAdapter(val viewModel: MyBoardViewModel, val context : Con
 
     var myBoardList: ArrayList<ProductItem> = ArrayList()
 
-    class MyViewHolder(val binding: MyBoardItemBinding) : RecyclerView.ViewHolder(binding.root) {
+    class MyViewHolder(val binding: ItemMyBoardBinding) : RecyclerView.ViewHolder(binding.root) {
         val typeTextView = binding?.productType
         val frameView = binding?.frameView
         val completeView = binding?.completeView
@@ -29,7 +29,7 @@ class MyHeartsRecyclerAdapter(val viewModel: MyBoardViewModel, val context : Con
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
-        val binding = MyBoardItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding = ItemMyBoardBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return MyViewHolder(binding)
     }
 

@@ -191,6 +191,11 @@
     <string name="auto_complete_text_view_comment">원하시는 상품명을 검색해보세요!</string>
     <string name="not_enough_keyword_length">키워드를 2글자 이상 입력해주세요!</string>
 
+
+    <!--share-->
+    <string name="share_done_toast_comment">나눔을 완료하였습니다!</string>
+    <string name="share_not_done_toast_comment">게시글을 나눔 상태로 변경하였습니다!</string>
+
     <!-- Notification Channel Id -->
     <string name="default_notification_channel_id">1000</string>
 

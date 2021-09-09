@@ -619,6 +619,7 @@ class FirebaseRepository {
             val board = transaction.get(doc).toObject(ProductItem::class.java)
             board?.isComplete = isDone
             transaction.set(doc, board!!)
+        }.addOnSuccessListener {
             callback() // 트랜잭션이 끝나면 액티비티를 종료하기 위한 callback을 호출
         }
     }

@@ -102,11 +102,8 @@ class MainActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode != RESULT_OK) return
+
         when (requestCode) {
-            REQUEST_CODE.DELETE_BOARD_CODE_FROM_MAIN -> { // 게시글을 삭제 했다면
-                Log.d("MainActivity -> onActivityResult", "replace MainHomeFragment")
-                //replaceFragment(MainHomeFragment()) // 게시글을 새로 불러오기 위해 HomeFragment 다시 실행
-            }
             REQUEST_CODE.API_COMPLETED_FINISH -> {// 다음 주소에서 주소 선택했을 때 :: AddressApiWebView
                 var jibun: String? = data?.getStringExtra("jibun")
                 Log.d("Main", jibun)
@@ -116,7 +113,13 @@ class MainActivity : AppCompatActivity() {
             }
             REQUEST_CODE.SEARCH_BOARD_CODE -> {
                 val searchKeyword = data?.getStringExtra("keyword")
-                supportFragmentManager.beginTransaction().replace(R.id.main_frame_layout, MainHomeFragment.instance(searchKeyword)).commit()
+                supportFragmentManager.beginTransaction()
+                    .replace(R.id.main_frame_layout, MainHomeFragment.instance(searchKeyword))
+                    .commit()
+            }
+            REQUEST_CODE.REFRESH_MAIN_HOME_FRAGMENT, REQUEST_CODE.UPDATE_BOARD_CODE -> { // 상품 정보 삭제, 수정, 나눔완료 등으로 인한 화면 갱신
+                supportFragmentManager.beginTransaction()
+                    .replace(R.id.main_frame_layout, MainHomeFragment.instance()).commit()
             }
         }
 

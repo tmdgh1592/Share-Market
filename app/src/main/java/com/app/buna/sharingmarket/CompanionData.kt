@@ -8,11 +8,12 @@ class REQUEST_CODE {
         const val REGISTER_OK_CODE = 4000 // 판매 글 등록 성공
         const val REGISTER_FAIL_CODE = 4001 // 판매 글 등록 실패
         const val IMAGE_PICKER_REQUEST_CODE = 5000 // 이미지 피커 갤러리 request 코드
-        const val DELETE_BOARD_CODE_FROM_MAIN = 6000
-        const val DELETE_BOARD_CODE_FROM_MY_BOARD = 6001
-        const val DELETE_BOARD_CODE_FROM_MY_HEART = 6002
-        const val UPDATE_BOARD_CODE = 6002
-        const val SEARCH_BOARD_CODE = 6003
+        const val DELETE_BOARD_CODE_FROM_MAIN = 6000 // 게시글 삭제
+        const val DELETE_BOARD_CODE_FROM_MY_BOARD = 6001 // 내 글 삭제
+        const val DELETE_BOARD_CODE_FROM_MY_HEART = 6002 // 좋아요 누른글 삭제
+        const val UPDATE_BOARD_CODE = 6002 // 게시글 업데이트
+        const val SEARCH_BOARD_CODE = 6003 // 키워드로 상품 검색
+        const val REFRESH_MAIN_HOME_FRAGMENT = 6004 // 화면 갱신
     }
 }
 

@@ -15,10 +15,12 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.app.buna.sharingmarket.MenuId
 import com.app.buna.sharingmarket.R
+import com.app.buna.sharingmarket.REQUEST_CODE
 import com.app.buna.sharingmarket.REQUEST_CODE.Companion.UPDATE_BOARD_CODE
 import com.app.buna.sharingmarket.adapter.ImageSliderAdapter
 import com.app.buna.sharingmarket.databinding.ActivityBoardBinding
 import com.app.buna.sharingmarket.model.items.ProductItem
+import com.app.buna.sharingmarket.utils.FancyToastUtil
 import com.app.buna.sharingmarket.viewmodel.BoardViewModel
 import com.bumptech.glide.Glide
 import com.kakao.sdk.template.model.*
@@ -38,6 +40,9 @@ class BoardActivity : AppCompatActivity() {
 
         vm?.item =
             intent.getParcelableExtra<ProductItem>("product_item") // MainHomeFragment에서 전달받은 데이터
+        vm.originHeartState = vm?.item.favorites.containsKey(vm.getUid())
+        vm.nowHeartState = vm.originHeartState
+
         initBinding()
         initView()
     }
@@ -109,8 +114,10 @@ class BoardActivity : AppCompatActivity() {
                     setOnClickListener {
                         AlertDialog.Builder(this@BoardActivity)
                             .setMessage(getString(R.string.share_not_done_message))
-                            .setPositiveButton(getString(R.string.ok)) { dialog, id ->
+                            .setPositiveButton(getString(R.string.ok)) { _, _ ->
+                                FancyToastUtil(this@BoardActivity).showSuccess(getString(R.string.share_not_done_message))
                                 vm?.shareDone(false) { // 나눔 완료로 상태 표시
+                                    setResult(RESULT_OK)
                                     finish()
                                 }
                             }.setNegativeButton(getString(R.string.cancel)) { dialog, id ->
@@ -126,8 +133,10 @@ class BoardActivity : AppCompatActivity() {
                         AlertDialog.Builder(this@BoardActivity)
                             .setTitle(getString(R.string.share_done))
                             .setMessage(getString(R.string.share_done_message))
-                            .setPositiveButton(getString(R.string.ok)) { dialog, id ->
+                            .setPositiveButton(getString(R.string.ok)) { _, _ ->
+                                FancyToastUtil(this@BoardActivity).showSuccess(getString(R.string.share_done_message))
                                 vm?.shareDone(true) { // 나눔 완료로 상태 표시
+                                    setResult(RESULT_OK)
                                     finish()
                                 }
                             }.setNegativeButton(getString(R.string.cancel)) { dialog, id ->
@@ -179,6 +188,7 @@ class BoardActivity : AppCompatActivity() {
             R.id.action_heart -> {
                 vm?.clickHeart { newState ->
                     // 새로운 상태가 좋아요 누른 상태이면
+                    vm.nowHeartState  = newState
                     if (newState) {
                         item.icon = ContextCompat.getDrawable(this, R.drawable.like_heart)
                         vm.item.favorites[vm.getUid()!!] = true
@@ -226,11 +236,11 @@ class BoardActivity : AppCompatActivity() {
 
         // 좋아요 누른 여부에 따라 Toolbar 아이콘 변경
         if (vm?.item.favorites.containsKey(uid)) { // 좋아요 목록에 본인인 포함되어 있으면 하트 활성화
-            var heart_icon = ContextCompat.getDrawable(this, R.drawable.like_heart)
-            menu?.findItem(R.id.action_heart)?.setIcon(heart_icon)
+            var heartIcon = ContextCompat.getDrawable(this, R.drawable.like_heart)
+            menu?.findItem(R.id.action_heart)?.icon = heartIcon
         } else { // 좋아요 목록에 본인인 포함되어 있지 않으면 하트 비활성화
-            var heart_icon = ContextCompat.getDrawable(this, R.drawable.not_like_heart)
-            menu?.findItem(R.id.action_heart)?.setIcon(heart_icon)
+            var heartIcon = ContextCompat.getDrawable(this, R.drawable.not_like_heart)
+            menu?.findItem(R.id.action_heart)?.icon = heartIcon
         }
 
         // 본인 게시글 여부에 따라 삭제 버튼 동적으로 추가 및 아이콘 배치 변경
@@ -253,11 +263,21 @@ class BoardActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        //super.onBackPressed()
-        Log.d("BoardActivity", "onbackpressed")
-        if (!vm?.item.favorites.containsKey(vm?.getUid())) {
+        if(vm.isHeartStateChanged()) {
             setResult(RESULT_OK)
         }
         finish()
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if(resultCode != RESULT_OK) {
+            return
+        }
+
+        if (requestCode == UPDATE_BOARD_CODE) { // 게시글을 업데이트 했다면 뷰 갱신을 위한 resultCode
+            setResult(RESULT_OK)
+            finish()
+        }
     }
 }

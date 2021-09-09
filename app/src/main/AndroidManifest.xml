@@ -25,7 +25,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ShareMarket"
         android:usesCleartextTraffic="true">
-        <activity android:name=".activity.SearchActivity"></activity>
+        <activity android:name=".activity.ExchangeActivity"></activity>
+        <activity android:name=".activity.SearchActivity" />
         <activity android:name=".fragment.dialog.SearchBoardDialog" /> <!-- 푸시 알림을 수신하기 위한 서비스 -->
         <service android:name=".notification.service.MyFirebaseMessagingService">
             <intent-filter>

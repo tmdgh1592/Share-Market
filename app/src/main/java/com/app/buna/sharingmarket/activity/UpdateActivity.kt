@@ -328,6 +328,7 @@ class UpdateActivity : AppCompatActivity(), IFirebaseRepositoryCallback {
     override fun callbackForSuccessfulUploading(uid: String) {
         writeVM?.updateProductImage(uid, boardVM?.item.fileNamesForDelete)
         FancyToastUtil(this).showSuccess(getString(R.string.update_success))
+        setResult(RESULT_OK)
         finish() // 업로드 성공시 작성 액티비티 종료
     }
 

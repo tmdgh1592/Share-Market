@@ -16,16 +16,30 @@ import com.app.buna.sharingmarket.repository.Firebase.FirebaseRepository
 import com.google.firebase.auth.FirebaseAuth
 import com.kakao.sdk.link.LinkClient
 import com.kakao.sdk.template.model.*
+import kotlin.properties.Delegates
 
 class BoardViewModel(application: Application, val context: Context) : AndroidViewModel(application) {
 
     lateinit var item: ProductItem
     var profileUrl: String? = null
 
+    var originHeartState by Delegates.notNull<Boolean>()
+    var nowHeartState by Delegates.notNull<Boolean>()
+
     class Factory(val application: Application, val context: Context) : ViewModelProvider.Factory {
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
             return BoardViewModel(application, context) as T
         }
+    }
+
+    // 처음 들어왔을 때랑 좋아요 상태가 다른지 (액티비티를 나갈 때 메인뷰 갱신을 위함)
+    fun isHeartStateChanged(): Boolean {
+        if (originHeartState != null && nowHeartState != null) {
+            if(originHeartState != nowHeartState) {
+                return true
+            }
+        }
+        return false
     }
 
     fun getUid(): String? {

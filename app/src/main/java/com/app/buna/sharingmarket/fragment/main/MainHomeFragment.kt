@@ -26,9 +26,12 @@ import org.koin.android.ext.android.get
 class MainHomeFragment(val category: String = "all") : Fragment() {
 
     private var keyword: String? = null
+    private var editedItem: ProductItem? = null
+
     constructor(category: String = "all", keyword: String?) : this(category) {
         this.keyword = keyword
     }
+
 
     private var binding: FragmentMainHomeBinding? = null
     private val vm: MainViewModel by lazy {
@@ -72,12 +75,14 @@ class MainHomeFragment(val category: String = "all") : Fragment() {
                             /* 리사이클러뷰 대신에 No Result View를 보여줌 */
                             binding?.noResultView?.visibility = View.VISIBLE
                             binding?.productRecyclerView?.visibility = View.GONE
-                        }else { // 키워드로 찾으려는 결과가 하나라도 있다면
+                        } else { // 키워드로 찾으려는 결과가 하나라도 있다면
                             /* 리사이클러뷰를 보여줌 */
                             binding?.noResultView?.visibility = View.GONE
                             binding?.productRecyclerView?.visibility = View.VISIBLE
 
-                            (binding?.productRecyclerView?.adapter as ProductRecyclerAdapter).updateData(data)
+                            (binding?.productRecyclerView?.adapter as ProductRecyclerAdapter).updateData(
+                                data
+                            )
                             vm?.productItems.value = (data)
                         }
                     }
@@ -123,10 +128,7 @@ class MainHomeFragment(val category: String = "all") : Fragment() {
                         val intent = Intent(context, WriteActivity::class.java).apply {
                             addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP or Intent.FLAG_ACTIVITY_CLEAR_TOP)
                         }
-                        (requireActivity() as MainActivity).startActivityForResult(
-                            intent,
-                            REQUEST_CODE.DELETE_BOARD_CODE_FROM_MAIN
-                        ) // 게시글 작성 액티비티 실행
+                        (requireActivity() as MainActivity).startActivity(intent) // 게시글 작성 액티비티 실행
                     }
                     R.id.action_exchange -> { // fab 쇼핑버튼 버튼 클릭시
                         Snackbar.make(toolbar, "쇼핑하기", Snackbar.LENGTH_SHORT).show()

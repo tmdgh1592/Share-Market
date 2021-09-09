@@ -11,7 +11,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.app.buna.sharingmarket.R
+import com.app.buna.sharingmarket.REQUEST_CODE
 import com.app.buna.sharingmarket.activity.BoardActivity
+import com.app.buna.sharingmarket.activity.MainActivity
 import com.app.buna.sharingmarket.callbacks.IFirebaseGetStoreDataCallback
 import com.app.buna.sharingmarket.callbacks.ILogoutCallback
 import com.app.buna.sharingmarket.model.items.CategoryItem
@@ -51,7 +53,7 @@ class MainViewModel(application: Application, val context: Context) :
         val intent = Intent(context, BoardActivity::class.java)
             .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
             .putExtra("product_item", productItems.value!!.get(position))
-        context.startActivity(intent)
+        (context as MainActivity).startActivityForResult(intent, REQUEST_CODE.REFRESH_MAIN_HOME_FRAGMENT)
     }
 
     @SuppressLint("ResourceType")
