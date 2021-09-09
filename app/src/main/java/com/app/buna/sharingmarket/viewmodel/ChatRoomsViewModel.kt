@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.view.View
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.app.buna.sharingmarket.activity.ChatActivity
@@ -26,6 +27,7 @@ class ChatRoomsViewModel(application: Application, val context: Context) : Andro
     var chatModels = ArrayList<ChatModel>()
     // 채팅할 대상들의 개인 정보 리스트
     var destUserModel = ArrayList<ChatUserModel>()
+    var destUserModelLiveData = MutableLiveData<ArrayList<ChatUserModel>>()
 
     fun getChatRoomList(callback: IFirebaseGetChatRoomCallback) {
         FirebaseRepository.instance.getChatModelList(callback)

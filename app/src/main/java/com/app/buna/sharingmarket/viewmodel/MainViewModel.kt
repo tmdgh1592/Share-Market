@@ -88,7 +88,8 @@ class MainViewModel(application: Application, val context: Context) :
     fun unregister(cause: String, id: Int, activityFinishCallback: () -> Unit) {
         // DB에 탈퇴 사유 저장
         FirebaseRepository.instance.saveUnregisterCause(cause, id) { // DB에 저장을 완료하였다면
-            Firebase.auth.currentUser!!.delete().addOnSuccessListener { task -> // 파이어베이스에서 유저 delete
+            // 파이어베이스에서 유저 delete
+            Firebase.auth.currentUser!!.delete().addOnSuccessListener {
                 Log.d("MainViewModel", "User account deleted")
                 PreferenceUtil.putInt(context, "fragment_page", 0) // 현재까지 진행한 fragment_page를 초기화면으로 돌림
                 activityFinishCallback() // 액티비티 종료 콜백

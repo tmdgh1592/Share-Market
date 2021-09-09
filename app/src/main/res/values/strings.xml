@@ -4,7 +4,7 @@
     <string name="app_description_content">사용하지 않는 물건들을 버리지 마세요.\n나눔을 통해 환경을 개선해봅시다!</string>
     <string name="set_my_location">내 지역 설정하기</string>
     <string name="search_location">예) 판교역로 235, 분당 준공, 삼평동 681</string>
-    <string name="no_location_result">찾으시는 결과가 없습니다.\n주소를 다시 한 번 확인해주세요!</string>
+    <string name="no_location_result">찾으시는 결과가 없습니다.\n검색을 통해 주소를 찾아보세요!</string>
     <string name="no_my_board_result">작성하신 게시글이 없습니다.\n홈으로 이동하여 글을 작성해보세요!</string>
     <string name="no_heart_board_result">좋아요를 누른 게시글이 없습니다.\n홈으로 게시글에 관심을 표현해보세요!</string>
     <string name="no_result_board">찾으시는 제품에 대한 결과가 없습니다.\n다른 키워드로 다시 검색해주세요!</string>

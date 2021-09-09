@@ -16,7 +16,7 @@ class InitialThirdFragment : Fragment() {
 
     private var binding: FragmentThirdInitialBinding? = null
     private val vm by lazy {
-        ViewModelProvider(this, ThirdInitialViewModel.Factory(get(), requireContext(), (requireActivity() as InitialActivity))).get(
+        ViewModelProvider(this, ThirdInitialViewModel.Factory(requireActivity().application, requireContext(), (requireActivity() as InitialActivity))).get(
             ThirdInitialViewModel::class.java)
     }
 

@@ -87,10 +87,14 @@
                         android:id="@+id/location"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        app:layout_constraintHorizontal_weight="1"
                         android:layout_marginLeft="@dimen/layout_frame_horizontal_margin"
                         android:text="@{viewModel.getJibun()}"
+                        app:layout_constraintHorizontal_bias="0"
+                        android:maxLines="2"
                         android:textSize="14sp"
                         app:layout_constraintLeft_toRightOf="@+id/profile_image_view"
+                        app:layout_constraintRight_toRightOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/nickname_text_view" />
                     <!-- 정보 수정 버튼 -->
                     <LinearLayout

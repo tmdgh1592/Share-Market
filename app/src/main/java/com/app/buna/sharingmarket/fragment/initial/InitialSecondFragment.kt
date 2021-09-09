@@ -27,7 +27,7 @@ class InitialSecondFragment : Fragment() {
 
     private var binding: FragmentSecondInitialBinding? = null
     private val vm: InitialViewModel by lazy {
-        ViewModelProvider(this, InitialViewModel.FactoryWithFragment(get(), requireContext(), this))
+        ViewModelProvider(this, InitialViewModel.FactoryWithFragment(requireActivity().application, requireContext(), this))
             .get(InitialViewModel::class.java)
     }
     private lateinit var recyclerAdapter: LocationRecyclerAdapter

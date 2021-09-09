@@ -720,7 +720,6 @@ class FirebaseRepository {
 
     // 채팅방 리스트를 보여주기 위한 ChatModel 리스트를 콜백으로 전달하는 함수
     fun getChatModelList(callback: IFirebaseGetChatRoomCallback) {
-
         firebaseDatabaseInstance.getReference("chatrooms")
             .orderByChild("users/${Firebase.auth.uid}")
             .equalTo(true)

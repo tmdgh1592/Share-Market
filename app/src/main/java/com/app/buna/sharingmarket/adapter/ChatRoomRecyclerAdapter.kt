@@ -39,6 +39,10 @@ class ChatRoomRecyclerAdapter(val viewModel: ChatRoomsViewModel) :
         return 0
     }
 
+    override fun getItemId(position: Int): Long {
+        return chatRoomList[position].hashCode().toLong()
+    }
+
     fun update(chatRoomList: ArrayList<ChatModel>, destUserModelList: ArrayList<ChatUserModel>) {
         this.chatRoomList = chatRoomList
         this.destUserModelList = destUserModelList

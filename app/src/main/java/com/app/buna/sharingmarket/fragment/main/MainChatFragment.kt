@@ -5,6 +5,7 @@ import android.view.*
 import android.widget.LinearLayout.VERTICAL
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -49,6 +50,7 @@ class MainChatFragment : Fragment() {
         binding?.chatRoomRecyclerView?.apply {
             adapter = ChatRoomRecyclerAdapter(vm)
             layoutManager = LinearLayoutManager(requireContext())
+            setHasFixedSize(true)
             addItemDecoration(DividerItemDecoration(requireContext(), VERTICAL))
         }
 
@@ -65,12 +67,16 @@ class MainChatFragment : Fragment() {
                             count++
 
                             if (count == chatRoomList.size){ // 가져올 데이터를 모두 가져왔다면
-                                (binding?.chatRoomRecyclerView?.adapter as ChatRoomRecyclerAdapter).update(chatRoomList, vm.destUserModel)
+                                vm.destUserModelLiveData.postValue(vm.destUserModel)
                             }
                         }
                     }
                 }
             }
+        })
+
+        vm.destUserModelLiveData.observe(viewLifecycleOwner, Observer {
+            (binding?.chatRoomRecyclerView?.adapter as ChatRoomRecyclerAdapter).update(vm.chatModels, it)
         })
 
     }
