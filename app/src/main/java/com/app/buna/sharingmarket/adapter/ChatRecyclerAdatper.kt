@@ -1,12 +1,14 @@
 package com.app.buna.sharingmarket.adapter
 
 import android.net.Uri
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.app.buna.sharingmarket.CommentType
+import com.app.buna.sharingmarket.R
 import com.app.buna.sharingmarket.databinding.*
 import com.app.buna.sharingmarket.model.items.chat.ChatModel
 import com.app.buna.sharingmarket.model.items.chat.ChatUserModel
@@ -71,9 +73,13 @@ class ChatRecyclerAdatper(val destModel: ChatUserModel) :
             binding.comment = chatList[position]
             binding.destModel = destModel
 
-            val timeStamp = chatList[position].usingTimeStamp.split(" ")[1]
-            if (destModel.profileImageUrl != null) {
+            val timeStamp = chatList[position].usingTimeStamp.split(" ")[1] // 시간 -> 20:32
+
+            if (!destModel.profileImageUrl.isNullOrEmpty()) { // 상대방이 프로필을 설정했다면
                 Glide.with(binding.root).load(Uri.parse(destModel.profileImageUrl)).circleCrop()
+                    .into(binding.profileImageView)
+            } else { // 프로필을 설정하지 않았다면 기본 프로필
+                Glide.with(binding.root).load(R.drawable.default_profile).circleCrop()
                     .into(binding.profileImageView)
             }
             binding.otherTimestampTextView.text = timeStamp
@@ -115,11 +121,12 @@ class ChatRecyclerAdatper(val destModel: ChatUserModel) :
 
             val weeks = arrayOf("일", "월", "화", "수", "목", "금", "토")
             val calendar = Calendar.getInstance()
-            calendar.set(year.toInt(), month.toInt()-1, day.toInt()) // 0~6 (일~토), Month는 1빼줘야 함
+            calendar.set(year.toInt(), month.toInt() - 1, day.toInt()) // 0~6 (일~토), Month는 1빼줘야 함
 
-            binding.date = "${year}년 ${month}월 ${day}일 ${weeks[calendar.get(Calendar.DAY_OF_WEEK)-1]}요일" // 2021년 09월 06일 월요일
+            binding.date =
+                "${year}년 ${month}월 ${day}일 ${weeks[calendar.get(Calendar.DAY_OF_WEEK) - 1]}요일" // 2021년 09월 06일 월요일
         }
-   }
+    }
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
@@ -185,7 +192,12 @@ class ChatRecyclerAdatper(val destModel: ChatUserModel) :
             // 날짜 변동에 따라 Date Divider를 사이에 추가
             if (!date.equals(willBeChangedDay)) { // 현재 보고 있는 채팅의 날짜가 이전 채팅의 날짜와 다른 경우
                 willBeChangedDay = date // 날짜 갱신
-                dateAddednewChatList.add(ChatModel.Comment(timeStamp = newChatList[index].timeStamp, commentType = CommentType.DATE_DIVIDER)) // Date Divider 추가
+                dateAddednewChatList.add(
+                    ChatModel.Comment(
+                        timeStamp = newChatList[index].timeStamp,
+                        commentType = CommentType.DATE_DIVIDER
+                    )
+                ) // Date Divider 추가
             }
             // 채팅 추가
             dateAddednewChatList.add(comment)

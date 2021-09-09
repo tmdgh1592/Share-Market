@@ -69,7 +69,9 @@ object BindingAdapters {
     @JvmStatic
     fun bindChatProfileImage(imageView: CircleImageView, uri: String?) {
         if (uri != null && uri != "") {
-            Glide.with(imageView.context).load(Uri.parse(uri)).error(R.drawable.default_profile).fitCenter().into(imageView)
+            Glide.with(imageView.context).load(Uri.parse(uri)).error(R.drawable.default_profile).fallback(R.drawable.default_profile).fitCenter().into(imageView)
+        } else {
+            Glide.with(imageView.context).load(R.drawable.default_profile).fitCenter().into(imageView)
         }
     }
 
