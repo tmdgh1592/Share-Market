@@ -25,8 +25,7 @@ class ChatRoomRecyclerAdapter(val viewModel: ChatRoomsViewModel) :
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChatRoomViewHolder {
-        val binding =
-            LayoutChatRoomBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding = LayoutChatRoomBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ChatRoomViewHolder(binding)
     }
 
@@ -35,17 +34,20 @@ class ChatRoomRecyclerAdapter(val viewModel: ChatRoomsViewModel) :
     }
 
     override fun getItemCount(): Int {
-        if (chatRoomList != null) return chatRoomList.size
-        return 0
+        return chatRoomList.size
     }
 
     override fun getItemId(position: Int): Long {
         return chatRoomList[position].hashCode().toLong()
     }
 
-    fun update(chatRoomList: ArrayList<ChatModel>, destUserModelList: ArrayList<ChatUserModel>) {
-        this.chatRoomList = chatRoomList
-        this.destUserModelList = destUserModelList
+
+    fun update(newChatRoomList: List<ChatModel>, newDestUserModelList: List<ChatUserModel>) {
+        this.chatRoomList.clear()
+        this.destUserModelList.clear()
+        this.chatRoomList.addAll(newChatRoomList)
+        this.destUserModelList.addAll(newDestUserModelList)
+
         notifyDataSetChanged()
     }
 }

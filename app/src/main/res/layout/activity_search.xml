@@ -31,7 +31,7 @@
                 android:layout_weight="1"
                 android:layout_marginHorizontal="12dp"
                 android:background="@null"
-                android:completionThreshold="2"
+                android:completionThreshold="1"
                 android:hint="@string/auto_complete_text_view_comment"
                 android:text="@={viewModel.keyword}"
                 android:maxLines="1"

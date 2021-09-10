@@ -676,14 +676,18 @@ class FirebaseRepository {
         } else { // 채팅방이 있다면 기존 채팅방에 채팅기록 추가
             firebaseDatabaseInstance.reference.child("chatrooms").child(chatRoomUid)
                 .child("comments").push().setValue(comment).addOnCompleteListener {
-                    // 메세지 전송 완료시 complete 콜백
-                    complete(null)
+                    // 마지막 메세지와 시간 저장
+                    firebaseDatabaseInstance.reference.child("chatrooms").child(chatRoomUid)
+                        .child("lastMessage").setValue(comment.message).addOnCompleteListener {
+                            firebaseDatabaseInstance.reference.child("chatrooms").child(chatRoomUid)
+                                .child("lastTimestamp").setValue(comment.timeStamp).addOnCompleteListener {
+                                    // 메세지 전송 완료시 complete 콜백
+                                    complete(null)
+                                }
+                        }
                 }
-            // 마지막 메세지와 시간 저장
-            firebaseDatabaseInstance.reference.child("chatrooms").child(chatRoomUid)
-                .child("lastMessage").setValue(comment.message)
-            firebaseDatabaseInstance.reference.child("chatrooms").child(chatRoomUid)
-                .child("lastTimestamp").setValue(comment.timeStamp)
+
+
         }
     }
 
@@ -739,7 +743,6 @@ class FirebaseRepository {
             .equalTo(true)
             .addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
-                    Log.d("Size", snapshot.childrenCount.toString())
                     val chatModels = ArrayList<ChatModel>()
                     snapshot.children.forEach { item ->
                         if (item.exists()) { // 데이터가 존재한다면
@@ -763,8 +766,7 @@ class FirebaseRepository {
                     if (snapshot.exists()) {
                         val userModel: UserModel? = snapshot.getValue(UserModel::class.java)
                         if (userModel != null) {
-                            val destUserModel =
-                                ChatUserModel(userModel.nickname, userModel.profile_url, uid)
+                            val destUserModel = ChatUserModel(userModel.nickname, userModel.profile_url, uid)
                             complete(destUserModel)
                         }
 
