@@ -410,19 +410,21 @@ class FirebaseRepository {
 
                         // 검색한 키워드가 게시글의 제목에 포함되어 있으면
                         // 또는 전체 가져오기를 선택했다면
-                        if(keyword == "all" || boardTitle.contains(keyword)) {
-                            val item = document.toObject(ProductItem::class.java) // 가져온 Document를 ProductItem으로 캐스팅
+                        if (keyword == "all" || boardTitle.contains(keyword)) {
+                            val item =
+                                document.toObject(ProductItem::class.java) // 가져온 Document를 ProductItem으로 캐스팅
                             firebaseDatabaseInstance
                                 .getReference("products")
                                 .child("img_path")
                                 .child(document.id)
                                 .get()
                                 .addOnSuccessListener {
-                                    var urlMap: HashMap<String, String>? = if (it.value == null) { // 가져온 이미지가 없으면, 또는 이미지가 저장된게 없으면
-                                        HashMap() // Empty hashmap 생성
-                                    } else { // 이미지가 한개라도 있으면
-                                        it.value as HashMap<String, String> // DataSnapshot에서 이미지 Url들을 HashMap 형태로 캐스팅해서 가져옴
-                                    } // 이미지 url을 가져올 해시맵
+                                    var urlMap: HashMap<String, String>? =
+                                        if (it.value == null) { // 가져온 이미지가 없으면, 또는 이미지가 저장된게 없으면
+                                            HashMap() // Empty hashmap 생성
+                                        } else { // 이미지가 한개라도 있으면
+                                            it.value as HashMap<String, String> // DataSnapshot에서 이미지 Url들을 HashMap 형태로 캐스팅해서 가져옴
+                                        } // 이미지 url을 가져올 해시맵
 
                                     item.imgPath = urlMap!!
                                     item.documentId = document.id // Document Id는 따로 받아옴
@@ -627,11 +629,12 @@ class FirebaseRepository {
     // 채팅방을 삭제하는 함수
     fun removeChatRoom(roomUid: String?, complete: () -> Unit) {
         if (roomUid != null) {
-            firebaseDatabaseInstance.getReference("chatrooms").child(roomUid!!).removeValue().addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    complete()
+            firebaseDatabaseInstance.getReference("chatrooms").child(roomUid!!).removeValue()
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        complete()
+                    }
                 }
-            }
         }
     }
 
@@ -751,9 +754,10 @@ class FirebaseRepository {
             })
     }
 
+    // 유저의 정보를 가져옴
     fun getUserModel(uid: String, complete: (ChatUserModel) -> Unit) {
         firebaseDatabaseInstance.getReference("users/$uid")
-            .addListenerForSingleValueEvent(object : ValueEventListener {
+            .addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     if (snapshot.exists()) {
                         val userModel: UserModel? = snapshot.getValue(UserModel::class.java)

@@ -99,13 +99,18 @@ class ChatViewModel(application: Application, val context: Context) : AndroidVie
     }
 
     fun sendPushGson(destPushToken: String, nickname: String, message: String) {
-        SendNotification.sendNotification(
-            context,
-            destPushToken,
-            nickname,
-            message,
-            destChatModel?.profileImageUrl
-        )
+        val myAuth = Firebase.auth.uid
+        if (myAuth != null ) {
+            FirebaseRepository.instance.getProfile(myAuth) { profileUrl ->
+                SendNotification.sendNotification(
+                    context,
+                    destPushToken,
+                    nickname,
+                    message,
+                    profileUrl
+                )
+            }
+        }
     }
 
     fun removeChatRoom(complete: () -> Unit) {

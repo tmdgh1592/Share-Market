@@ -1,6 +1,7 @@
 package com.app.buna.sharingmarket.fragment.main
 
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import android.widget.LinearLayout.VERTICAL
 import androidx.appcompat.widget.Toolbar
@@ -50,7 +51,6 @@ class MainChatFragment : Fragment() {
         binding?.chatRoomRecyclerView?.apply {
             adapter = ChatRoomRecyclerAdapter(vm)
             layoutManager = LinearLayoutManager(requireContext())
-            setHasFixedSize(true)
             addItemDecoration(DividerItemDecoration(requireContext(), VERTICAL))
         }
 
@@ -66,11 +66,14 @@ class MainChatFragment : Fragment() {
 
                     if (destUid != null) {
                         vm.getUserModel(destUid) { userModel -> // 상대방 Uid를 찾아서 이 Uid로 해당 유저 정보 가져오기
+                            Log.d("model", userModel.userName)
+                            Log.d("model", userModel.profileImageUrl)
+                            Log.d("model", userModel.uid)
                             vm.destUserModel.add(userModel)
                             count++
 
                             if (count == chatRoomList.size){ // 가져올 데이터를 모두 가져왔다면
-                                 // Recycler View에 알려줌
+                                // Recycler View에 알려줌
                                 (binding?.chatRoomRecyclerView?.adapter as ChatRoomRecyclerAdapter).update(vm.chatModels, vm.destUserModel)
                             }
                         }

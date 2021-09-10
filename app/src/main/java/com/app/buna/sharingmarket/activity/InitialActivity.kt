@@ -118,7 +118,6 @@ class InitialActivity : AppCompatActivity() {
         if (user != null && sosock != "" && Firebase.auth.currentUser != null) {
             startActivity(Intent(this, MainActivity::class.java), ActivityOptions.makeSceneTransitionAnimation(this).toBundle())
             finish()
-            overridePendingTransition(R.anim.anim_fade_in, R.anim.anim_fade_out);
         }
     }
 
