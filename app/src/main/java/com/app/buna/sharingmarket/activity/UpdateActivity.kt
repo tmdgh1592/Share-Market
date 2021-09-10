@@ -75,19 +75,33 @@ class UpdateActivity : AppCompatActivity(), IFirebaseRepositoryCallback {
 
         // Init 스피너 Fragment
         writeVM.category = boardVM.item.category
-        val spinnerDialogFragment = SpinnerDialogFragment.newInstance(
-            getString(R.string.category), categoryList,
-            object : OnSpinnerOKPressedListener {
-                override fun onItemSelect(data: SpinnerModel, selectedPosition: Int) {
-                    binding?.categoryText?.text = data.text
-                    writeVM?.category = (data.text) // 선택한 카테고리를 뷰 모델에 저장
-                }
+        var spinnerDialogFragment: SpinnerDialogFragment? = null
+        try {
+            spinnerDialogFragment = SpinnerDialogFragment.newInstance(
+                getString(R.string.category), categoryList,
+                object : OnSpinnerOKPressedListener {
+                    override fun onItemSelect(data: SpinnerModel, selectedPosition: Int) {
+                        binding?.categoryText?.text = data.text
+                        writeVM?.category = (data.text) // 선택한 카테고리를 뷰 모델에 저장
+                    }
 
-            }, 0
-        )
-        spinnerDialogFragment.buttonText = getString(R.string.done)
-        spinnerDialogFragment.themeColorResId = ContextCompat.getColor(this, R.color.app_green)
-
+                }, 0
+            )
+            spinnerDialogFragment.buttonText = getString(R.string.done)
+            spinnerDialogFragment.themeColorResId = ContextCompat.getColor(this, R.color.app_green)
+        }catch (e: IllegalStateException) {
+            print(e.message)
+        }
+        // 카테고리 스피너 다이얼로그
+        binding?.categorySpinner?.setOnClickListener {
+            // 카테고리 선택창 클릭시 키보드 닫기
+            hideKeyBoard(this@UpdateActivity, binding?.titleEditText!!.windowToken)
+            // 카테고리 스피너 다이얼로그 보이기
+            spinnerDialogFragment?.show(
+                supportFragmentManager,
+                "SpinnerDialogFragment"
+            )
+        }
 
         /* 갤러리 포토 피커 */
         binding?.photoAddBtn?.setOnClickListener {
@@ -99,16 +113,7 @@ class UpdateActivity : AppCompatActivity(), IFirebaseRepositoryCallback {
                 .show()
         }
 
-        // 카테고리 스피너 다이얼로그
-        binding?.categorySpinner?.setOnClickListener {
-            // 카테고리 선택창 클릭시 키보드 닫기
-            hideKeyBoard(this@UpdateActivity, binding?.titleEditText!!.windowToken)
-            // 카테고리 스피너 다이얼로그 보이기
-            spinnerDialogFragment.show(
-                supportFragmentManager,
-                "SpinnerDialogFragment"
-            )
-        }
+
 
         // 완료 버튼 -> 게시글 수정
         binding?.doneBtn?.setOnClickListener {
@@ -178,16 +183,6 @@ class UpdateActivity : AppCompatActivity(), IFirebaseRepositoryCallback {
 
         }
 
-        // 카테고리 스피너 다이얼로그
-        binding?.categorySpinner?.setOnClickListener {
-            // 카테고리 선택창 클릭시 키보드 닫기
-            hideKeyBoard(this@UpdateActivity, binding?.titleEditText!!.windowToken)
-            // 카테고리 스피너 다이얼로그 보이기
-            spinnerDialogFragment.show(
-                supportFragmentManager,
-                "SpinnerDialogFragment"
-            )
-        }
 
         // Radio Button (드릴게요!, 필요해요!)
         binding?.typeRadioGroup?.setOnCheckedChangeListener(object :

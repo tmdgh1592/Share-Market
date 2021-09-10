@@ -107,7 +107,16 @@ class BoardActivity : AppCompatActivity() {
                             R.color.gray_50
                         )
                     )
-                    text = getString(R.string.share_not_done)
+                    text = if (vm?.item.isExchange) { // 교환이면
+                        getString(R.string.exchange_not_done)
+                    }else{
+                        if(vm?.item.isGive) { // 나눔이면
+                            getString(R.string.share_not_done)
+                        }else{ // 받는 것이면
+                            getString(R.string.take_not_done)
+                        }
+                    }
+
                     // 거래 완료 상태를 해제할지 물어봄
                     setOnClickListener {
                         AlertDialog.Builder(this@BoardActivity)
@@ -126,10 +135,21 @@ class BoardActivity : AppCompatActivity() {
             } else { // 거래가 완료된 게시물이 아니면 완료로 변경할건지 물어봄
                 binding?.chatBtn?.apply {
                     // 게시글을 나눔 완료 상태로 변경할지 물어봄
-                    text = getString(R.string.share_done)
+                    val taskText: String = if (vm?.item.isExchange) { // 교환이면
+                        getString(R.string.exchange_done)
+                    }else{
+                        if(vm?.item.isGive) { // 나눔이면
+                            getString(R.string.share_done)
+                        }else{ // 받는 것이면
+                            getString(R.string.take_done)
+                        }
+                    }
+
+                    text = taskText
+
                     setOnClickListener {
                         AlertDialog.Builder(this@BoardActivity)
-                            .setTitle(getString(R.string.share_done))
+                            .setTitle(text)
                             .setMessage(getString(R.string.share_done_message))
                             .setPositiveButton(getString(R.string.ok)) { _, _ ->
                                 FancyToastUtil(this@BoardActivity).showSuccess(getString(R.string.share_done_message))

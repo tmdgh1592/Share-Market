@@ -29,10 +29,12 @@ import com.app.buna.sharingmarket.utils.NetworkStatus
 import com.app.buna.sharingmarket.viewmodel.WriteViewModel
 import com.bumptech.glide.Glide
 import com.github.hamzaahmedkhan.spinnerdialog.OnSpinnerOKPressedListener
+import com.github.hamzaahmedkhan.spinnerdialog.SpinnerDialogFragment
 import com.github.hamzaahmedkhan.spinnerdialog.SpinnerDialogFragment.Companion.newInstance
 import com.github.hamzaahmedkhan.spinnerdialog.SpinnerModel
 import com.opensooq.supernova.gligar.GligarPicker
 import kotlinx.android.synthetic.main.picked_photo_view.view.*
+import java.lang.IllegalStateException
 
 private var binding: ActivityWriteBinding? = null
 private var vm: WriteViewModel? = null
@@ -73,18 +75,24 @@ class WriteActivity : AppCompatActivity(), IFirebaseRepositoryCallback {
         }
 
         // Init 스피너 Fragment
-        val spinnerDialogFragment = newInstance(
-            getString(R.string.category), categoryList,
-            object : OnSpinnerOKPressedListener {
-                override fun onItemSelect(data: SpinnerModel, selectedPosition: Int) {
-                    binding?.categoryText?.text = data.text
-                    vm?.category = (data.text) // 선택한 카테고리를 뷰 모델에 저장
-                }
+        var spinnerDialogFragment: SpinnerDialogFragment? = null
+        try { // IllegalStateException: Fragment already added
+            spinnerDialogFragment = newInstance(
+                getString(R.string.category), categoryList,
+                object : OnSpinnerOKPressedListener {
+                    override fun onItemSelect(data: SpinnerModel, selectedPosition: Int) {
+                        binding?.categoryText?.text = data.text
+                        vm?.category = (data.text) // 선택한 카테고리를 뷰 모델에 저장
+                    }
 
-            }, 0
-        )
-        spinnerDialogFragment.buttonText = getString(R.string.done)
-        spinnerDialogFragment.themeColorResId = ContextCompat.getColor(this, R.color.app_green)
+                }, 0
+            )
+        }catch (e: IllegalStateException) {
+            print(e.message)
+        }
+
+        spinnerDialogFragment?.buttonText = getString(R.string.done)
+        spinnerDialogFragment?.themeColorResId = ContextCompat.getColor(this, R.color.app_green)
 
         /* 갤러리 포토 피커 */
         binding?.photoAddBtn?.setOnClickListener {
@@ -101,10 +109,12 @@ class WriteActivity : AppCompatActivity(), IFirebaseRepositoryCallback {
             // 카테고리 선택창 클릭시 키보드 닫기
             hideKeyBoard(this@WriteActivity, binding?.titleEditText!!.windowToken)
             // 카테고리 스피너 다이얼로그 보이기
-            spinnerDialogFragment.show(
-                supportFragmentManager,
-                "SpinnerDialogFragment"
-            )
+            if (spinnerDialogFragment != null) {
+                spinnerDialogFragment.show(
+                    supportFragmentManager,
+                    "SpinnerDialogFragment"
+                )
+            }
         }
 
         // 완료 버튼 -> 게시글 업로드

@@ -156,8 +156,12 @@
     <string name="one_to_one_chat">1:1 채팅하기</string>
     <string name="share_done">나눔 완료</string>
     <string name="share_not_done">나눔 완료 해제</string>
-    <string name="share_done_message">게시글을 나눔 완료로 변경합니다.</string>
-    <string name="share_not_done_message">게시글의 나눔 상태를 해제합니다.</string>
+    <string name="take_done">수령 완료</string>
+    <string name="take_not_done">수령 완료 해제</string>
+    <string name="exchange_done">나눔 완료</string>
+    <string name="exchange_not_done">교환 완료 해제</string>
+    <string name="share_done_message">게시글 상태를 완료로 변경합니다.</string>
+    <string name="share_not_done_message">게시글의 완료 상태를 해제합니다.</string>
 
     <!-- fragment : my -->
     <string name="edit_location">내 위치 수정</string>

@@ -63,7 +63,7 @@ class MainChatFragment : Fragment() {
                 //vm.chatModels.sortByDescending { it.lastTimestamp } // 가장 최근 채팅을 가져오기 위해 lastTimeStamp 순으로 오름차순 정렬
                 vm.chatModels.forEach { chatModel ->
                     val destUid = vm.findDestUid(chatModel.users) // 채팅 상대방 uid
-
+                    Log.d("count", count.toString())
                     if (destUid != null) {
                         vm.getUserModel(destUid) { userModel -> // 상대방 Uid를 찾아서 이 Uid로 해당 유저 정보 가져오기
                             Log.d("model", userModel.userName)

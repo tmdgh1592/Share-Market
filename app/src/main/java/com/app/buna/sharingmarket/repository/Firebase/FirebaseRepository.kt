@@ -739,6 +739,7 @@ class FirebaseRepository {
             .equalTo(true)
             .addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
+                    Log.d("Size", snapshot.childrenCount.toString())
                     val chatModels = ArrayList<ChatModel>()
                     snapshot.children.forEach { item ->
                         if (item.exists()) { // 데이터가 존재한다면
@@ -757,7 +758,7 @@ class FirebaseRepository {
     // 유저의 정보를 가져옴
     fun getUserModel(uid: String, complete: (ChatUserModel) -> Unit) {
         firebaseDatabaseInstance.getReference("users/$uid")
-            .addValueEventListener(object : ValueEventListener {
+            .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     if (snapshot.exists()) {
                         val userModel: UserModel? = snapshot.getValue(UserModel::class.java)

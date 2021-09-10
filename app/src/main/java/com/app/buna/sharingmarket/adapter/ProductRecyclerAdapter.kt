@@ -86,7 +86,9 @@ class ProductRecyclerAdapter(var viewModel: MainViewModel, val context: Context)
 
         // 제품 타입 추가 입력
         if (item.isComplete) { // 거래 완료 상태인 경우
-            holder.typeTextView.setText("나눔완료")
+            if(item.isGive) { // 나눔하는 게시물이면
+                holder.typeTextView.text = "거래완료"
+            }
             holder.typeTextView.background.setTint(
                 ContextCompat.getColor(
                     context,
