@@ -53,7 +53,7 @@ class MainViewModel(application: Application, val context: Context) :
         val intent = Intent(context, BoardActivity::class.java)
             .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
             .putExtra("product_item", productItems.value!!.get(position))
-        (context as MainActivity).startActivityForResult(intent, REQUEST_CODE.REFRESH_MAIN_HOME_FRAGMENT)
+        (context as MainActivity).startActivityForResult(intent, REQUEST_CODE.REFRESH_MAIN_HOME_FRAGMENT_CODE)
     }
 
     @SuppressLint("ResourceType")

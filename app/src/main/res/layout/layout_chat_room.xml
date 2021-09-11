@@ -5,7 +5,7 @@
     <data>
         <variable
             name="chatModel"
-            type="com.app.buna.sharingmarket.model.items.chat.ChatModel" />
+            type="com.app.buna.sharingmarket.model.items.chat.ChatRoomModel" />
         <variable
             name="destUserModel"
             type="com.app.buna.sharingmarket.model.items.chat.ChatUserModel" />

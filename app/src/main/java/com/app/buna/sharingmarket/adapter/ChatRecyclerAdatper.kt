@@ -1,9 +1,7 @@
 package com.app.buna.sharingmarket.adapter
 
-import android.app.AlertDialog
 import android.content.Context
 import android.net.Uri
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.ViewDataBinding
@@ -13,7 +11,7 @@ import com.app.buna.sharingmarket.CommentType
 import com.app.buna.sharingmarket.R
 import com.app.buna.sharingmarket.activity.ChatActivity
 import com.app.buna.sharingmarket.databinding.*
-import com.app.buna.sharingmarket.model.items.chat.ChatModel
+import com.app.buna.sharingmarket.model.items.chat.ChatRoomModel
 import com.app.buna.sharingmarket.model.items.chat.ChatUserModel
 import com.app.buna.sharingmarket.utils.BaseDiffUtil
 import com.bumptech.glide.Glide
@@ -24,7 +22,7 @@ import kotlin.collections.ArrayList
 
 class ChatRecyclerAdatper(val destModel: ChatUserModel, val context: Context) :
     RecyclerView.Adapter<ChatRecyclerAdatper.BaseViewHolder>() {
-    var chatList = ArrayList<ChatModel.Comment>()
+    var chatList = ArrayList<ChatRoomModel.Comment>()
     private val TYPE_ME = 0
     private val TYPE_OTHER = 1
     private val TYPE_DIVIDER = 2
@@ -189,19 +187,19 @@ class ChatRecyclerAdatper(val destModel: ChatUserModel, val context: Context) :
         return chatList.size
     }
 
-    fun update(newChatList: ArrayList<ChatModel.Comment>) {
-        val dateAddednewChatList = ArrayList<ChatModel.Comment>() // 새로운 채팅을 담을 리스트
+    fun update(newChatRoomList: ArrayList<ChatRoomModel.Comment>) {
+        val dateAddednewChatList = ArrayList<ChatRoomModel.Comment>() // 새로운 채팅을 담을 리스트
         var willBeChangedDay = "" // 채팅들의 날짜를 구분하기위한 채팅 날짜 구분 데이터를 저장할 변수
 
-        newChatList.forEachIndexed { index, comment ->
+        newChatRoomList.forEachIndexed { index, comment ->
             val date = comment.usingTimeStamp.split(" ")[0] // 채팅을 보낸 날짜. ex) 2021.09.06
 
             // 날짜 변동에 따라 Date Divider를 사이에 추가
             if (!date.equals(willBeChangedDay)) { // 현재 보고 있는 채팅의 날짜가 이전 채팅의 날짜와 다른 경우
                 willBeChangedDay = date // 날짜 갱신
                 dateAddednewChatList.add(
-                    ChatModel.Comment(
-                        timeStamp = newChatList[index].timeStamp,
+                    ChatRoomModel.Comment(
+                        timeStamp = newChatRoomList[index].timeStamp,
                         commentType = CommentType.DATE_DIVIDER
                     )
                 ) // Date Divider 추가

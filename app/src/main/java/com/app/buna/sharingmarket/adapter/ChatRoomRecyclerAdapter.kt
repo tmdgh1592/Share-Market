@@ -4,23 +4,23 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.app.buna.sharingmarket.databinding.LayoutChatRoomBinding
-import com.app.buna.sharingmarket.model.items.chat.ChatModel
+import com.app.buna.sharingmarket.model.items.chat.ChatRoomModel
 import com.app.buna.sharingmarket.model.items.chat.ChatUserModel
 import com.app.buna.sharingmarket.utils.ChatTimeStampUtil
 import com.app.buna.sharingmarket.viewmodel.ChatRoomsViewModel
 
 class ChatRoomRecyclerAdapter(val viewModel: ChatRoomsViewModel) :
     RecyclerView.Adapter<ChatRoomRecyclerAdapter.ChatRoomViewHolder>() {
-    var chatRoomList: ArrayList<ChatModel> = ArrayList()
+    var chatRoomRoomList: ArrayList<ChatRoomModel> = ArrayList()
     var destUserModelList: ArrayList<ChatUserModel> = ArrayList()
 
     inner class ChatRoomViewHolder(val binding: LayoutChatRoomBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(position: Int) {
             binding.destUserModel = destUserModelList[position] // 상대방 정보 데이터 바인딩
-            binding.chatModel = chatRoomList[position] // 상대방과 한 채팅 모델 바인딩
+            binding.chatModel = chatRoomRoomList[position] // 상대방과 한 채팅 모델 바인딩
             binding.viewModel = viewModel // ChatRoomViewModel 바인딩
-            binding.timestampTextView.text = ChatTimeStampUtil.getStamp(chatRoomList[position].lastTimestamp)
+            binding.timestampTextView.text = ChatTimeStampUtil.getStamp(chatRoomRoomList[position].lastTimestamp)
         }
     }
 
@@ -34,18 +34,18 @@ class ChatRoomRecyclerAdapter(val viewModel: ChatRoomsViewModel) :
     }
 
     override fun getItemCount(): Int {
-        return chatRoomList.size
+        return chatRoomRoomList.size
     }
 
     override fun getItemId(position: Int): Long {
-        return chatRoomList[position].hashCode().toLong()
+        return chatRoomRoomList[position].hashCode().toLong()
     }
 
 
-    fun update(newChatRoomList: List<ChatModel>, newDestUserModelList: List<ChatUserModel>) {
-        this.chatRoomList.clear()
+    fun update(newChatRoomRoomList: List<ChatRoomModel>, newDestUserModelList: List<ChatUserModel>) {
+        this.chatRoomRoomList.clear()
         this.destUserModelList.clear()
-        this.chatRoomList.addAll(newChatRoomList)
+        this.chatRoomRoomList.addAll(newChatRoomRoomList)
         this.destUserModelList.addAll(newDestUserModelList)
 
         notifyDataSetChanged()

@@ -118,12 +118,12 @@ class MainActivity : AppCompatActivity() {
                     .replace(R.id.main_frame_layout, MainHomeFragment.instance(searchKeyword))
                     .commit()
             }
-            REQUEST_CODE.REFRESH_MAIN_HOME_FRAGMENT, REQUEST_CODE.UPDATE_BOARD_CODE -> { // 상품 정보 삭제, 수정, 나눔완료 등으로 인한 화면 갱신
+            REQUEST_CODE.REFRESH_MAIN_HOME_FRAGMENT_CODE, REQUEST_CODE.UPDATE_BOARD_CODE -> { // 상품 정보 삭제, 수정, 나눔완료 등으로 인한 화면 갱신
                 supportFragmentManager.beginTransaction()
                     .replace(R.id.main_frame_layout, MainHomeFragment.instance()).commit()
             }
-            REQUEST_CODE.REFRESH_MAIN_CHAT_FRAGMENT -> { // 유효하지 않은 채팅방으로 이동하여 채팅방이 삭제될 시 refresh
-                FancyToastUtil(this).showFail(getString(R.string.dest_is_null))
+            REQUEST_CODE.REFRESH_MAIN_CHAT_FRAGMENT_CODE -> { // 유효하지 않은 채팅방으로 이동하여 채팅방이 삭제될 시 refresh
+                FancyToastUtil(this).showRed(getString(R.string.dest_is_null))
                 supportFragmentManager.beginTransaction()
                     .replace(R.id.main_frame_layout, MainChatFragment.instance).commit()
             }

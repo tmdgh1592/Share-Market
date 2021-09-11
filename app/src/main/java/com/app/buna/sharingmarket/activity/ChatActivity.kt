@@ -93,7 +93,7 @@ class ChatActivity : AppCompatActivity() {
                 binding?.submitBtn.isClickable = true
             } else {
                 // 인터넷 연결 실패 토스트 보여주기
-                FancyToastUtil(this).showFail(getString(R.string.internet_check))
+                FancyToastUtil(this).showRed(getString(R.string.internet_check))
             }
 
             // 스크롤을 맨 아래로 이동

@@ -1,22 +1,16 @@
 package com.app.buna.sharingmarket.viewmodel
 
 import android.app.Application
-import android.content.ClipData
-import android.content.ClipboardManager
 import android.content.Context
-import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.app.buna.sharingmarket.R
-import com.app.buna.sharingmarket.activity.ChatActivity
-import com.app.buna.sharingmarket.model.items.chat.ChatModel
+import com.app.buna.sharingmarket.model.items.chat.ChatRoomModel
 import com.app.buna.sharingmarket.model.items.chat.ChatUserModel
 import com.app.buna.sharingmarket.notification.notification.SendNotification
 import com.app.buna.sharingmarket.repository.Firebase.FirebaseRepository
 import com.app.buna.sharingmarket.repository.Local.PreferenceUtil
-import com.app.buna.sharingmarket.utils.FancyToastUtil
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
@@ -35,7 +29,7 @@ class ChatViewModel(application: Application, val context: Context) : AndroidVie
     //상대방과 채팅한 기록이 있는지 확인 후 있으면 채팅방 uid 가져옴
     var chatRoomUid: String? = null
 
-    fun sendMesage(complete: (firstChatList: ArrayList<ChatModel.Comment>?) -> Unit, success: (Boolean) -> Unit) {
+    fun sendMesage(complete: (firstChatRoomList: ArrayList<ChatRoomModel.Comment>?) -> Unit, success: (Boolean) -> Unit) {
         if (message != null && message.trim() != "" && destChatModel != null) {
             //채팅방 유저 맵
             val users = HashMap<String, Boolean>().apply {
@@ -43,7 +37,7 @@ class ChatViewModel(application: Application, val context: Context) : AndroidVie
                 put(destChatModel!!.uid, true)
             }
             // 전송할 채팅 모델 생성
-            val comment = ChatModel.Comment(
+            val comment = ChatRoomModel.Comment(
                 Firebase.auth.uid.toString(),
                 message.trimStart(),
                 System.currentTimeMillis()
@@ -94,7 +88,7 @@ class ChatViewModel(application: Application, val context: Context) : AndroidVie
         }
     }
 
-    fun getChatList(complete: (ArrayList<ChatModel.Comment>) -> Unit) {
+    fun getChatList(complete: (ArrayList<ChatRoomModel.Comment>) -> Unit) {
         FirebaseRepository.instance.getComments(chatRoomUid, complete)
     }
 

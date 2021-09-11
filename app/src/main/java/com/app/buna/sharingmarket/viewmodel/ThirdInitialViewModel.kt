@@ -13,7 +13,6 @@ import com.app.buna.sharingmarket.REQUEST_CODE
 import com.app.buna.sharingmarket.activity.InitialActivity
 import com.app.buna.sharingmarket.fragment.initial.InitialFourthFragment
 import com.app.buna.sharingmarket.repository.Local.PreferenceUtil
-import com.app.buna.sharingmarket.utils.FancyChocoBar
 import com.app.buna.sharingmarket.utils.FancyToastUtil
 import com.app.buna.sharingmarket.utils.NetworkStatus
 import com.facebook.AccessToken
@@ -71,7 +70,7 @@ class ThirdInitialViewModel(application: Application, val context: Context) :
     fun signInGoogle() {
         // 인터넷 연결 상태 체크
         if(!NetworkStatus.isConnectedInternet(context)){
-            FancyToastUtil(context).showFail(context.getString(R.string.internet_check)) // 인터넷 사용 문구 스낵바 출력
+            FancyToastUtil(context).showRed(context.getString(R.string.internet_check)) // 인터넷 사용 문구 스낵바 출력
             return // 미연결시 아무런 로직 수행하지 않음
         }
 
@@ -93,7 +92,7 @@ class ThirdInitialViewModel(application: Application, val context: Context) :
     fun signInFacebook() {
         // 인터넷 연결 상태 체크
         if(!NetworkStatus.isConnectedInternet(context)){
-            FancyToastUtil(context).showFail(context.getString(R.string.internet_check)) // 인터넷 사용 문구 스낵바 출력
+            FancyToastUtil(context).showRed(context.getString(R.string.internet_check)) // 인터넷 사용 문구 스낵바 출력
             return // 미연결시 아무런 로직 수행하지 않음
         }
         

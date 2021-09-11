@@ -5,14 +5,13 @@ import android.content.Context
 import android.content.Intent
 import android.view.View
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.app.buna.sharingmarket.REQUEST_CODE
 import com.app.buna.sharingmarket.activity.ChatActivity
 import com.app.buna.sharingmarket.activity.MainActivity
 import com.app.buna.sharingmarket.callbacks.IFirebaseGetChatRoomCallback
-import com.app.buna.sharingmarket.model.items.chat.ChatModel
+import com.app.buna.sharingmarket.model.items.chat.ChatRoomModel
 import com.app.buna.sharingmarket.model.items.chat.ChatUserModel
 import com.app.buna.sharingmarket.repository.Firebase.FirebaseRepository
 import com.google.firebase.auth.ktx.auth
@@ -26,7 +25,7 @@ class ChatRoomsViewModel(application: Application, val context: Context) : Andro
     }
 
     // 채팅할 대상들의 채팅 정보 리스트
-    var chatModels = ArrayList<ChatModel>()
+    var chatModels = ArrayList<ChatRoomModel>()
     // 채팅할 대상들의 개인 정보 리스트
     var destUserModel = ArrayList<ChatUserModel>()
 
@@ -54,7 +53,7 @@ class ChatRoomsViewModel(application: Application, val context: Context) : Andro
             putExtra("destUid", destUserModel.uid) // 채팅할 상대방 Uid를 전달 받음
             addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP or Intent.FLAG_ACTIVITY_CLEAR_TOP)
         }
-        (view.context as MainActivity).startActivityForResult(intent, REQUEST_CODE.REFRESH_MAIN_CHAT_FRAGMENT)
+        (view.context as MainActivity).startActivityForResult(intent, REQUEST_CODE.REFRESH_MAIN_CHAT_FRAGMENT_CODE)
     }
 
 }

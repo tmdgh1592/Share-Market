@@ -22,7 +22,6 @@ import com.app.buna.sharingmarket.callbacks.ILogoutCallback
 import com.app.buna.sharingmarket.databinding.FragmentMainMyBinding
 import com.app.buna.sharingmarket.databinding.UnregisterSurveyLayoutBinding
 import com.app.buna.sharingmarket.fragment.dialog.LocationFragmentDialog
-import com.app.buna.sharingmarket.utils.FancyChocoBar
 import com.app.buna.sharingmarket.utils.FancyToastUtil
 import com.app.buna.sharingmarket.utils.NetworkStatus
 import com.app.buna.sharingmarket.viewmodel.MainViewModel
@@ -282,12 +281,12 @@ class MainMyFragment : Fragment() {
                     // 로그아웃
                     vm?.logout(object : ILogoutCallback {
                         override fun success() { // 성공 콜백시 액티비티 종료
-                            FancyToastUtil(requireContext()).showSuccess(getString(R.string.logout_success))
+                            FancyToastUtil(requireContext()).showGreen(getString(R.string.logout_success))
                             startActivity(Intent(requireContext(), InitialActivity::class.java))
                             requireActivity().finish()
                         }
                         override fun fail() { // 실패할 경우 실패 문구 출력
-                            FancyToastUtil(requireContext()).showFail(getString(R.string.logout_fail))
+                            FancyToastUtil(requireContext()).showRed(getString(R.string.logout_fail))
                         }
                     })
                 }.setNegativeButton(getString(R.string.cancel)) { dialog, _ ->

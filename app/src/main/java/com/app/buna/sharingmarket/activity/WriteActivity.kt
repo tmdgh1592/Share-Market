@@ -22,7 +22,6 @@ import com.app.buna.sharingmarket.callbacks.IFirebaseRepositoryCallback
 import com.app.buna.sharingmarket.databinding.ActivityWriteBinding
 import com.app.buna.sharingmarket.model.items.ProductItem
 import com.app.buna.sharingmarket.repository.Local.PreferenceUtil
-import com.app.buna.sharingmarket.utils.FancyChocoBar
 import com.app.buna.sharingmarket.utils.FancyToastUtil
 import com.app.buna.sharingmarket.utils.KeyboardUtil.Companion.hideKeyBoard
 import com.app.buna.sharingmarket.utils.NetworkStatus
@@ -147,7 +146,7 @@ class WriteActivity : AppCompatActivity(), IFirebaseRepositoryCallback {
                 FancyToastUtil(this).showWarning(getString(R.string.internet_check))
                 return@setOnClickListener
             } else if (location == null) { // 지역 데이터를 가져오지 못한 경우
-                FancyToastUtil(this).showFail(getString(R.string.upload_fail))
+                FancyToastUtil(this).showRed(getString(R.string.upload_fail))
                 return@setOnClickListener
             }
 
@@ -199,13 +198,13 @@ class WriteActivity : AppCompatActivity(), IFirebaseRepositoryCallback {
     /* Firebase 업로드에 성공한 경우 callback 지정 */
     override fun callbackForSuccessfulUploading(uid: String) {
         vm?.saveProductImage(vm?.imagePaths!!, uid)
-        FancyToastUtil(this).showSuccess(getString(R.string.upload_success))
+        FancyToastUtil(this).showGreen(getString(R.string.upload_success))
         finish() // 업로드 성공시 작성 액티비티 종료
     }
 
     /* Firebase 업로드에 실패한 경우 callback 지정 */
     override fun callbackForFailureUploading() {
-        FancyToastUtil(this).showFail(getString(R.string.upload_fail))
+        FancyToastUtil(this).showRed(getString(R.string.upload_fail))
     }
 
 
@@ -226,7 +225,7 @@ class WriteActivity : AppCompatActivity(), IFirebaseRepositoryCallback {
 
                 for (data in newData) { // 새로운 데이터가 5개를 초과하는지 확인하면서 반복문을 돌림
                     if ((totalSize + 1) > Const.MAX_PHOTO_SIZE) {
-                        FancyToastUtil(this).showFail("이미지는 총 5개만 가져올 수 있어요!")
+                        FancyToastUtil(this).showRed("이미지는 총 5개만 가져올 수 있어요!")
                         break
                     }
                     totalSize += 1 // 전체 선택된 이미지에 개수 더하기

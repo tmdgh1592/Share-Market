@@ -8,7 +8,7 @@ import com.app.buna.sharingmarket.callbacks.IFirebaseGetStoreDataCallback
 import com.app.buna.sharingmarket.callbacks.IFirebaseRepositoryCallback
 import com.app.buna.sharingmarket.model.items.ProductItem
 import com.app.buna.sharingmarket.model.items.UserModel
-import com.app.buna.sharingmarket.model.items.chat.ChatModel
+import com.app.buna.sharingmarket.model.items.chat.ChatRoomModel
 import com.app.buna.sharingmarket.model.items.chat.ChatUserModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -17,6 +17,9 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import java.io.File
+import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 
 class FirebaseRepository {
 
@@ -642,13 +645,13 @@ class FirebaseRepository {
     fun sendMessage(
         chatRoomUid: String?,
         users: HashMap<String, Boolean>,
-        comment: ChatModel.Comment,
+        comment: ChatRoomModel.Comment,
         complete: (String?) -> Unit
     ) {
         if (chatRoomUid == null) { // 채팅방이 없다면 새로운 채팅방 생성
             // 새로운 채팅 맵 생성
             var roomUid: String? = firebaseDatabaseInstance.reference.child("chatrooms").push().key
-            val commentMap = HashMap<String, ChatModel.Comment>().apply {
+            val commentMap = HashMap<String, ChatRoomModel.Comment>().apply {
                 put(roomUid!!, comment)
             }
             val pushStateMap = HashMap<String, Boolean>().apply { // 유저 푸시 상태
@@ -680,7 +683,8 @@ class FirebaseRepository {
                     firebaseDatabaseInstance.reference.child("chatrooms").child(chatRoomUid)
                         .child("lastMessage").setValue(comment.message).addOnCompleteListener {
                             firebaseDatabaseInstance.reference.child("chatrooms").child(chatRoomUid)
-                                .child("lastTimestamp").setValue(comment.timeStamp).addOnCompleteListener {
+                                .child("lastTimestamp").setValue(comment.timeStamp)
+                                .addOnCompleteListener {
                                     // 메세지 전송 완료시 complete 콜백
                                     complete(null)
                                 }
@@ -691,15 +695,15 @@ class FirebaseRepository {
         }
     }
 
-    fun getComments(chatRoomUid: String?, complete: (ArrayList<ChatModel.Comment>) -> Unit) {
+    fun getComments(chatRoomUid: String?, complete: (ArrayList<ChatRoomModel.Comment>) -> Unit) {
         if (chatRoomUid != null) {
             firebaseDatabaseInstance.getReference("chatrooms").child(chatRoomUid).child("comments")
                 .addValueEventListener(object : ValueEventListener {
                     override fun onDataChange(snapshot: DataSnapshot) {
-                        val chatList = ArrayList<ChatModel.Comment>() // 채팅 기록 리스트
+                        val chatList = ArrayList<ChatRoomModel.Comment>() // 채팅 기록 리스트
                         // 채팅방 채팅 내역들을 가져와서 chatList에 추가
                         snapshot.children.forEach { item ->
-                            val comment = item.getValue(ChatModel.Comment::class.java)
+                            val comment = item.getValue(ChatRoomModel.Comment::class.java)
                             comment?.let { chatList.add(it) }
                         }
                         complete(chatList)
@@ -720,7 +724,7 @@ class FirebaseRepository {
             .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     snapshot.children.forEach { item ->
-                        val chatModel = item.getValue(ChatModel::class.java)
+                        val chatModel = item.getValue(ChatRoomModel::class.java)
                         if (chatModel?.users?.containsKey(destUid)!!) {
                             Log.d("FirebaseRepository", "checkChatRoom Callback Called")
                             callback(item.key) // 채팅방 Uid 전달
@@ -743,10 +747,10 @@ class FirebaseRepository {
             .equalTo(true)
             .addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
-                    val chatModels = ArrayList<ChatModel>()
+                    val chatModels = ArrayList<ChatRoomModel>()
                     snapshot.children.forEach { item ->
                         if (item.exists()) { // 데이터가 존재한다면
-                            chatModels.add(item.getValue(ChatModel::class.java)!!) // Chat Model 리스트에 추가
+                            chatModels.add(item.getValue(ChatRoomModel::class.java)!!) // Chat Model 리스트에 추가
                         }
                     }
                     callback.complete(chatModels) // 콜백을 통해 채팅 모델 리스트 전달
@@ -766,7 +770,8 @@ class FirebaseRepository {
                     if (snapshot.exists()) {
                         val userModel: UserModel? = snapshot.getValue(UserModel::class.java)
                         if (userModel != null) {
-                            val destUserModel = ChatUserModel(userModel.nickname, userModel.profile_url, uid)
+                            val destUserModel =
+                                ChatUserModel(userModel.nickname, userModel.profile_url, uid)
                             complete(destUserModel)
                         }
 
@@ -778,7 +783,60 @@ class FirebaseRepository {
                 }
             }
             )
+    }
 
+    // 나와 채팅 상대인 유저의 정보(ChatUserModel)를 가져옴
+    fun getChatDestUsers(complete: (ArrayList<ChatUserModel>) -> Unit) {
+        val myUid = Firebase.auth.uid // 본인 계정 uid
+        var destUserCount = 0 // 상대방 데이터를 다 가져왔느지 확인하기 위한 카운터 변수
+
+        // 상대방 Uid를 가져오는 함수
+        fun findDestUid(users: HashMap<String, Boolean>): String? {
+            // haspmap에서 본인 uid가 아닌 key값을 가져옴
+            val filteredMap = users.filterKeys { !it.contains(myUid!!) }
+            return filteredMap.keys.first() // 상대방 uid를 return함.
+        }
+
+        // 내가 속해있는 채팅방 데이터를 가져옴
+        firebaseDatabaseInstance.getReference("chatrooms")
+            .orderByChild("users/${myUid}")
+            .equalTo(true)
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(chatRoomSnapshot: DataSnapshot) {
+                    val destUidArray = ArrayList<String>() // 채팅 상대 uid를 담기 위한 배열
+
+                    chatRoomSnapshot.children.forEach { item -> // 채팅방을 하나씩 돌아가면서 탐색
+                        if (item.exists()) { // 데이터가 존재한다면
+                            val chatRoom =
+                                (item.getValue(ChatRoomModel::class.java)!!) // 채팅방 정보를 가져옴
+                            destUidArray.add(findDestUid(chatRoom.users)!!) // 내가 있는 채팅방의 상대방 uid를 추가함
+
+                            // 채팅방 데이터를 모두 가져왔으면
+                            if (destUidArray.size == chatRoomSnapshot.childrenCount.toInt()) {
+
+                                val chatDestUsers =
+                                    ArrayList<ChatUserModel>() // 채팅 상대방에 대한 Array List
+
+                                destUidArray.forEach { destUid -> // 상대방 uid를 대상으로 반복하면서
+                                    destUserCount++ // 상대방 uid 개수 1 더해줌
+                                    getUserModel(destUid) { destUserModel -> // 상대방에 대한 정보를 가져와서 추가한다.
+                                        chatDestUsers.add(destUserModel)
+
+                                        // (상대방 정보를 모두 가져왔으면)
+                                        if (destUserCount == destUidArray.size) {
+                                            complete(chatDestUsers) // 콜백 호출
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    TODO("Not yet implemented")
+                }
+            })
     }
 
     // 채팅을 보내면 푸시를 보내기 위해 Token을 얻기 위한 콜백 함수

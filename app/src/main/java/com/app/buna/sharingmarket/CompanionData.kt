@@ -13,8 +13,9 @@ class REQUEST_CODE {
         const val DELETE_BOARD_CODE_FROM_MY_HEART = 6002 // 좋아요 누른글 삭제
         const val UPDATE_BOARD_CODE = 6002 // 게시글 업데이트
         const val SEARCH_BOARD_CODE = 6003 // 키워드로 상품 검색
-        const val REFRESH_MAIN_HOME_FRAGMENT = 6004 // 화면 갱신
-        const val REFRESH_MAIN_CHAT_FRAGMENT = 6005
+        const val REFRESH_MAIN_HOME_FRAGMENT_CODE = 6004 // 화면 갱신
+        const val REFRESH_MAIN_CHAT_FRAGMENT_CODE = 6005 // 채팅 화면 갱신
+        const val SELECT_USER_CODE = 6006 // 나눔 완료시 유저 리스트를 보여주고 돌아오기 위함
     }
 }
 

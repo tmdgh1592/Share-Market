@@ -6,7 +6,7 @@
 
         <variable
             name="comment"
-            type="com.app.buna.sharingmarket.model.items.chat.ChatModel.Comment" />
+            type="com.app.buna.sharingmarket.model.items.chat.ChatRoomModel.Comment" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

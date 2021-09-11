@@ -14,6 +14,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.app.buna.sharingmarket.MenuId
 import com.app.buna.sharingmarket.R
+import com.app.buna.sharingmarket.REQUEST_CODE
 import com.app.buna.sharingmarket.REQUEST_CODE.Companion.UPDATE_BOARD_CODE
 import com.app.buna.sharingmarket.adapter.ImageSliderAdapter
 import com.app.buna.sharingmarket.databinding.ActivityBoardBinding
@@ -98,9 +99,6 @@ class BoardActivity : AppCompatActivity() {
         if (vm?.getUid() == vm?.item.uid) { // 본인인 경우에 ''거래 완료''로 표시
             if (vm?.item.isComplete) { // 거래가 완료된 게시물인 경우
                 binding?.chatBtn?.apply {
-                    /*val btnDrawable = DrawableCompat.wrap(background)
-                    DrawableCompat.setTint(btnDrawable, ContextCompat.getColor(this@BoardActivity, R.color.gray_50))
-                    background = btnDrawable*/
                     backgroundTintList = ColorStateList.valueOf(
                         ContextCompat.getColor(
                             this@BoardActivity,
@@ -122,7 +120,7 @@ class BoardActivity : AppCompatActivity() {
                         AlertDialog.Builder(this@BoardActivity)
                             .setMessage(getString(R.string.share_not_done_message))
                             .setPositiveButton(getString(R.string.ok)) { _, _ ->
-                                FancyToastUtil(this@BoardActivity).showSuccess(getString(R.string.share_not_done_message))
+                                FancyToastUtil(this@BoardActivity).showGreen(getString(R.string.share_not_done_message))
                                 vm?.shareDone(false) { // 나눔 완료로 상태 표시
                                     setResult(RESULT_OK)
                                     finish()
@@ -152,11 +150,8 @@ class BoardActivity : AppCompatActivity() {
                             .setTitle(text)
                             .setMessage(getString(R.string.share_done_message))
                             .setPositiveButton(getString(R.string.ok)) { _, _ ->
-                                FancyToastUtil(this@BoardActivity).showSuccess(getString(R.string.share_done_message))
-                                vm?.shareDone(true) { // 나눔 완료로 상태 표시
-                                    setResult(RESULT_OK)
-                                    finish()
-                                }
+                                val selectUserIntent = Intent(this@BoardActivity, SelectUserActivity::class.java)
+                                startActivityForResult(selectUserIntent, REQUEST_CODE.SELECT_USER_CODE)
                             }.setNegativeButton(getString(R.string.cancel)) { dialog, id ->
                                 dialog.dismiss()
                             }.create().show()
@@ -294,8 +289,14 @@ class BoardActivity : AppCompatActivity() {
         }
 
         if (requestCode == UPDATE_BOARD_CODE) { // 게시글을 업데이트 했다면 뷰 갱신을 위한 resultCode
-            setResult(RESULT_OK)
-            finish()
+            setResult(RESULT_OK) // 화면을 새로 불러오기 위함.
+            finish() // 액티비티 종료
+        } else if (requestCode == REQUEST_CODE.SELECT_USER_CODE) {
+            FancyToastUtil(this@BoardActivity).showGreen(getString(R.string.share_done_message))
+            vm?.shareDone(true) { // 나눔 완료로 상태 표시
+                setResult(RESULT_OK) // 데이터 변화에 따라 화면을 새로 불러오기 위함.
+                finish() // 액티비티 종료
+            }
         }
     }
 }
