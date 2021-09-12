@@ -24,13 +24,14 @@ class SelectUserActivity : AppCompatActivity() {
     val vm: SelectUserViewModel by lazy {
         ViewModelProvider(
             this,
-            SelectUserViewModel.Factory(get())
+            SelectUserViewModel.Factory(application)
         ).get(SelectUserViewModel::class.java)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initView() // 뷰 초기화
+        vm.boardTitle = intent.getStringExtra("board_title") // BoardActivity로부터 게시글 제목 전달받음
     }
 
     fun initView() {
@@ -73,7 +74,7 @@ class SelectUserActivity : AppCompatActivity() {
         binding?.doneBtn?.setOnClickListener {
             vm.clickDoneBtn(object : ViewModelListner { // 커스텀 리스너로 확인버튼을 눌렀다고 알려주고 결과를 전달받는다.
                 override fun onSuccess(data: Any?) { // success
-                    if (data is ChatUserModel && data != null) {// 상대방 정보 모델
+                    if (data is ChatUserModel) {// 상대방 정보 모델
                         // destModelIntent : 상대방 정보를 담은 인텐트
                         // setResult()를 통해 메인 액티비티까지 종료하면서 데이터를 가져가고, 메인액티비티에서 화면 갱신 후 ChatActivity로 이동
                         val destModelIntent = Intent(this@SelectUserActivity, ChatActivity::class.java).apply {

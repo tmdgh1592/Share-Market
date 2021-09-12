@@ -2,6 +2,11 @@ package com.app.buna.sharingmarket.viewmodel
 
 import android.app.Application
 import android.content.Context
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.content.pm.ResolveInfo
+import android.net.Uri
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -29,7 +34,10 @@ class ChatViewModel(application: Application, val context: Context) : AndroidVie
     //상대방과 채팅한 기록이 있는지 확인 후 있으면 채팅방 uid 가져옴
     var chatRoomUid: String? = null
 
-    fun sendMesage(complete: (firstChatRoomList: ArrayList<ChatRoomModel.Comment>?) -> Unit, success: (Boolean) -> Unit) {
+    fun sendMesage(
+        complete: (firstChatRoomList: ArrayList<ChatRoomModel.Comment>?) -> Unit,
+        success: (Boolean) -> Unit
+    ) {
         if (message != null && message.trim() != "" && destChatModel != null) {
             //채팅방 유저 맵
             val users = HashMap<String, Boolean>().apply {
@@ -118,7 +126,12 @@ class ChatViewModel(application: Application, val context: Context) : AndroidVie
     }
 
     fun togglePushState(uid: String, complete: (Boolean) -> Unit) {
-        FirebaseRepository.instance.togglePushState(myPushState.value!!, chatRoomUid!!, uid, complete)
+        FirebaseRepository.instance.togglePushState(
+            myPushState.value!!,
+            chatRoomUid!!,
+            uid,
+            complete
+        )
     }
 
     fun setPushState(state: Boolean, chatRoomUid: String, uid: String) {
@@ -127,6 +140,41 @@ class ChatViewModel(application: Application, val context: Context) : AndroidVie
 
     fun getPushState(chatRoomUid: String, uid: String, complete: (Boolean) -> Unit) {
         FirebaseRepository.instance.getPushState(chatRoomUid, uid, complete)
+    }
+
+    // 기부금 영수증 신청하기 버튼 눌렀을 때 호출하는 메솓,
+    // 전자 기부금 영수증 앱 설치로 이동
+    fun applyGiveBill() {
+        val homeTaxAppPacakge = "kr.go.nts.android"
+        var homeTaxIntent: Intent
+
+        if(isInstalled(homeTaxAppPacakge)) { // 홈택스 앱이 깔려있다면
+            homeTaxIntent = context.packageManager.getLaunchIntentForPackage(homeTaxAppPacakge)!!
+            homeTaxIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_SINGLE_TOP or Intent.FLAG_ACTIVITY_CLEAR_TOP)
+        } else {
+            homeTaxIntent = Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=${homeTaxAppPacakge}"))
+        }
+        context.startActivity(homeTaxIntent)
+    }
+
+    fun isInstalled(packageName: String): Boolean {
+        var isExist = false
+        val pkgMgr: PackageManager = context.packageManager
+        val mApps: List<ResolveInfo>
+        val mainIntent = Intent(Intent.ACTION_MAIN, null)
+        mainIntent.addCategory(Intent.CATEGORY_LAUNCHER)
+        mApps = pkgMgr.queryIntentActivities(mainIntent, 0)
+        try {
+            for (i in mApps.indices) {
+                if (mApps[i].activityInfo.packageName.startsWith(packageName)) {
+                    isExist = true
+                    break
+                }
+            }
+        } catch (e: Exception) {
+            isExist = false
+        }
+        return isExist
     }
 
 }

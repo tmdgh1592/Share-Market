@@ -19,6 +19,8 @@
     <color name="pressed_white">#F9F9F9</color>
     <color name="enabled_white">#E1E1E1</color>
 
+    <color name="give_bill_btn_color">#F6F7F8</color>
+    <color name="give_bill_btn_pressed_color">#ECEEF0</color>
 
     <!--chat bubble-->
     <color name="chat_me_bubble">#fffffde7</color>
@@ -37,6 +39,8 @@
     <color name="black_transparent">#CC000000</color>
     <color name="control_hight_light">#0A535353</color>
     <color name="heart_color">#FF6358</color>
+
+    <color name="notification_title_background_color">#4CAF50</color>
 
     <!--type color-->
     <color name="give_color">#CDDC39</color>

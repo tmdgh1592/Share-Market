@@ -102,7 +102,7 @@ class ChatActivity : AppCompatActivity() {
 
 
         binding?.chatRecyclerView.apply {
-            adapter = ChatRecyclerAdatper(viewModel.destChatModel!!, this@ChatActivity).apply {
+            adapter = ChatRecyclerAdatper(viewModel, viewModel.destChatModel!!, this@ChatActivity).apply {
                 setHasStableIds(true)
             }
             layoutManager = LinearLayoutManager(this@ChatActivity)

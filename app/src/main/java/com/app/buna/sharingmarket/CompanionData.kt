@@ -41,12 +41,17 @@ class Channel {
     }
 }
 
+class AppHostPush{
+    companion object {
+        const val HOST_NOTIFICAITON = "AppHost"
+    }
+}
 class CommentType {
     companion object {
         const val COMMENT = 0 // 단순 문자인 경우
         const val PICTURE = 1 // 사진인 경우
         const val DATE_DIVIDER = 2 // 날짜 구분선인 경우
-        const val GIVE_BILL = 3 // 기부금 영수증 요청이면
+        const val GIVE_BILL = 100 // 기부금 영수증 요청이면
     }
 }
 

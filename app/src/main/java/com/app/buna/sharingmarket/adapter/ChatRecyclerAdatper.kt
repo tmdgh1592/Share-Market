@@ -14,18 +14,20 @@ import com.app.buna.sharingmarket.databinding.*
 import com.app.buna.sharingmarket.model.items.chat.ChatRoomModel
 import com.app.buna.sharingmarket.model.items.chat.ChatUserModel
 import com.app.buna.sharingmarket.utils.BaseDiffUtil
+import com.app.buna.sharingmarket.viewmodel.ChatViewModel
 import com.bumptech.glide.Glide
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import java.util.*
 import kotlin.collections.ArrayList
 
-class ChatRecyclerAdatper(val destModel: ChatUserModel, val context: Context) :
+class ChatRecyclerAdatper(val viewModel: ChatViewModel, val destModel: ChatUserModel, val context: Context) :
     RecyclerView.Adapter<ChatRecyclerAdatper.BaseViewHolder>() {
     var chatList = ArrayList<ChatRoomModel.Comment>()
     private val TYPE_ME = 0
     private val TYPE_OTHER = 1
     private val TYPE_DIVIDER = 2
+    private val TYPE_BILL = CommentType.GIVE_BILL
 
 
     abstract class BaseViewHolder(binding: ViewDataBinding) :
@@ -133,6 +135,14 @@ class ChatRecyclerAdatper(val destModel: ChatUserModel, val context: Context) :
         }
     }
 
+    inner class RequireBillViewHolder(val binding: LayoutRequireBillBinding) :
+        BaseViewHolder(binding) {
+        override fun bind(position: Int) {
+            binding.messageTextView.text = chatList[position].message
+            binding.applyGiveBillBtn.setOnClickListener { viewModel.applyGiveBill() }
+        }
+    }
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
         return when (viewType) {
@@ -157,6 +167,13 @@ class ChatRecyclerAdatper(val destModel: ChatUserModel, val context: Context) :
                     false
                 )
             )
+            TYPE_BILL -> RequireBillViewHolder(
+                LayoutRequireBillBinding.inflate(
+                    LayoutInflater.from(
+                        parent.context
+                    ), parent, false
+                )
+            )
             else -> throw IllegalArgumentException("Invalid view type")
         }
     }
@@ -166,10 +183,14 @@ class ChatRecyclerAdatper(val destModel: ChatUserModel, val context: Context) :
             is MyChatViewHolder -> holder.bind(position)
             is OtherChatViewHolder -> holder.bind(position)
             is ChatDividerViewHolder -> holder.bind(position)
+            is RequireBillViewHolder -> holder.bind(position)
         }
     }
 
     override fun getItemViewType(position: Int): Int {
+        if (chatList[position].commentType == CommentType.GIVE_BILL) {
+            return TYPE_BILL
+        }
         if (chatList[position].commentType == CommentType.DATE_DIVIDER) {
             return TYPE_DIVIDER
         } else if (chatList[position].uid == Firebase.auth.uid) {

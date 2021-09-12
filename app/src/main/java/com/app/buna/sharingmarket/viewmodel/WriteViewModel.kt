@@ -51,7 +51,7 @@ class WriteViewModel(application: Application) : AndroidViewModel(application) {
 
     // 상품 정보 등록 후 -> callback -> 이미지 Save
     fun saveProductImage(imgPath: ArrayList<String>, boardUid: String) {
-        if(imgPath != null && imgPath.size != 0) {
+        if(imgPath.size != 0) {
             FirebaseRepository.instance.saveProductImg(imgPath, boardUid, fileNameForDelete)
         }
     }
@@ -65,8 +65,8 @@ class WriteViewModel(application: Application) : AndroidViewModel(application) {
 
     // 상품 정보 업데이트 후 -> callback -> 이미지 새로 Save
     fun updateProductImage(boardUid: String, fileNamesForDelete: ArrayList<String>) {
-        if(imagePathHash != null) {
-            FirebaseRepository.instance.updateProductImg(imagePathHash, boardUid, fileNamesForDelete)
-        }
+
+        FirebaseRepository.instance.updateProductImg(imagePathHash, boardUid, fileNamesForDelete)
+
     }
 }

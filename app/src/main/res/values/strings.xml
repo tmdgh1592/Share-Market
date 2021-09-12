@@ -38,7 +38,10 @@
     <string name="select_user_toolbar_title">거래 유저</string>
 
     <!-- 기부금 영수증 요청 메세지 문구 -->
-    <string name="require_give_bill_message">나눔을 성공적으로 완료했어요!\n나눔을 받으신 분께서는 해당 메세지를 클릭하여 기부금 영수증을 발급해주세요!</string>
+    <string name="require_give_bill_title">📦 [%s] 나눔이 완료되었습니다.\n\n\n</string>
+    <string name="require_give_bill_message">✅ 나눔을 성공적으로 완료했어요!\n✅ 필요시 나눔을 받으신 분께서는 아래 버튼을 클릭하여 기부금 영수증을 발급해주세요!\n\n❌ 기부금 영수증 중복 신청은 무효처리 됩니다.\n📄 자세한 신청 방법은 My섹션에서 확인해보세요</string>
+    <string name="require_give_bill_notification">🌱 [알림] 채팅창을 확인해주세요 🌱</string>
+    <string name="give_bill_btn">기부금 영수증 신청하기</string>
 
     <string name="fab_exchange">교환해요</string>
     <string name="fab_write">무료나눔</string>
@@ -162,7 +165,7 @@
     <string name="share_not_done">나눔 완료 해제</string>
     <string name="take_done">수령 완료</string>
     <string name="take_not_done">수령 완료 해제</string>
-    <string name="exchange_done">나눔 완료</string>
+    <string name="exchange_done">교환 완료</string>
     <string name="exchange_not_done">교환 완료 해제</string>
     <string name="share_done_message">게시글 상태를 완료로 변경합니다.</string>
     <string name="share_not_done_message">게시글의 완료 상태를 해제합니다.</string>
@@ -210,6 +213,7 @@
     <!--share-->
     <string name="share_done_toast_comment">나눔을 완료하였습니다!</string>
     <string name="share_not_done_toast_comment">게시글을 나눔 상태로 변경하였습니다!</string>
+
 
     <!-- Notification Channel Id -->
     <string name="default_notification_channel_id">1000</string>

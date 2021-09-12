@@ -4,6 +4,7 @@ import android.content.Intent
 import android.content.res.ColorStateList
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.util.TypedValue
 import android.view.*
 import android.widget.RelativeLayout
@@ -133,7 +134,7 @@ class BoardActivity : AppCompatActivity() {
             } else { // 거래가 완료된 게시물이 아니면 완료로 변경할건지 물어봄
                 binding?.chatBtn?.apply {
                     // 게시글을 나눔 완료 상태로 변경할지 물어봄
-                    val taskText: String = if (vm?.item.isExchange) { // 교환이면
+                    text = if (vm?.item.isExchange) { // 교환이면
                         getString(R.string.exchange_done)
                     }else{
                         if(vm?.item.isGive) { // 나눔이면
@@ -143,15 +144,28 @@ class BoardActivity : AppCompatActivity() {
                         }
                     }
 
-                    text = taskText
-
                     setOnClickListener {
                         AlertDialog.Builder(this@BoardActivity)
                             .setTitle(text)
                             .setMessage(getString(R.string.share_done_message))
                             .setPositiveButton(getString(R.string.ok)) { _, _ ->
-                                val selectUserIntent = Intent(this@BoardActivity, SelectUserActivity::class.java)
-                                startActivityForResult(selectUserIntent, REQUEST_CODE.SELECT_USER_CODE)
+                                if (vm.item.isExchange) { // 단순 교환인 경우엔 기부금 영수증이 필요없으므로 메세지를 보내지 않음.
+                                    vm?.shareDone(true) { // 나눔 완료로 상태 표시
+                                        setResult(RESULT_OK)
+                                        finish()
+                                    }
+                                }else { // 나눔 또는 필요인 경우 기부금 영수증 요청을 보낼 대상을 선택하는 Activity로 이동
+                                    val selectUserIntent = Intent(
+                                        this@BoardActivity,
+                                        SelectUserActivity::class.java
+                                    ).apply {
+                                        putExtra("board_title", vm.item.title)
+                                    }
+                                    startActivityForResult(
+                                        selectUserIntent,
+                                        REQUEST_CODE.SELECT_USER_CODE
+                                    )
+                                }
                             }.setNegativeButton(getString(R.string.cancel)) { dialog, id ->
                                 dialog.dismiss()
                             }.create().show()

@@ -9,9 +9,11 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.util.Log
+import android.view.View
 import android.widget.RemoteViews
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import com.app.buna.sharingmarket.AppHostPush
 import com.app.buna.sharingmarket.Channel
 import com.app.buna.sharingmarket.R
 import com.app.buna.sharingmarket.activity.Splash
@@ -55,7 +57,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
     }
 
     private fun sendNotification(notificationManager: NotificationManager, remoteMessage: RemoteMessage) {
-        val title = remoteMessage.data["title"] // 닉네임
+        val nickname = remoteMessage.data["title"] // 닉네임
         val message = remoteMessage.data["body"] // 메세지 내용
         val profileUri = remoteMessage.data["image"] // 프로필 Url
 
@@ -87,13 +89,17 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
         // 커스텀 노티피케이션 레이아웃
         val customView = RemoteViews(packageName, R.layout.notification_layout).apply {
-            setTextViewText(R.id.title_text_view, title) // 메세지 제목 (닉네임)
+            setTextViewText(R.id.nickname_text_view, nickname) // 메세지 제목 (닉네임)
             setTextViewText(R.id.message_text_view, message) // 메세지 내용
+            if(profileUri == AppHostPush.HOST_NOTIFICAITON) { // Host(앱 개발자)가 보낸 푸시 메세지이면 프로필 안보이게 하기
+                setViewVisibility(R.id.notification_profile_image_view, View.GONE)
+            }
+
             notificationBuilder.setCustomContentView(this) // 노티피케이션 커스텀 뷰 Set
         }
 
-        // 상대방이 프로필을 설정한 상대라면
-        if (profileUri != null) {
+        // 상대방이 프로필을 설정한 상대방이고, Host(앱 개발자)가 보낸 푸시가 아니면
+        if (profileUri != null && profileUri != AppHostPush.HOST_NOTIFICAITON) {
             val notificationTarget = NotificationTarget(
                 this,
                 R.id.notification_profile_image_view,
@@ -107,6 +113,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                 .fallback(R.drawable.default_profile).load(profileUri).circleCrop()
                 .into(notificationTarget)
         }
+
         // 푸시가 쌓이지 않도록 기존에 보낸 푸시는 삭제
         notificationManager.cancel(NOTI_ID)
         // 새로운 푸시 발동
