@@ -6,7 +6,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.app.buna.sharingmarket.viewmodel.UserSelectViewModel" />
+            type="com.app.buna.sharingmarket.viewmodel.SelectUserViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

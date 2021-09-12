@@ -3,7 +3,6 @@ package com.app.buna.sharingmarket.activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
@@ -17,16 +16,16 @@ import com.app.buna.sharingmarket.listners.FailType
 import com.app.buna.sharingmarket.listners.ViewModelListner
 import com.app.buna.sharingmarket.model.items.chat.ChatUserModel
 import com.app.buna.sharingmarket.utils.FancyToastUtil
-import com.app.buna.sharingmarket.viewmodel.UserSelectViewModel
+import com.app.buna.sharingmarket.viewmodel.SelectUserViewModel
 import org.koin.android.ext.android.get
 
 class SelectUserActivity : AppCompatActivity() {
     var binding: ActivitySelectUserBinding? = null
-    val vm: UserSelectViewModel by lazy {
+    val vm: SelectUserViewModel by lazy {
         ViewModelProvider(
             this,
-            UserSelectViewModel.Factory(get())
-        ).get(UserSelectViewModel::class.java)
+            SelectUserViewModel.Factory(get())
+        ).get(SelectUserViewModel::class.java)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -46,12 +45,16 @@ class SelectUserActivity : AppCompatActivity() {
         }
 
         // 채팅했던 유저 리스트 가져와서 adapter에 전송
-        vm.getMyChatUsers { chatRoomUsers ->
+        // 추가로 해당 채팅방의 key값(Room uid)도 가져옴
+        vm.getMyChatUsers { chatRoomUsers, roomUids ->
             vm.selectUserList = chatRoomUsers
-            (binding?.userSelectRecyclerView?.adapter as UserSelectRecyclerAdapter).update(chatRoomUsers)
+            vm.roomUids.addAll(roomUids)
+            (binding?.userSelectRecyclerView?.adapter as UserSelectRecyclerAdapter).update(
+                chatRoomUsers
+            )
 
             // 채팅한 기록이 있다면 리스트 화면을 보여준다.
-            if(!chatRoomUsers.isNullOrEmpty()) {
+            if (!chatRoomUsers.isNullOrEmpty()) {
                 binding?.doneBtn?.run {
                     isEnabled = true // 버튼 활성화
                     setTextColor(ContextCompat.getColor(this@SelectUserActivity, R.color.app_green))
@@ -71,8 +74,9 @@ class SelectUserActivity : AppCompatActivity() {
             vm.clickDoneBtn(object : ViewModelListner { // 커스텀 리스너로 확인버튼을 눌렀다고 알려주고 결과를 전달받는다.
                 override fun onSuccess(data: Any?) { // success
                     if (data is ChatUserModel && data != null) {// 상대방 정보 모델
-                        val intent =
-                            Intent(this@SelectUserActivity, ChatActivity::class.java).apply {
+                        // destModelIntent : 상대방 정보를 담은 인텐트
+                        // setResult()를 통해 메인 액티비티까지 종료하면서 데이터를 가져가고, 메인액티비티에서 화면 갱신 후 ChatActivity로 이동
+                        val destModelIntent = Intent(this@SelectUserActivity, ChatActivity::class.java).apply {
                                 putExtra("userName", data.userName) // 채팅할 상대방 닉네임 전달 받음
                                 putExtra(
                                     "profileImageUrl",
@@ -81,8 +85,7 @@ class SelectUserActivity : AppCompatActivity() {
                                 putExtra("destUid", data.uid)
                             }
 
-                        startActivity(intent)
-                        setResult(RESULT_OK)
+                        setResult(RESULT_OK, destModelIntent)
                         finish()
 
                     }
@@ -91,6 +94,8 @@ class SelectUserActivity : AppCompatActivity() {
                 override fun onFail(failType: Int) { // 클릭에 실패했을 때
                     if (failType == FailType.NO_SELECTED) { // 유저를 선택하지 않은 경우
                         FancyToastUtil(this@SelectUserActivity).showGreen(getString(R.string.no_selected_user))
+                    } else if (failType == FailType.INTERNET_STATE_ERROR) {
+                        FancyToastUtil(this@SelectUserActivity).showRed(getString(R.string.internet_check))
                     }
                 }
             })

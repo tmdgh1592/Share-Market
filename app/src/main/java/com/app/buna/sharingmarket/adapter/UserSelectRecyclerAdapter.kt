@@ -5,19 +5,19 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.app.buna.sharingmarket.databinding.LayoutSelectUserBinding
 import com.app.buna.sharingmarket.model.items.chat.ChatUserModel
-import com.app.buna.sharingmarket.viewmodel.UserSelectViewModel
+import com.app.buna.sharingmarket.viewmodel.SelectUserViewModel
 
-class UserSelectRecyclerAdapter(val viewModel: UserSelectViewModel) : RecyclerView.Adapter<UserSelectRecyclerAdapter.UserSelectViewHolder>() {
+class UserSelectRecyclerAdapter(val userViewModel: SelectUserViewModel) : RecyclerView.Adapter<UserSelectRecyclerAdapter.UserSelectViewHolder>() {
     var userChatModelList: ArrayList<ChatUserModel> = ArrayList()
 
     inner class UserSelectViewHolder(val binding: LayoutSelectUserBinding): RecyclerView.ViewHolder(binding.root) {
         fun bind(position: Int) {
             binding.userModel = userChatModelList[position]
             binding.selectUserLayout.setOnClickListener {
-                viewModel.selectedUserPos.postValue(position) // 클릭한 유저의 position으로 값 갱신
+                userViewModel.selectedUserPos.postValue(position) // 클릭한 유저의 position으로 값 갱신
             }
 
-            binding.selectUserRadioBtn.isChecked = (position == viewModel.selectedUserPos.value)
+            binding.selectUserRadioBtn.isChecked = (position == userViewModel.selectedUserPos.value)
         }
     }
 

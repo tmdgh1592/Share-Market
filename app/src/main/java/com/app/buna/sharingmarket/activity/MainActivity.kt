@@ -121,6 +121,9 @@ class MainActivity : AppCompatActivity() {
             REQUEST_CODE.REFRESH_MAIN_HOME_FRAGMENT_CODE, REQUEST_CODE.UPDATE_BOARD_CODE -> { // 상품 정보 삭제, 수정, 나눔완료 등으로 인한 화면 갱신
                 supportFragmentManager.beginTransaction()
                     .replace(R.id.main_frame_layout, MainHomeFragment.instance()).commit()
+                if (data != null) { // SelectUserActivity에서부터 전달받은 상대방 데이터
+                    startActivity(data) // 해당 데이터를 통해 ChatActivity로 이동
+                }
             }
             REQUEST_CODE.REFRESH_MAIN_CHAT_FRAGMENT_CODE -> { // 유효하지 않은 채팅방으로 이동하여 채팅방이 삭제될 시 refresh
                 FancyToastUtil(this).showRed(getString(R.string.dest_is_null))

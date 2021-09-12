@@ -646,7 +646,7 @@ class FirebaseRepository {
         chatRoomUid: String?,
         users: HashMap<String, Boolean>,
         comment: ChatRoomModel.Comment,
-        complete: (String?) -> Unit
+        complete: (String?) -> Unit = {}
     ) {
         if (chatRoomUid == null) { // 채팅방이 없다면 새로운 채팅방 생성
             // 새로운 채팅 맵 생성
@@ -786,11 +786,11 @@ class FirebaseRepository {
     }
 
     // 나와 채팅 상대인 유저의 정보(ChatUserModel)를 가져옴
-    fun getChatDestUsers(complete: (ArrayList<ChatUserModel>) -> Unit) {
+    fun getChatDestUsers(complete: (ArrayList<ChatUserModel>, ArrayList<String>) -> Unit) {
         val myUid = Firebase.auth.uid // 본인 계정 uid
         var destUserCount = 0 // 상대방 데이터를 다 가져왔느지 확인하기 위한 카운터 변수
 
-        // 상대방 Uid를 가져오는 함수
+        // 상대방 uid를 가져오는 함수
         fun findDestUid(users: HashMap<String, Boolean>): String? {
             // haspmap에서 본인 uid가 아닌 key값을 가져옴
             val filteredMap = users.filterKeys { !it.contains(myUid!!) }
@@ -805,10 +805,11 @@ class FirebaseRepository {
                 override fun onDataChange(chatRoomSnapshot: DataSnapshot) {
                     if (chatRoomSnapshot.childrenCount.toInt() != 0) {
                         val destUidArray = ArrayList<String>() // 채팅 상대 uid를 담기 위한 배열
+                        val chatRoomUids = ArrayList<String>()
                         chatRoomSnapshot.children.forEach { item -> // 채팅방을 하나씩 돌아가면서 탐색
                             if (item.exists()) { // 데이터가 존재한다면
-                                val chatRoom =
-                                    (item.getValue(ChatRoomModel::class.java)!!) // 채팅방 정보를 가져옴
+                                val chatRoom = (item.getValue(ChatRoomModel::class.java)!!) // 채팅방 정보를 가져옴
+                                chatRoomUids.add(item.key!!)
                                 destUidArray.add(findDestUid(chatRoom.users)!!) // 내가 있는 채팅방의 상대방 uid를 추가함
 
                                 // 채팅방 데이터를 모두 가져왔으면
@@ -824,7 +825,7 @@ class FirebaseRepository {
 
                                             // (상대방 정보를 모두 가져왔으면)
                                             if (destUserCount == destUidArray.size) {
-                                                complete(chatDestUsers) // 콜백 호출
+                                                complete(chatDestUsers, chatRoomUids) // 콜백 호출
                                             }
                                         }
                                     }
@@ -832,7 +833,7 @@ class FirebaseRepository {
                             }
                         }
                     } else {
-                        complete(ArrayList())
+                        complete(ArrayList(), ArrayList())
                     }
                 }
 

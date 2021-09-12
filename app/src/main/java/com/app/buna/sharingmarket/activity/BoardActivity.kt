@@ -293,8 +293,9 @@ class BoardActivity : AppCompatActivity() {
             finish() // 액티비티 종료
         } else if (requestCode == REQUEST_CODE.SELECT_USER_CODE) {
             FancyToastUtil(this@BoardActivity).showGreen(getString(R.string.share_done_message))
-            vm?.shareDone(true) { // 나눔 완료로 상태 표시
-                setResult(RESULT_OK) // 데이터 변화에 따라 화면을 새로 불러오기 위함.
+            vm?.shareDone(true) { // DB데이터를 나눔 완료 상태로 변경
+                // 데이터 변화에 따라 화면을 새로 불러오고, SelectUserActivity에서 선택한 data(상대방 정보)를 담은 intent를 전달
+                setResult(RESULT_OK, data)
                 finish() // 액티비티 종료
             }
         }

@@ -37,6 +37,9 @@
     <string name="sosock_check">회원님의 소속을 선택해주세요 :D</string>
     <string name="select_user_toolbar_title">거래 유저</string>
 
+    <!-- 기부금 영수증 요청 메세지 문구 -->
+    <string name="require_give_bill_message">나눔을 성공적으로 완료했어요!\n나눔을 받으신 분께서는 해당 메세지를 클릭하여 기부금 영수증을 발급해주세요!</string>
+
     <string name="fab_exchange">교환해요</string>
     <string name="fab_write">무료나눔</string>
 
