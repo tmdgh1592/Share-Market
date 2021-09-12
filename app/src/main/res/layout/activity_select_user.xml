@@ -39,10 +39,10 @@
                 android:layout_gravity="right"
                 android:layout_marginRight="16dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
-                android:clickable="true"
+                android:enabled="false"
                 android:gravity="right"
                 android:text="@string/ok"
-                android:textColor="@color/app_green"
+                android:textColor="@color/gray_40"
                 android:textSize="@dimen/toolbar_text_size"/>
 
         </androidx.appcompat.widget.Toolbar>
@@ -53,7 +53,8 @@
             android:layout_height="match_parent"
             android:layout_marginTop="?attr/actionBarSize"
             app:layout_constraintTop_toBottomOf="@+id/tool_bar"
-            tools:listitem="@layout/layout_select_user"/>
+            tools:listitem="@layout/layout_select_user"
+            android:visibility="gone"/>
 
         <!--No Result View-->
         <!--검색결과 없을 때 보여짐-->
@@ -62,8 +63,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:gravity="center"
-            android:visibility="gone">
+            android:gravity="center">
 
             <ImageView
                 android:layout_width="100dp"

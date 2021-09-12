@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -46,15 +47,17 @@ class SelectUserActivity : AppCompatActivity() {
 
         // 채팅했던 유저 리스트 가져와서 adapter에 전송
         vm.getMyChatUsers { chatRoomUsers ->
-            Log.d("size", chatRoomUsers.isNullOrEmpty().toString())
             vm.selectUserList = chatRoomUsers
             (binding?.userSelectRecyclerView?.adapter as UserSelectRecyclerAdapter).update(chatRoomUsers)
 
-            // 채팅한 기록이 없으면 결과 없음 화면을 보여준다.
-            if(chatRoomUsers.isNullOrEmpty()) {
-                binding?.doneBtn?.visibility = View.GONE
-                binding?.userSelectRecyclerView?.visibility = View.GONE
-                binding?.noResultView?.visibility = View.VISIBLE
+            // 채팅한 기록이 있다면 리스트 화면을 보여준다.
+            if(!chatRoomUsers.isNullOrEmpty()) {
+                binding?.doneBtn?.run {
+                    isEnabled = true // 버튼 활성화
+                    setTextColor(ContextCompat.getColor(this@SelectUserActivity, R.color.app_green))
+                }
+                binding?.userSelectRecyclerView?.visibility = View.VISIBLE
+                binding?.noResultView?.visibility = View.GONE
             }
         }
 
@@ -65,8 +68,8 @@ class SelectUserActivity : AppCompatActivity() {
         })
 
         binding?.doneBtn?.setOnClickListener {
-            vm.clickDoneBtn(object : ViewModelListner {
-                override fun onSuccess(data: Any?) {
+            vm.clickDoneBtn(object : ViewModelListner { // 커스텀 리스너로 확인버튼을 눌렀다고 알려주고 결과를 전달받는다.
+                override fun onSuccess(data: Any?) { // success
                     if (data is ChatUserModel && data != null) {// 상대방 정보 모델
                         val intent =
                             Intent(this@SelectUserActivity, ChatActivity::class.java).apply {

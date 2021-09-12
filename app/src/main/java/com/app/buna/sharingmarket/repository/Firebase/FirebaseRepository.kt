@@ -803,38 +803,41 @@ class FirebaseRepository {
             .equalTo(true)
             .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(chatRoomSnapshot: DataSnapshot) {
-                    val destUidArray = ArrayList<String>() // 채팅 상대 uid를 담기 위한 배열
+                    if (chatRoomSnapshot.childrenCount.toInt() != 0) {
+                        val destUidArray = ArrayList<String>() // 채팅 상대 uid를 담기 위한 배열
+                        chatRoomSnapshot.children.forEach { item -> // 채팅방을 하나씩 돌아가면서 탐색
+                            if (item.exists()) { // 데이터가 존재한다면
+                                val chatRoom =
+                                    (item.getValue(ChatRoomModel::class.java)!!) // 채팅방 정보를 가져옴
+                                destUidArray.add(findDestUid(chatRoom.users)!!) // 내가 있는 채팅방의 상대방 uid를 추가함
 
-                    chatRoomSnapshot.children.forEach { item -> // 채팅방을 하나씩 돌아가면서 탐색
-                        if (item.exists()) { // 데이터가 존재한다면
-                            val chatRoom =
-                                (item.getValue(ChatRoomModel::class.java)!!) // 채팅방 정보를 가져옴
-                            destUidArray.add(findDestUid(chatRoom.users)!!) // 내가 있는 채팅방의 상대방 uid를 추가함
+                                // 채팅방 데이터를 모두 가져왔으면
+                                if (destUidArray.size == chatRoomSnapshot.childrenCount.toInt()) {
 
-                            // 채팅방 데이터를 모두 가져왔으면
-                            if (destUidArray.size == chatRoomSnapshot.childrenCount.toInt()) {
+                                    val chatDestUsers =
+                                        ArrayList<ChatUserModel>() // 채팅 상대방에 대한 Array List
 
-                                val chatDestUsers =
-                                    ArrayList<ChatUserModel>() // 채팅 상대방에 대한 Array List
+                                    destUidArray.forEach { destUid -> // 상대방 uid를 대상으로 반복하면서
+                                        destUserCount++ // 상대방 uid 개수 1 더해줌
+                                        getUserModel(destUid) { destUserModel -> // 상대방에 대한 정보를 가져와서 추가한다.
+                                            chatDestUsers.add(destUserModel)
 
-                                destUidArray.forEach { destUid -> // 상대방 uid를 대상으로 반복하면서
-                                    destUserCount++ // 상대방 uid 개수 1 더해줌
-                                    getUserModel(destUid) { destUserModel -> // 상대방에 대한 정보를 가져와서 추가한다.
-                                        chatDestUsers.add(destUserModel)
-
-                                        // (상대방 정보를 모두 가져왔으면)
-                                        if (destUserCount == destUidArray.size) {
-                                            complete(chatDestUsers) // 콜백 호출
+                                            // (상대방 정보를 모두 가져왔으면)
+                                            if (destUserCount == destUidArray.size) {
+                                                complete(chatDestUsers) // 콜백 호출
+                                            }
                                         }
                                     }
                                 }
                             }
                         }
+                    } else {
+                        complete(ArrayList())
                     }
                 }
 
                 override fun onCancelled(error: DatabaseError) {
-                    TODO("Not yet implemented")
+                    Log.d("FirebaseRepository", error.message)
                 }
             })
     }
