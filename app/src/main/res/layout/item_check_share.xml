@@ -17,17 +17,17 @@
         android:layout_marginHorizontal="12dp"
         android:layout_marginTop="12dp"
         android:clickable="true"
-        android:minHeight="60dp"
+        app:cardElevation="3dp"
         app:cardBackgroundColor="@color/soft_app_green"
         app:cardCornerRadius="4dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical"
             android:background="?android:attr/selectableItemBackground"
             android:paddingHorizontal="12dp"
-            android:paddingVertical="8dp">
+            android:paddingVertical="12dp">
 
             <TextView
                 android:id="@+id/check_share_title"

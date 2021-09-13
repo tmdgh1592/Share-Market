@@ -91,15 +91,13 @@ class MainHomeFragment(val category: String = "all") : Fragment() {
                     override fun complete(data: ArrayList<BoardItem>) {
                         val boardList = ArrayList<BoardItem>().apply {
                             // 나눔 현황 확인하는 뷰 맨 앞에 추가
-                            add(
-                                BoardItem()
-                            )
+                            add(BoardItem())
                             addAll(data)
                         }
                         (binding?.productRecyclerView?.adapter as BoardRecyclerAdapter).updateData(
                             boardList
                         )
-                        vm?.productItems.value = (data)
+                        vm?.productItems.value = (boardList)
                     }
                 })
             }

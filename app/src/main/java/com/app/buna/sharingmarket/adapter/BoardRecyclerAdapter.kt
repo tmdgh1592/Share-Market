@@ -179,8 +179,7 @@ class BoardRecyclerAdapter(var viewModel: MainViewModel, val context: Context) :
     }
 
     fun updateData(newList: ArrayList<BoardItem>) {
-        this.productItemList.clear()
-        this.productItemList.addAll(newList)
+        this.productItemList = newList
         notifyDataSetChanged()
     }
 

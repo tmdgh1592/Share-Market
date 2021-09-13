@@ -26,7 +26,6 @@
                 android:layout_marginHorizontal="24dp"
                 android:layout_marginTop="24dp"
                 android:gravity="center"
-                android:text="@string/now_share_count"
                 android:textColor="@color/black"
                 android:textSize="20sp"
                 app:layout_constraintTop_toTopOf="parent" />

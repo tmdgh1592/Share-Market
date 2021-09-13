@@ -39,7 +39,7 @@
 
     <!-- 기부금 영수증 요청 메세지 문구 -->
     <string name="require_give_bill_title">📦 [%s] 나눔이 완료되었습니다.\n\n\n</string>
-    <string name="require_give_bill_message">✅ 나눔을 성공적으로 완료했어요!\n✅ 필요시 나눔을 받으신 분께서는 아래 버튼을 클릭하여 기부금 영수증을 발급해주세요!\n\n❌ 기부금 영수증 중복 신청은 무효처리 됩니다.\n📄 자세한 신청 방법은 My섹션에서 확인해보세요</string>
+    <string name="require_give_bill_message">✅ 나눔을 성공적으로 완료했어요!\n✅ 필요시 나눔을 받으신 분께서는 아래 버튼을 클릭하여 기부금 영수증을 발급해주세요!\n\n❌ 기부금 영수증 중복 신청은 무효처리 됩니다.\n❌ 또한, 허위 신청시 불이익이 발생할 수 있습니다.\n📄 자세한 신청 방법은 My섹션에서 확인해보세요!</string>
     <string name="require_give_bill_notification">🌱 [알림] 채팅창을 확인해주세요 🌱</string>
     <string name="give_bill_btn">기부금 영수증 신청하기</string>
 
