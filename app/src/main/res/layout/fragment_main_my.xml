@@ -96,6 +96,7 @@
                         app:layout_constraintLeft_toRightOf="@+id/profile_image_view"
                         app:layout_constraintRight_toRightOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/nickname_text_view" />
+
                     <!-- 정보 수정 버튼 -->
                     <LinearLayout
                         android:id="@+id/edit_location_btn"
@@ -196,7 +197,7 @@
                         android:background="@color/gray_20"
                         app:layout_constraintTop_toBottomOf="@+id/my_heart_btn" />
 
-                    <!-- 관심 게시글 버튼-->
+                    <!-- 앱 공유 버튼-->
                     <LinearLayout
                         android:id="@+id/share_app_btn"
                         android:layout_width="match_parent"
@@ -226,9 +227,9 @@
                             android:textStyle="bold" />
                     </LinearLayout>
 
-                    <!-- 관심 게시글 버튼-->
+                    <!-- 자주 묻는 질문 버튼-->
                     <LinearLayout
-                        android:id="@+id/unregister_btn"
+                        android:id="@+id/qna_btn"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="@dimen/layout_frame_horizontal_margin"
@@ -240,6 +241,36 @@
                         android:paddingVertical="10dp"
                         app:layout_constraintTop_toBottomOf="@+id/share_app_btn">
 
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_gravity="center"
+                            android:layout_marginRight="8dp"
+                            android:src="@drawable/icon_faq" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/qna"
+                            android:textColor="@color/black_70"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <!-- 회원탈퇴 버튼-->
+                    <LinearLayout
+                        android:id="@+id/unregister_btn"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="@dimen/layout_frame_horizontal_margin"
+                        android:layout_marginVertical="@dimen/layout_frame_vertical_margin"
+                        android:background="@drawable/btn_in_my"
+                        android:clickable="true"
+                        android:foreground="?android:attr/selectableItemBackgroundBorderless"
+                        android:gravity="center"
+                        android:paddingVertical="10dp"
+                        app:layout_constraintTop_toBottomOf="@+id/qna_btn">
+
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -249,7 +280,7 @@
                             android:textStyle="bold" />
                     </LinearLayout>
 
-                    <!-- 관심 게시글 버튼-->
+                    <!-- 로그아웃 버튼-->
                     <LinearLayout
                         android:id="@+id/logout_btn"
                         android:layout_width="match_parent"
@@ -270,6 +301,7 @@
                             android:textColor="@color/black_70"
                             android:textSize="14sp"
                             android:textStyle="bold" />
+
                     </LinearLayout>
 
 

@@ -3,10 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-
         <variable
             name="model"
-            type="com.app.buna.sharingmarket.model.items.ProductItem" />
+            type="com.app.buna.sharingmarket.model.items.BoardItem" />
         />
     </data>
 
@@ -31,19 +30,20 @@
                 <!--imageview를 round하게 만들기 위한 cardview-->
                 <androidx.cardview.widget.CardView
                     android:id="@+id/cardBackgroundView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
                     android:layout_gravity="center|left"
                     app:cardCornerRadius="12dp"
                     app:cardElevation="0dp"
+                    app:layout_constraintDimensionRatio="1:1"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
 
                     <com.elyeproj.loaderviewlibrary.LoaderImageView
                         android:id="@+id/product_image_view"
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
                         android:background="@drawable/radius12_shape"
                         android:scaleType="fitXY"
                         android:src="@drawable/default_item" />
@@ -167,6 +167,7 @@
 
         </androidx.cardview.widget.CardView>
 
+        <!-- 거래 완료시 흐릿하게 보이게 하기 위한 View -->
         <androidx.cardview.widget.CardView
             android:id="@+id/complete_view"
             android:layout_width="match_parent"
@@ -176,5 +177,6 @@
             app:cardCornerRadius="4dp"
             android:alpha="0.45"
             android:background="@color/black" />
+
     </RelativeLayout>
 </layout>

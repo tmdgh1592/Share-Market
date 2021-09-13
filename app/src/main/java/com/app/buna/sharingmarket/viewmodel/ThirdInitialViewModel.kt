@@ -125,7 +125,7 @@ class ThirdInitialViewModel(application: Application, val context: Context) :
         auth?.signInWithCredential(credential).addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 // 로그인 성공시 user 정보 가져오고
-                val user = auth!!.currentUser
+                val user = auth.currentUser
                 PreferenceUtil.putString(context, key = "nickname", value = user?.displayName.toString()) // Preference에 유저의 '(닉네임)' 저장
                 Log.d(TAG, "로그인 성공 : ${user?.displayName}")
                 view.replaceFragment(InitialFourthFragment()) // View에게 다음 프래그먼트로 이동하도록 요청

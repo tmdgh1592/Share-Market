@@ -7,6 +7,7 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="black_70">#B3000000</color>
+    <color name="black_80">#CC000000</color>
     <color name="black_50">#80000000</color>
     <color name="gray">#535353</color>
     <color name="gray_50">#80535353</color>
@@ -32,6 +33,7 @@
     <!--my color-->
     <color name="app_green">#FF9ACE97</color>
     <color name="app_pressed_green">#8AC886</color>
+    <color name="soft_app_green">#D6EFD5</color>
     <color name="facebook_login">#027DFA</color>
     <color name="facebook_login_pressed">#0075EC</color>
     <color name="kakao_login">#FEE339</color>
@@ -41,6 +43,10 @@
     <color name="heart_color">#FF6358</color>
 
     <color name="notification_title_background_color">#4CAF50</color>
+
+    <!-- check share color -->
+    <color name="check_share_title_color">#4CAF50</color>
+    <color name="check_share_body_color">#4CAF50</color>
 
     <!--type color-->
     <color name="give_color">#CDDC39</color>

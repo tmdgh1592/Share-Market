@@ -10,7 +10,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.app.buna.sharingmarket.Tags.Companion.TAG
-import com.app.buna.sharingmarket.model.items.ProductItem
+import com.app.buna.sharingmarket.model.items.BoardItem
 import com.app.buna.sharingmarket.model.items.SliderItem
 import com.app.buna.sharingmarket.repository.Firebase.FirebaseRepository
 import com.google.firebase.auth.FirebaseAuth
@@ -20,7 +20,7 @@ import kotlin.properties.Delegates
 
 class BoardViewModel(application: Application, val context: Context) : AndroidViewModel(application) {
 
-    lateinit var item: ProductItem
+    lateinit var item: BoardItem
     var profileUrl: String? = null
 
     var originHeartState by Delegates.notNull<Boolean>()

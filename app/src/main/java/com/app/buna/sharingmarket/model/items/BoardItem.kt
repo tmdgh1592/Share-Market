@@ -6,7 +6,7 @@ import com.google.firebase.firestore.Exclude
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-data class ProductItem(
+data class BoardItem(
     var uid: String = "null", // 게시자 uid
     var owner: String = "null",  // 상품 주인
     var category: String = "null", // 카테고리

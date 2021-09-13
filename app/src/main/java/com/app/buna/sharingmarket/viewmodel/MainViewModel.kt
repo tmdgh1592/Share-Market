@@ -17,7 +17,7 @@ import com.app.buna.sharingmarket.activity.MainActivity
 import com.app.buna.sharingmarket.callbacks.IFirebaseGetStoreDataCallback
 import com.app.buna.sharingmarket.callbacks.ILogoutCallback
 import com.app.buna.sharingmarket.model.items.CategoryItem
-import com.app.buna.sharingmarket.model.items.ProductItem
+import com.app.buna.sharingmarket.model.items.BoardItem
 import com.app.buna.sharingmarket.repository.Firebase.FirebaseRepository
 import com.app.buna.sharingmarket.repository.Local.PreferenceUtil
 import com.app.buna.sharingmarket.utils.NetworkStatus
@@ -34,7 +34,7 @@ class MainViewModel(application: Application, val context: Context) :
         }
     }
 
-    val productItems = MutableLiveData<ArrayList<ProductItem>>(ArrayList())
+    val productItems = MutableLiveData<ArrayList<BoardItem>>(ArrayList())
     var surveyOptionId: Int? = null // 설문조사 radio 옵션
     var surveyText: String? = null // 설문조사 문구
 

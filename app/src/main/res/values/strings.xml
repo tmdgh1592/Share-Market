@@ -94,7 +94,7 @@
     <!--profile change-->
     <string name="profile_change">프로필을 성공적으로 변경하였습니다.</string>
 
-    <!--string-array-->
+    <!--카테고리 타이틀-->
     <string-array name="category_title">
         <item>가전디지털</item>
         <item>패션의류/잡화</item>
@@ -132,6 +132,47 @@
         <item>@drawable/category_item_14</item>
         <item>@drawable/category_item_15</item>
     </array>
+
+    <!-- FAQ -->
+    <string-array name="faq_titles">
+        <item>Q. 기부금 영수증이 무엇인가요?</item>
+        <item>Q. 기부금 영수증은 어떤 기관이나 발급해줄 수 있는건가요?</item>
+        <item>Q. 나눔을 하고 나서 기부금 영수증을 어떻게 신청할 수 있나요?</item>
+        <item>Q. 제 나눔으로 개선되는 환경을 수치로 보고 싶어요!</item>
+        <item>Q. 게시글을 작성할 때 해서는 안되는 부분이 있나요?</item>
+        <item>Q. 장난식으로 채팅을 보내는 사용자가 있어요!</item>
+        <item>Q. 프로필 사진을 변경하고 싶어요!</item>
+        <item>Q. 게시글 내용을 스크린샷이 아닌 채팅 형태로 공유하고 싶어요.</item>
+        <item>Q. 제가 올린 게시글이 화면에 보이지 않아요.</item>
+        <item>Q. 상대방 채팅 푸시 알림을 받고 싶지 않아요.</item>
+        <item>Q. 쉐어마켓을 이용하다가 오류가 발생했어요!</item>
+    </string-array>
+
+    <string-array name="faq_details">
+        <item>단군 할아버지</item>
+        <item>동명왕</item>
+        <item>은조왕</item>
+        <item>혁거세</item>
+        <item>광개토대왕</item>
+        <item>이사부</item>
+        <item>백결선생</item>
+        <item>의자왕</item>
+        <item>계백</item>
+        <item>관창</item>
+        <item>김유신</item>
+    </string-array>
+    <string name="ask_more">아직 해결되지 않으셨나요?</string>
+    <string name="ask_to_center">1:1 문의하기</string>
+
+    <!--나눔 현황 확인하기-->
+    <string name="check_share_title">잠깐! 나눔 현황을 확인보세요.\n지금 이 시간에도 또 하나의 나눔이 진행되고 있어요. 클릭을 통해 나눔으로 개선되는 환경 변화를 알아보세요!</string>
+    <string name="check_share_body"></string>
+
+    <!--developer email-->
+    <string name="email_chooser_title">1:1 문의하기</string>
+    <string name="chat_email">wercobro@gmail.com</string>
+    <string name="chat_subject">[1:1 문의하기] </string>
+    <string name="no_email_client">실행할 수 있는 이메일 어플리케이션이 없습니다.</string>
 
     <!--logout-->
     <string name="ask_logout">로그아웃 하시겠습니까?</string>
@@ -175,6 +216,7 @@
     <string name="my_board">내가 쓴 글</string>
     <string name="my_heart_board">관심 게시글</string>
     <string name="share_app">쉐어마켓 공유</string>
+    <string name="qna">자주 묻는 질문</string>
     <string name="unregister">회원탈퇴</string>
     <string name="logout">로그아웃</string>
 

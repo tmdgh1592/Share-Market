@@ -6,7 +6,7 @@ import android.util.Log
 import com.app.buna.sharingmarket.callbacks.IFirebaseGetChatRoomCallback
 import com.app.buna.sharingmarket.callbacks.IFirebaseGetStoreDataCallback
 import com.app.buna.sharingmarket.callbacks.IFirebaseRepositoryCallback
-import com.app.buna.sharingmarket.model.items.ProductItem
+import com.app.buna.sharingmarket.model.items.BoardItem
 import com.app.buna.sharingmarket.model.items.UserModel
 import com.app.buna.sharingmarket.model.items.chat.ChatRoomModel
 import com.app.buna.sharingmarket.model.items.chat.ChatUserModel
@@ -31,7 +31,7 @@ class FirebaseRepository {
 
     // Firebase Storage instacne 생성
     val firebaseStorage = FirebaseStorage.getInstance()
-    val productList = ArrayList<ProductItem>()
+    val productList = ArrayList<BoardItem>()
 
     companion object {
         // FirebaseDB 싱글톤 생성
@@ -168,7 +168,7 @@ class FirebaseRepository {
     }
 
     // 파이어 스토어에 제품 게시글 '등록'
-    fun uploadBoard(item: ProductItem, callback: IFirebaseRepositoryCallback) {
+    fun uploadBoard(item: BoardItem, callback: IFirebaseRepositoryCallback) {
         firebaseStoreInstance.collection("Boards")
             .add(item)
             .addOnSuccessListener {
@@ -180,7 +180,7 @@ class FirebaseRepository {
     }
 
     // 파이어 스토어에 제품 게시글 '수정'
-    fun updateBoard(item: ProductItem, callback: IFirebaseRepositoryCallback) {
+    fun updateBoard(item: BoardItem, callback: IFirebaseRepositoryCallback) {
         firebaseStoreInstance.collection("Boards").document(item.documentId)
             .update(
                 mapOf(
@@ -308,7 +308,7 @@ class FirebaseRepository {
 
     // 하트 클릭시 변경
     fun clickHeart(
-        item: ProductItem,
+        item: BoardItem,
         nowState: Boolean,
         pushManUid: String,
         callback: (Boolean) -> Unit
@@ -362,7 +362,7 @@ class FirebaseRepository {
                     for (document in task.result) { // 게시글 개수만큼 반복
                         if (category == "all" || document.get("category") == category) {
                             val item =
-                                document.toObject(ProductItem::class.java) // 가져온 Document를 ProductItem으로 캐스팅
+                                document.toObject(BoardItem::class.java) // 가져온 Document를 ProductItem으로 캐스팅
                             firebaseDatabaseInstance
                                 .getReference("products")
                                 .child("img_path")
@@ -415,7 +415,7 @@ class FirebaseRepository {
                         // 또는 전체 가져오기를 선택했다면
                         if (keyword == "all" || boardTitle.contains(keyword)) {
                             val item =
-                                document.toObject(ProductItem::class.java) // 가져온 Document를 ProductItem으로 캐스팅
+                                document.toObject(BoardItem::class.java) // 가져온 Document를 ProductItem으로 캐스팅
                             firebaseDatabaseInstance
                                 .getReference("products")
                                 .child("img_path")
@@ -466,7 +466,7 @@ class FirebaseRepository {
                     for (document in task.result) { // 게시글 개수만큼 반복
                         if (document.get("uid") == uid) {
                             val item =
-                                document.toObject(ProductItem::class.java) // 가져온 Document를 ProductItem으로 캐스팅
+                                document.toObject(BoardItem::class.java) // 가져온 Document를 ProductItem으로 캐스팅
                             firebaseDatabaseInstance
                                 .getReference("products")
                                 .child("img_path")
@@ -521,7 +521,7 @@ class FirebaseRepository {
                             )
                         ) {
                             val item =
-                                document.toObject(ProductItem::class.java) // 가져온 Document를 ProductItem으로 캐스팅
+                                document.toObject(BoardItem::class.java) // 가져온 Document를 ProductItem으로 캐스팅
                             firebaseDatabaseInstance
                                 .getReference("products")
                                 .child("img_path")
@@ -560,7 +560,7 @@ class FirebaseRepository {
 
     // 게시글 삭제
     @SuppressLint("LongLogTag")
-    fun removeProductData(item: ProductItem, callback: (Boolean) -> Unit) {
+    fun removeProductData(item: BoardItem, callback: (Boolean) -> Unit) {
         // 우선 FireStore에서 게시글에 대한 정보부터 지움
         firebaseStoreInstance.collection("Boards").document(item.documentId).delete()
             .addOnSuccessListener { // 게시글 지우기에 성공했다면 Realtime Database에 기록된 정보들 제거
@@ -621,7 +621,7 @@ class FirebaseRepository {
     fun shareDone(isDone: Boolean, documentId: String, callback: () -> Unit) {
         val doc = firebaseStoreInstance.collection("Boards").document(documentId)
         firebaseStoreInstance.runTransaction { transaction ->
-            val board = transaction.get(doc).toObject(ProductItem::class.java)
+            val board = transaction.get(doc).toObject(BoardItem::class.java)
             board?.isComplete = isDone
             transaction.set(doc, board!!)
         }.addOnSuccessListener {

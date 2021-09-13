@@ -4,7 +4,6 @@ import android.content.Intent
 import android.content.res.ColorStateList
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.util.TypedValue
 import android.view.*
 import android.widget.RelativeLayout
@@ -19,7 +18,7 @@ import com.app.buna.sharingmarket.REQUEST_CODE
 import com.app.buna.sharingmarket.REQUEST_CODE.Companion.UPDATE_BOARD_CODE
 import com.app.buna.sharingmarket.adapter.ImageSliderAdapter
 import com.app.buna.sharingmarket.databinding.ActivityBoardBinding
-import com.app.buna.sharingmarket.model.items.ProductItem
+import com.app.buna.sharingmarket.model.items.BoardItem
 import com.app.buna.sharingmarket.utils.FancyToastUtil
 import com.app.buna.sharingmarket.viewmodel.BoardViewModel
 import com.bumptech.glide.Glide
@@ -39,7 +38,7 @@ class BoardActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         vm?.item =
-            intent.getParcelableExtra<ProductItem>("product_item") // MainHomeFragment에서 전달받은 데이터
+            intent.getParcelableExtra<BoardItem>("product_item") // MainHomeFragment에서 전달받은 데이터
         vm.originHeartState = vm?.item.favorites.containsKey(vm.getUid())
         vm.nowHeartState = vm.originHeartState
 

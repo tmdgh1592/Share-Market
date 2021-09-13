@@ -8,7 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.app.buna.sharingmarket.Const
 import com.app.buna.sharingmarket.callbacks.IFirebaseRepositoryCallback
-import com.app.buna.sharingmarket.model.items.ProductItem
+import com.app.buna.sharingmarket.model.items.BoardItem
 import com.app.buna.sharingmarket.repository.Firebase.FirebaseRepository
 import com.google.firebase.auth.FirebaseAuth
 
@@ -45,7 +45,7 @@ class WriteViewModel(application: Application) : AndroidViewModel(application) {
 
 
     // 상품 정보 등록
-    fun uploadProduct(item: ProductItem, callback: IFirebaseRepositoryCallback) {
+    fun uploadProduct(item: BoardItem, callback: IFirebaseRepositoryCallback) {
         FirebaseRepository.instance.uploadBoard(item, callback)
     }
 
@@ -57,10 +57,8 @@ class WriteViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     // 상품 정보 업데이트
-    fun updateProduct(item: ProductItem, callback: IFirebaseRepositoryCallback) {
-        if(item != null) {
-            FirebaseRepository.instance.updateBoard(item, callback)
-        }
+    fun updateProduct(item: BoardItem, callback: IFirebaseRepositoryCallback) {
+        FirebaseRepository.instance.updateBoard(item, callback)
     }
 
     // 상품 정보 업데이트 후 -> callback -> 이미지 새로 Save

@@ -18,7 +18,7 @@ import com.app.buna.sharingmarket.R
 import com.app.buna.sharingmarket.REQUEST_CODE
 import com.app.buna.sharingmarket.callbacks.IFirebaseRepositoryCallback
 import com.app.buna.sharingmarket.databinding.ActivityUpdateBinding
-import com.app.buna.sharingmarket.model.items.ProductItem
+import com.app.buna.sharingmarket.model.items.BoardItem
 import com.app.buna.sharingmarket.repository.Local.PreferenceUtil
 import com.app.buna.sharingmarket.utils.FancyToastUtil
 import com.app.buna.sharingmarket.utils.KeyboardUtil.Companion.hideKeyBoard
@@ -49,7 +49,7 @@ class UpdateActivity : AppCompatActivity(), IFirebaseRepositoryCallback {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        boardVM?.item = intent.getParcelableExtra<ProductItem>("product_item") // BoardActivity로 부터 전달받은 Product Data
+        boardVM?.item = intent.getParcelableExtra<BoardItem>("product_item") // BoardActivity로 부터 전달받은 Product Data
         initBinding()
         initView()
 
@@ -158,7 +158,7 @@ class UpdateActivity : AppCompatActivity(), IFirebaseRepositoryCallback {
                 boardVM.item.fileNamesForDelete?.add(i.toString()) // 새로 추가
             }
 
-            val item = ProductItem(
+            val item = BoardItem(
                 uid = writeVM?.getUid()!!, // 상품 주인 uid
                 documentId = boardVM?.item.documentId, // 문서 id
                 owner = writeVM?.getUserName()!!,  // 상품 주인

@@ -13,10 +13,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.app.buna.sharingmarket.R
-import com.app.buna.sharingmarket.activity.InitialActivity
-import com.app.buna.sharingmarket.activity.MainActivity
-import com.app.buna.sharingmarket.activity.MyBoardsActivity
-import com.app.buna.sharingmarket.activity.MyHeartsActivity
+import com.app.buna.sharingmarket.activity.*
 import com.app.buna.sharingmarket.callbacks.ILocationDialogCallback
 import com.app.buna.sharingmarket.callbacks.ILogoutCallback
 import com.app.buna.sharingmarket.databinding.FragmentMainMyBinding
@@ -159,6 +156,12 @@ class MainMyFragment : Fragment() {
                 type = "text/plain"
             }
             startActivity(Intent.createChooser(msg, getString(R.string.share_app)))
+        }
+
+        /* 자주묻는질문 버튼 */
+        binding?.qnaBtn?.setOnClickListener {
+            // FAQ 액티비티 실행
+            startActivity(Intent(requireContext(), FAQActivity::class.java))
         }
 
 

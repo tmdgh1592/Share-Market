@@ -13,7 +13,7 @@ import com.app.buna.sharingmarket.REQUEST_CODE
 import com.app.buna.sharingmarket.adapter.MyHeartsRecyclerAdapter
 import com.app.buna.sharingmarket.callbacks.IFirebaseGetStoreDataCallback
 import com.app.buna.sharingmarket.databinding.ActivityMyHeartsBinding
-import com.app.buna.sharingmarket.model.items.ProductItem
+import com.app.buna.sharingmarket.model.items.BoardItem
 import com.app.buna.sharingmarket.viewmodel.MyBoardViewModel
 
 class MyHeartsActivity : AppCompatActivity() {
@@ -39,7 +39,7 @@ class MyHeartsActivity : AppCompatActivity() {
         binding?.myHeartsRecyclerView?.layoutManager = LinearLayoutManager(this)
 
         vm?.getMyHearts(object : IFirebaseGetStoreDataCallback {
-            override fun complete(data: ArrayList<ProductItem>) {
+            override fun complete(data: ArrayList<BoardItem>) {
                 vm.myBoardItems.postValue(data) // viewmodel의 리스트 데이터들도 갱신
 
                 if (data.size == 0) { // 데이터가 0개면 No Result View를 보여줌

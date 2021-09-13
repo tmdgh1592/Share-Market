@@ -49,8 +49,7 @@
             android:layout_marginRight="12dp"
             android:clickable="false"
             android:button="@null"
-            android:background="@drawable/radio_button_user_select"
-            />
+            android:background="@drawable/radio_button_user_select"/>
 
         <View
             android:layout_width="match_parent"

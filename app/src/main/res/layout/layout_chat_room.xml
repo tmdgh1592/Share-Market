@@ -2,81 +2,91 @@
 
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+
     <data>
+
         <variable
             name="chatModel"
             type="com.app.buna.sharingmarket.model.items.chat.ChatRoomModel" />
+
         <variable
             name="destUserModel"
             type="com.app.buna.sharingmarket.model.items.chat.ChatUserModel" />
+
         <variable
             name="viewModel"
             type="com.app.buna.sharingmarket.viewmodel.ChatRoomsViewModel" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="90dp"
-        android:clickable="true"
-        android:background="?android:attr/selectableItemBackground"
-        android:onClick="@{(v) -> viewModel.goToChatRoom(v, destUserModel)}">
+        android:layout_height="wrap_content"
+        android:background="@color/white">
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/profile_image_view"
-            android:layout_width="65dp"
-            android:layout_height="65dp"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginLeft="12dp"
-            chat_profile_img="@{destUserModel.profileImageUrl}"
-            android:src="@drawable/default_profile"
-            app:civ_border_width="2dp"
-            app:civ_border_color="#14535353"/>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="90dp"
+            android:background="?android:attr/selectableItemBackground"
+            android:clickable="true"
+            android:onClick="@{(v) -> viewModel.goToChatRoom(v, destUserModel)}">
 
-        <TextView
-            android:id="@+id/dest_name_text_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintLeft_toRightOf="@+id/profile_image_view"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginLeft="12dp"
-            android:layout_marginTop="18dp"
-            android:text="@{destUserModel.userName}"
-            android:textStyle="bold"
-            android:textSize="17sp"
-            android:textColor="@color/black_70"/>
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/profile_image_view"
+                chat_profile_img="@{destUserModel.profileImageUrl}"
+                android:layout_width="65dp"
+                android:layout_height="65dp"
+                android:layout_marginLeft="12dp"
+                android:src="@drawable/default_profile"
+                app:civ_border_color="#14535353"
+                app:civ_border_width="2dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/last_message_text_view"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            app:layout_constraintHorizontal_weight="1"
-            app:layout_constraintLeft_toRightOf="@+id/profile_image_view"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/dest_name_text_view"
-            app:layout_constraintHorizontal_bias="0"
-            android:layout_marginLeft="12dp"
-            android:layout_marginRight="30dp"
-            android:layout_marginTop="6dp"
-            android:gravity="left"
-            android:text="@{chatModel.lastMessage}"
-            android:textSize="15sp"
-            app:layout_constrainedWidth="true"
-            android:maxLines="1"
-            android:ellipsize="end"
-            android:textColor="@color/gray_70"/>
+            <TextView
+                android:id="@+id/dest_name_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="12dp"
+                android:layout_marginTop="18dp"
+                android:text="@{destUserModel.userName}"
+                android:textColor="@color/black_70"
+                android:textSize="17sp"
+                android:textStyle="bold"
+                app:layout_constraintLeft_toRightOf="@+id/profile_image_view"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/timestamp_text_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginTop="20dp"
-            android:layout_marginRight="18dp"
-            android:textSize="13sp"
-            android:textColor="@color/gray_50"/>
+            <TextView
+                android:id="@+id/last_message_text_view"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="12dp"
+                android:layout_marginTop="6dp"
+                android:layout_marginRight="30dp"
+                android:ellipsize="end"
+                android:gravity="left"
+                android:maxLines="1"
+                android:text="@{chatModel.lastMessage}"
+                android:textColor="@color/gray_70"
+                android:textSize="15sp"
+                app:layout_constrainedWidth="true"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintHorizontal_weight="1"
+                app:layout_constraintLeft_toRightOf="@+id/profile_image_view"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/dest_name_text_view" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                android:id="@+id/timestamp_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="18dp"
+                android:textColor="@color/gray_50"
+                android:textSize="13sp"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
 </layout>

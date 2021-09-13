@@ -17,6 +17,10 @@
         <item name="actionOverflowButtonStyle">@style/AppTheme.OverFlow</item>
     </style>
 
+    <style name="Theme.ShareMarket.FAQ" parent="Theme.ShareMarket">
+        <item name="android:statusBarColor" tools:targetApi="l">@color/app_green</item>
+    </style>
+
     <!-- Title Text Style -->
     <style name="titleTextStyle">
         <item name="android:fontFamily">@font/wemp_bold</item>

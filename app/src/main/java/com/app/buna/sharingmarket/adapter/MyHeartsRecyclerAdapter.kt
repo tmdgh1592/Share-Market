@@ -10,20 +10,20 @@ import androidx.recyclerview.widget.RecyclerView
 import com.app.buna.sharingmarket.R
 import com.app.buna.sharingmarket.activity.MyHeartsActivity
 import com.app.buna.sharingmarket.databinding.ItemMyBoardBinding
-import com.app.buna.sharingmarket.model.items.ProductItem
+import com.app.buna.sharingmarket.model.items.BoardItem
 import com.app.buna.sharingmarket.viewmodel.MyBoardViewModel
 
 class MyHeartsRecyclerAdapter(val viewModel: MyBoardViewModel, val context : Context, val activity: Activity) :
     RecyclerView.Adapter<MyHeartsRecyclerAdapter.MyViewHolder>() {
 
-    var myBoardList: ArrayList<ProductItem> = ArrayList()
+    var myBoardList: ArrayList<BoardItem> = ArrayList()
 
     class MyViewHolder(val binding: ItemMyBoardBinding) : RecyclerView.ViewHolder(binding.root) {
         val typeTextView = binding?.productType
         val frameView = binding?.frameView
         val completeView = binding?.completeView
 
-        fun bind(item: ProductItem) {
+        fun bind(item: BoardItem) {
             binding.model = item
         }
     }
@@ -98,7 +98,7 @@ class MyHeartsRecyclerAdapter(val viewModel: MyBoardViewModel, val context : Con
         return 0
     }
 
-    fun updateData(data: ArrayList<ProductItem>) {
+    fun updateData(data: ArrayList<BoardItem>) {
         myBoardList = data
         notifyDataSetChanged()
     }

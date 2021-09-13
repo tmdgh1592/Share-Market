@@ -3,13 +3,17 @@ package com.app.buna.sharingmarket
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
+import android.content.Intent
 import android.net.Uri
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.BindingAdapter
+import androidx.cardview.widget.CardView
+import com.app.buna.sharingmarket.activity.CheckShareActivity
+import com.app.buna.sharingmarket.utils.FancyToastUtil
+import com.app.buna.sharingmarket.utils.NetworkStatus
 import com.bumptech.glide.Glide
 import com.google.android.gms.common.SignInButton
 import de.hdodenhof.circleimageview.CircleImageView
@@ -69,9 +73,11 @@ object BindingAdapters {
     @JvmStatic
     fun bindChatProfileImage(imageView: CircleImageView, uri: String?) {
         if (uri != null && uri != "") {
-            Glide.with(imageView.context).load(Uri.parse(uri)).error(R.drawable.default_profile).fallback(R.drawable.default_profile).fitCenter().into(imageView)
+            Glide.with(imageView.context).load(Uri.parse(uri)).error(R.drawable.default_profile)
+                .fallback(R.drawable.default_profile).fitCenter().into(imageView)
         } else {
-            Glide.with(imageView.context).load(R.drawable.default_profile).fitCenter().into(imageView)
+            Glide.with(imageView.context).load(R.drawable.default_profile).fitCenter()
+                .into(imageView)
         }
     }
 
@@ -79,13 +85,19 @@ object BindingAdapters {
     @JvmStatic
     fun bindClickChatBubble(layout: TextView, message: String) {
         layout.setOnClickListener { view ->
-            val clipboardManager = view.context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+            val clipboardManager =
+                view.context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
             val clipData = ClipData.newPlainText("message", message)
             clipboardManager.setPrimaryClip(clipData)
 
-            Toast.makeText(view.context, view.context.getString(R.string.clip_success), Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                view.context,
+                view.context.getString(R.string.clip_success),
+                Toast.LENGTH_SHORT
+            ).show()
         }
     }
+
 }
 
 

@@ -14,20 +14,18 @@ import com.app.buna.sharingmarket.WriteType
 import com.app.buna.sharingmarket.activity.MainActivity
 import com.app.buna.sharingmarket.activity.SearchActivity
 import com.app.buna.sharingmarket.activity.WriteActivity
-import com.app.buna.sharingmarket.adapter.ProductRecyclerAdapter
+import com.app.buna.sharingmarket.adapter.BoardRecyclerAdapter
 import com.app.buna.sharingmarket.callbacks.IFirebaseGetStoreDataCallback
 import com.app.buna.sharingmarket.databinding.FragmentMainHomeBinding
-import com.app.buna.sharingmarket.model.items.ProductItem
+import com.app.buna.sharingmarket.model.items.BoardItem
 import com.app.buna.sharingmarket.viewmodel.MainViewModel
 import com.google.android.material.internal.NavigationMenu
-import com.google.android.material.snackbar.Snackbar
 import io.github.yavski.fabspeeddial.FabSpeedDial
 import org.koin.android.ext.android.get
 
 class MainHomeFragment(val category: String = "all") : Fragment() {
 
     private var keyword: String? = null
-    private var editedItem: ProductItem? = null
 
     constructor(category: String = "all", keyword: String?) : this(category) {
         this.keyword = keyword
@@ -56,7 +54,7 @@ class MainHomeFragment(val category: String = "all") : Fragment() {
 
     fun initView() {
         with(binding) {
-            val boardRecyclerAdapter = ProductRecyclerAdapter(vm, requireContext())
+            val boardRecyclerAdapter = BoardRecyclerAdapter(vm, requireContext())
             boardRecyclerAdapter.setHasStableIds(true)
             this?.productRecyclerView?.apply {
                 adapter = boardRecyclerAdapter
@@ -71,7 +69,7 @@ class MainHomeFragment(val category: String = "all") : Fragment() {
 
                 // 게시글의 제목에 keyword가 들어가 있는 게시글들을 가져옴
                 vm?.getBoardByKeyword(keyword!!, object : IFirebaseGetStoreDataCallback {
-                    override fun complete(data: ArrayList<ProductItem>) {
+                    override fun complete(data: ArrayList<BoardItem>) {
                         if (data.size == 0) { // 키워드로 찾으려는 결과가 없다면
                             /* 리사이클러뷰 대신에 No Result View를 보여줌 */
                             binding?.noResultView?.visibility = View.VISIBLE
@@ -81,7 +79,7 @@ class MainHomeFragment(val category: String = "all") : Fragment() {
                             binding?.noResultView?.visibility = View.GONE
                             binding?.productRecyclerView?.visibility = View.VISIBLE
 
-                            (binding?.productRecyclerView?.adapter as ProductRecyclerAdapter).updateData(
+                            (binding?.productRecyclerView?.adapter as BoardRecyclerAdapter).updateData(
                                 data
                             )
                             vm?.productItems.value = (data)
@@ -90,9 +88,16 @@ class MainHomeFragment(val category: String = "all") : Fragment() {
                 })
             } else { // 키워드 검색없이 HomeFragment에 들어온 경우
                 vm?.getProductData(category, object : IFirebaseGetStoreDataCallback {
-                    override fun complete(data: ArrayList<ProductItem>) {
-                        (binding?.productRecyclerView?.adapter as ProductRecyclerAdapter).updateData(
-                            data
+                    override fun complete(data: ArrayList<BoardItem>) {
+                        val boardList = ArrayList<BoardItem>().apply {
+                            // 나눔 현황 확인하는 뷰 맨 앞에 추가
+                            add(
+                                BoardItem()
+                            )
+                            addAll(data)
+                        }
+                        (binding?.productRecyclerView?.adapter as BoardRecyclerAdapter).updateData(
+                            boardList
                         )
                         vm?.productItems.value = (data)
                     }

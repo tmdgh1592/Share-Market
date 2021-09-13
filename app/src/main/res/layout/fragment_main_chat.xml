@@ -12,7 +12,8 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".fragment.main.MainChatFragment">
+        tools:context=".fragment.main.MainChatFragment"
+        android:background="@color/gray_10">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/tool_bar"
@@ -41,6 +42,7 @@
                 android:id="@+id/chat_room_recycler_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:background="#F6F6F6"
                 tools:listitem="@layout/layout_chat_room"/>
 
 
