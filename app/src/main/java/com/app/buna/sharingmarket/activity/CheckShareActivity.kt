@@ -34,9 +34,8 @@ class CheckShareActivity : AppCompatActivity() {
 
         // 현재 모든 게시글의 개수를 가져와서 text를 변경해준다.
         vm.getBoardTotalCount { boardTotalCount ->
-            Log.d("ddd", boardTotalCount.toString())
             binding?.shareCountText?.apply {
-                text = getString(R.string.now_share_count, boardTotalCount)
+                text = boardTotalCount.toString()
                 val span = SpannableStringBuilder(text)
                 span.setSpan(StyleSpan(Typeface.BOLD), 10, 10+boardTotalCount.toString().length, Spanned.SPAN_EXCLUSIVE_INCLUSIVE)
                 span.setSpan(RelativeSizeSpan(1.5f), 10, 10+boardTotalCount.toString().length, Spanned.SPAN_EXCLUSIVE_INCLUSIVE)

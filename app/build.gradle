@@ -70,6 +70,8 @@ dependencies {
     implementation 'com.google.firebase:firebase-messaging'
     implementation 'com.google.firebase:firebase-analytics'
 
+    /* AnimatedCountTextView */
+
     /* Image Alert Dialog */
     implementation 'com.github.chathuralakmal:AndroidImagePopup:1.2.2'
 

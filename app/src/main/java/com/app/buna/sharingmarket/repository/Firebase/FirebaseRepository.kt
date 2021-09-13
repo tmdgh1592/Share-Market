@@ -513,7 +513,6 @@ class FirebaseRepository {
             }
 
             if (snapshot != null) {
-                Log.d("ddd","ddd")
                 callback(snapshot.size())
             }
         }
