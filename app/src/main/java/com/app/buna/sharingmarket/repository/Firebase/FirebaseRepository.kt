@@ -13,7 +13,9 @@ import com.app.buna.sharingmarket.model.items.chat.ChatUserModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.*
+import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import java.io.File
@@ -502,6 +504,20 @@ class FirebaseRepository {
         getData()
     }
 
+    // 실시간으로 전체 게시글 개수를 가져와줌
+    // CheckShareActivity에서 사용함.
+    fun getBoardTotalCount(callback: (Int) -> Unit) {
+        firebaseStoreInstance.collection("Boards").addSnapshotListener { snapshot, e ->
+            if (e != null) {
+                return@addSnapshotListener
+            }
+
+            if (snapshot != null) {
+                Log.d("ddd","ddd")
+                callback(snapshot.size())
+            }
+        }
+    }
 
     // 내가 좋아요 누른 게시글 목록들 가져오는 함수
     fun getLikeProductData(callback: IFirebaseGetStoreDataCallback) {
