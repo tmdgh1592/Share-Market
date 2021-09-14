@@ -72,6 +72,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="15dp"
                 android:text="@{faqModel.detail}"
+                android:textAlignment="textStart"
                 android:textColor="@color/black_80" />
 
             <View

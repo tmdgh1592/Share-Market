@@ -2,8 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:minHeight="55dp"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:minHeight="50dp"
     android:orientation="horizontal">
 
 
@@ -11,19 +10,19 @@
         android:id="@+id/notification_profile_image_view"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:minHeight="40dp"
-        android:minWidth="40dp"
-        android:src="@drawable/default_profile"
         android:layout_gravity="center"
-        android:layout_marginRight="10dp"/>
+        android:layout_marginRight="10dp"
+        android:minWidth="40dp"
+        android:minHeight="40dp"
+        android:src="@drawable/default_profile" />
 
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:orientation="vertical"
         android:layout_marginLeft="8dp"
-        android:layout_marginRight="12dp">
+        android:layout_marginRight="12dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/nickname_text_view"
@@ -32,9 +31,9 @@
             android:layout_marginBottom="4dp"
             android:ellipsize="end"
             android:maxLines="1"
-            android:textSize="16sp"
+            android:text=""
             android:textColor="@color/black"
-            android:text=""/>
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/message_text_view"
@@ -42,20 +41,20 @@
             android:layout_height="25dp"
             android:ellipsize="end"
             android:maxLines="1"
-            android:textSize="14sp"
+            android:text=""
             android:textColor="@color/gray"
-            android:text=""/>
+            android:textSize="14sp" />
     </LinearLayout>
 
     <ImageView
         android:layout_width="30dp"
         android:layout_height="30dp"
-        android:minHeight="40dp"
-        android:minWidth="40dp"
-        android:src="@drawable/icon_enter"
         android:layout_gravity="center"
         android:layout_marginLeft="20dp"
-        android:layout_marginRight="15dp"/>
+        android:layout_marginRight="15dp"
+        android:minWidth="40dp"
+        android:minHeight="40dp"
+        android:src="@drawable/icon_enter" />
 
 
 </LinearLayout>

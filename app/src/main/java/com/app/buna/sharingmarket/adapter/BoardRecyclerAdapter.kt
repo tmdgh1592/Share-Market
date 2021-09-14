@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.app.buna.sharingmarket.R
 import com.app.buna.sharingmarket.activity.CheckShareActivity
 import com.app.buna.sharingmarket.databinding.BoardItemBinding
-import com.app.buna.sharingmarket.databinding.ItemCheckShareBinding
+import com.app.buna.sharingmarket.databinding.LayoutCheckShareBinding
 import com.app.buna.sharingmarket.model.items.BoardItem
 import com.app.buna.sharingmarket.viewmodel.MainViewModel
 import com.bumptech.glide.Glide
@@ -44,7 +44,7 @@ class BoardRecyclerAdapter(var viewModel: MainViewModel, val context: Context) :
 
 
     // 나눔 현황 확인하기 View Holder
-    class CheckShareViewHolder(val binding: ItemCheckShareBinding) :
+    class CheckShareViewHolder(val binding: LayoutCheckShareBinding) :
         BaseViewHolder(binding) {
 
         override fun bind(item: BoardItem) {
@@ -65,7 +65,7 @@ class BoardRecyclerAdapter(var viewModel: MainViewModel, val context: Context) :
                 return ProductViewHolder(binding)
             }
             CHECK_SHARE_VIEW -> {
-                val binding = ItemCheckShareBinding.inflate(
+                val binding = LayoutCheckShareBinding.inflate(
                     LayoutInflater.from(parent.context),
                     parent,
                     false
@@ -120,7 +120,7 @@ class BoardRecyclerAdapter(var viewModel: MainViewModel, val context: Context) :
                         )
                     }
                 } else if (item.isExchange) { // 물물교환인 경우
-                    holder.typeTextView.setText("물물교환")
+                    holder.typeTextView.text = "물물교환"
                     holder.typeTextView.background.setTint(
                         ContextCompat.getColor(
                             context,
@@ -131,9 +131,8 @@ class BoardRecyclerAdapter(var viewModel: MainViewModel, val context: Context) :
 
                 // 제품 타입 추가 입력
                 if (item.isComplete) { // 거래 완료 상태인 경우
-                    if (item.isGive) { // 나눔하는 게시물이면
-                        holder.typeTextView.text = "거래완료"
-                    }
+                    holder.typeTextView.text = "거래완료"
+
                     holder.typeTextView.background.setTint(
                         ContextCompat.getColor(
                             context,
