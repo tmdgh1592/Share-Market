@@ -37,6 +37,24 @@
     <string name="sosock_check">회원님의 소속을 선택해주세요 :D</string>
     <string name="select_user_toolbar_title">거래 유저</string>
 
+    <!--sosock-->
+    <string name="personal">개인</string>
+    <string name="agency">기관</string>
+    <string name="company">기업</string>
+
+    <!-- realtime_env -->
+    <string name="realtime_env_title_1">%s그루의 나무를 보호했어요!</string>
+    <string name="realtime_env_title_2">바다 위의 플라스틱이 %sg만큼 줄어들었어요!</string>
+    <string name="realtime_env_title_3">이산화탄소 배출량이 %sg만큼 감소했어요!</string>
+    <string name="realtime_env_title_4">쓰레기 매립 면적을 %sm²만큼 절감시켰어요!</string>
+    <string name="realtime_env_title_5">이웃 사회와의 온도가 %s℃만큼 높아졌어요!</string>
+
+    <string name="realtime_env_content_1">숲을 찢어 물건을 만든다. 한 사람당 일 평생 30년생 나무 230그루나 소비한다고 합니다.</string>
+    <string name="realtime_env_content_2">한국인의 플라스틱 소비량은 세계 상위권에 해당하며, 바다 위는 점점 플라스틱으로 가득 차 해양 생물들이 어려움을 겪고 있습니다.</string>
+    <string name="realtime_env_content_3">쓰레기 1톤이 연소 될 때마다 약 1.1 톤의 이산화탄소가 대기로 방출되어 온실가스 배출에 기여합니다.</string>
+    <string name="realtime_env_content_4">쓰레기 매립은 폐기물, 농약, 중금속 등 유해한 물질이 토양에 축적되어 오염물질을 발생시킵니다.</string>
+    <string name="realtime_env_content_5">나눔을 하면 이웃간의 따뜻한 마음이 생겨납니다. 주위의 사용하지 않는 물건을 그냥 버리지말고 서로 나누어봅시다.</string>
+
     <!-- 기부금 영수증 요청 메세지 문구 -->
     <string name="require_give_bill_title">📦 [%s] 나눔이 완료되었습니다.\n\n\n</string>
     <string name="require_give_bill_message">✅ 나눔을 성공적으로 완료했어요!\n✅ 필요시 나눔을 받으신 분께서는 아래 버튼을 클릭하여 기부금 영수증을 발급해주세요!\n\n❌ 기부금 영수증 중복 신청은 무효처리 됩니다.\n❌ 또한, 허위 신청시 불이익이 발생할 수 있습니다.\n📄 자세한 신청 방법은 My섹션에서 확인해보세요!</string>

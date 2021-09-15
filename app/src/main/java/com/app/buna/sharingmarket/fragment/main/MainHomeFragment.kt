@@ -62,46 +62,21 @@ class MainHomeFragment(val category: String = "all") : Fragment() {
                 setHasFixedSize(true)
             }
 
+            // RecyclerView에 사용할 데이터를 불러온다.
+            loadData()
 
-            // 키워드 검색을 한 경우
-            if (keyword != null) {
-                Log.d("search keyword", keyword)
+        }
 
-                // 게시글의 제목에 keyword가 들어가 있는 게시글들을 가져옴
-                vm?.getBoardByKeyword(keyword!!, object : IFirebaseGetStoreDataCallback {
-                    override fun complete(data: ArrayList<BoardItem>) {
-                        if (data.size == 0) { // 키워드로 찾으려는 결과가 없다면
-                            /* 리사이클러뷰 대신에 No Result View를 보여줌 */
-                            binding?.noResultView?.visibility = View.VISIBLE
-                            binding?.productRecyclerView?.visibility = View.GONE
-                        } else { // 키워드로 찾으려는 결과가 하나라도 있다면
-                            /* 리사이클러뷰를 보여줌 */
-                            binding?.noResultView?.visibility = View.GONE
-                            binding?.productRecyclerView?.visibility = View.VISIBLE
+        // 새로고침
+        binding?.swipeRefreshLayout?.apply {
 
-                            (binding?.productRecyclerView?.adapter as BoardRecyclerAdapter).updateData(
-                                data
-                            )
-                            vm?.productItems.value = (data)
-                        }
-                    }
-                })
-            } else { // 키워드 검색없이 HomeFragment에 들어온 경우
-                vm?.getProductData(category, object : IFirebaseGetStoreDataCallback {
-                    override fun complete(data: ArrayList<BoardItem>) {
-                        val boardList = ArrayList<BoardItem>().apply {
-                            // 나눔 현황 확인하는 뷰 맨 앞에 추가
-                            add(BoardItem())
-                            addAll(data)
-                        }
-                        (binding?.productRecyclerView?.adapter as BoardRecyclerAdapter).updateData(
-                            boardList
-                        )
-                        vm?.productItems.value = (boardList)
-                    }
-                })
+            setColorSchemeResources(R.color.app_green)
+
+            // 새로고침을 하는 경우
+            setOnRefreshListener {
+                // 데이터 새로 불러오기
+                loadData()
             }
-
         }
 
 
@@ -185,6 +160,59 @@ class MainHomeFragment(val category: String = "all") : Fragment() {
         }
 
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun loadData() {
+        // 키워드 검색을 한 경우
+        if (keyword != null) {
+            Log.d("search keyword", keyword)
+
+            // 게시글의 제목에 keyword가 들어가 있는 게시글들을 가져옴
+            vm?.getBoardByKeyword(keyword!!, object : IFirebaseGetStoreDataCallback {
+                override fun complete(data: ArrayList<BoardItem>) {
+                    if (data.size == 0) { // 키워드로 찾으려는 결과가 없다면
+                        /* 리사이클러뷰 대신에 No Result View를 보여줌 */
+                        binding?.noResultView?.visibility = View.VISIBLE
+                        binding?.productRecyclerView?.visibility = View.GONE
+                    } else { // 키워드로 찾으려는 결과가 하나라도 있다면
+                        /* 리사이클러뷰를 보여줌 */
+                        binding?.noResultView?.visibility = View.GONE
+                        binding?.productRecyclerView?.visibility = View.VISIBLE
+
+                        (binding?.productRecyclerView?.adapter as BoardRecyclerAdapter).updateData(
+                            data
+                        )
+                        vm?.productItems.value = (data)
+
+                        // 새로고침을 하는 경우이면
+                        if(binding?.swipeRefreshLayout?.isRefreshing!!) {
+                            // Refresh 아이콘 사라지게 하기
+                            binding?.swipeRefreshLayout?.isRefreshing = false
+                        }
+                    }
+                }
+            })
+        } else { // 키워드 검색없이 HomeFragment에 들어온 경우
+            vm?.getProductData(category, object : IFirebaseGetStoreDataCallback {
+                override fun complete(data: ArrayList<BoardItem>) {
+                    val boardList = ArrayList<BoardItem>().apply {
+                        // 나눔 현황 확인하는 뷰 맨 앞에 추가
+                        add(BoardItem())
+                        addAll(data)
+                    }
+                    (binding?.productRecyclerView?.adapter as BoardRecyclerAdapter).updateData(
+                        boardList
+                    )
+                    vm?.productItems.value = (boardList)
+
+                    // 새로고침을 하는 경우이면
+                    if(binding?.swipeRefreshLayout?.isRefreshing!!) {
+                        // Refresh 아이콘 사라지게 하기
+                        binding?.swipeRefreshLayout?.isRefreshing = false
+                    }
+                }
+            })
+        }
     }
 
     companion object {

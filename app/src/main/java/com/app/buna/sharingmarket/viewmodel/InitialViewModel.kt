@@ -85,7 +85,7 @@ class InitialViewModel(application: Application) :
             locationItems.postValue(locationList.distinct())
         }
     }
-    
+
 
     /* fun startKakaoWebView() {
          *//* 인터넷 연결 상태 확인 *//*
@@ -115,7 +115,7 @@ class InitialViewModel(application: Application) :
 
     // 사용자 이름 가져오는 함수
     fun getUserName(context: Context): String = PreferenceUtil.getString(context, "nickname")
-    
+
     // 지번 가져오는 함수
     fun getLocation(context: Context): String = PreferenceUtil.getString(context, "jibun")
 
@@ -134,10 +134,11 @@ class InitialViewModel(application: Application) :
         if (mySoSock.value != "" || mySoSock.value != null) {
             // firebase realtimedb에 소속&이름(닉네임) 추가
             PreferenceUtil.putString(context, "sosock", mySoSock.value!!) // SharedPreference에 저장
-            Log.d("InitialViewModel", PreferenceUtil.getString(context, "sosock", "")) // Log출력
-            
-            saveUserInfo(context, key = "jibun", value = "jibun", isInPref = true) // Preference에 사용자의 주소 등록
-            saveUserInfo(context, key = "sosock", value = "sosock", isInPref = true) // Preference에 유저의 '소속' 저장
+            PreferenceUtil.putInt(context, "fragment_page", -1) // SharedPreference에 저장
+            Log.d("InitialViewModel", PreferenceUtil.getString(context, "sosock", "")) // Log출력)
+
+            saveUserInfo(context, key = "jibun", value = "jibun", fromPref = true) // Preference에 사용자의 주소 등록
+            saveUserInfo(context, key = "sosock", value = "sosock", fromPref = true) // Preference에 유저의 '소속' 저장
             saveUserInfo(context, key = "nickname", value = FirebaseAuth.getInstance().currentUser?.displayName.toString()) // firebaseDB에 유저의 ''소속'' 저장
 
             // 가입 완료 버튼 누르고 문제 없으면 MainActivity 실행
@@ -155,13 +156,13 @@ class InitialViewModel(application: Application) :
         }
     }
 
-    fun saveUserInfo(context: Context, key: String, value: String, isInPref: Boolean = false) {
+    fun saveUserInfo(context: Context, key: String, value: String, fromPref: Boolean = false) {
         // preference에 저장된 값을 가져와서 저장하려는 경우
-        if (isInPref) {
+        if (fromPref) {
             firebaseRepository.saveUserInfo(key, PreferenceUtil.getString(context, key, ""), true)
             return
         }
-        // preference가 아닌 단순 key, value를 firebaseDB에 저장하는 경우
+        // preference가 아닌 단순 key, value를 이용해 firebaseDB에 저장하는 경우
         firebaseRepository.saveUserInfo(key, value, true)
     }
 

@@ -39,6 +39,7 @@ class MainActivity : AppCompatActivity() {
         initBinding()
         initView()
 
+
         if (NetworkStatus.isConnectedInternet(this) && PreferenceUtil.getInt(this, "push") == 0) {
             vm.registerPushToken()
         }

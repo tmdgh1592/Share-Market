@@ -21,7 +21,9 @@ allprojects {
 android {
     compileSdkVersion 29
 
-    dataBinding { enabled = true }
+    buildFeatures {
+        dataBinding = true
+    }
 
     defaultConfig {
         applicationId "com.app.buna.sharingmarket"
@@ -70,8 +72,8 @@ dependencies {
     implementation 'com.google.firebase:firebase-messaging'
     implementation 'com.google.firebase:firebase-analytics'
 
-    /* AnimatedCountTextView */
-
+    /* Refresh RecyclerView */
+    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.0.0'
     /* Image Alert Dialog */
     implementation 'com.github.chathuralakmal:AndroidImagePopup:1.2.2'
 

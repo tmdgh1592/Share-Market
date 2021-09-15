@@ -43,7 +43,7 @@
                 android:id="@+id/belong_information"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="100dp"
+                android:layout_marginTop="80dp"
                 android:gravity="center"
                 android:text="아래 이미지를 클릭하셔서 소속을 선택해보세요!"
                 android:textSize="16sp"
@@ -52,28 +52,96 @@
                 android:layout_marginLeft="24dp"
                 android:layout_marginRight="24dp"/>
 
-            <HorizontalScrollView
+
+            <ScrollView
                 android:id="@+id/sosock_scroll_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="120dp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                android:visibility="gone"
-                android:scrollbars="none">
+                android:layout_marginBottom="120dp"
+                android:scrollbars="none"
+                android:visibility="gone">
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
 
-                    <de.hdodenhof.circleimageview.CircleImageView
+                    <!-- 개인 -->
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp"
+                        app:cardUseCompatPadding="true"
+                        app:cardBackgroundColor="@color/material_orange100"
+                        android:clickable="true"
+                        app:cardCornerRadius="8dp"
+                        app:cardElevation="6dp"
+                        android:onClick="@{() -> viewModel.changeSoSock(sosock.PERSONAL)}">
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/black"
+                            android:background="?android:attr/selectableItemBackgroundBorderless"
+                            android:paddingVertical="12dp"
+                            android:paddingHorizontal="12dp"
+                            android:textSize="20sp"
+                            android:text="@string/personal"/>
+                    </androidx.cardview.widget.CardView>
+
+                    <!-- 기관 -->
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp"
+                        app:cardUseCompatPadding="true"
+                        android:background="?android:attr/selectableItemBackgroundBorderless"
+                        app:cardBackgroundColor="@color/material_amber100"
+                        android:clickable="true"
+                        app:cardCornerRadius="8dp"
+                        app:cardElevation="6dp"
+                        android:onClick="@{() -> viewModel.changeSoSock(sosock.AGENCY)}">
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/black"
+                            android:background="?android:attr/selectableItemBackgroundBorderless"
+                            android:paddingVertical="12dp"
+                            android:paddingHorizontal="12dp"
+                            android:textSize="20sp"
+                            android:text="@string/agency"/>
+                    </androidx.cardview.widget.CardView>
+
+                    <!-- 기업 -->
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp"
+                        app:cardUseCompatPadding="true"
+                        android:background="?android:attr/selectableItemBackgroundBorderless"
+                        app:cardBackgroundColor="@color/material_blue50"
+                        android:clickable="true"
+                        app:cardCornerRadius="8dp"
+                        app:cardElevation="6dp"
+                        android:onClick="@{() -> viewModel.changeSoSock(sosock.COMPANY)}">
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/black"
+                            android:background="?android:attr/selectableItemBackgroundBorderless"
+                            android:paddingVertical="12dp"
+                            android:paddingHorizontal="12dp"
+                            android:textSize="20sp"
+                            android:text="@string/company"/>
+                    </androidx.cardview.widget.CardView>
+                    <!--<de.hdodenhof.circleimageview.CircleImageView
                         android:id="@+id/person_image"
                         android:layout_width="120dp"
                         android:layout_height="120dp"
-                        android:src="@drawable/personal"
-                        android:clickable="true"
-                        android:layout_marginLeft="20dp"
-                        android:layout_marginRight="20dp"
-                        android:onClick="@{() -> viewModel.changeSoSock(sosock.PERSONAL)}"/>
+                        android:src="@drawable/personal"/>
 
                     <de.hdodenhof.circleimageview.CircleImageView
                         android:id="@+id/agency_image"
@@ -93,9 +161,9 @@
                         android:clickable="true"
                         android:layout_marginLeft="20dp"
                         android:layout_marginRight="20dp"
-                        android:onClick="@{() -> viewModel.changeSoSock(sosock.COMPANY)}"/>
+                        android:onClick="@{() -> viewModel.changeSoSock(sosock.COMPANY)}"/>-->
                 </LinearLayout>
-            </HorizontalScrollView>
+            </ScrollView>
 
             <TextView
                 android:id="@+id/register_btn"
@@ -103,6 +171,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/register_ok"
                 android:textColor="@color/gray_50"
+                android:background="?android:attr/selectableItemBackgroundBorderless"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 android:textSize="16sp"

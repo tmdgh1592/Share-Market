@@ -7,7 +7,6 @@ import android.os.Bundle
 import android.text.Spannable
 import android.text.SpannableStringBuilder
 import android.text.style.StyleSpan
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,7 +20,6 @@ import com.app.buna.sharingmarket.databinding.FragmentFourthInitialBinding
 import com.app.buna.sharingmarket.repository.Local.PreferenceUtil
 import com.app.buna.sharingmarket.viewmodel.InitialViewModel
 import kotlinx.android.synthetic.main.fragment_fourth_initial.*
-import org.koin.android.ext.android.get
 
 class InitialFourthFragment : Fragment() {
 

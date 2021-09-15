@@ -12,12 +12,14 @@
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:overScrollMode="never">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:context=".activity.CheckShareActivity">
+            tools:context=".activity.CheckShareActivity"
+            android:paddingBottom="16dp">
 
             <TextView
                 android:id="@+id/share_count_text"
@@ -40,6 +42,267 @@
                 app:lottie_autoPlay="true"
                 app:lottie_loop="true"
                 app:lottie_rawRes="@raw/check_share" />
+
+            <!-- 카드 뷰 1 -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/realtime_env_layout1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="10dp"
+                app:cardBackgroundColor="@color/material_lightgreen100"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="3dp"
+                app:cardUseCompatPadding="true"
+                app:layout_constraintTop_toBottomOf="@+id/main_lottie_image">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?android:attr/selectableItemBackgroundBorderless"
+                    android:clickable="true"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/realtime_env_title1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="6dp"
+                        android:layout_marginTop="6dp"
+                        android:background="@drawable/view_env_state"
+                        android:backgroundTint="@color/material_lightgreen200"
+                        android:text="@string/realtime_env_title_1"
+                        android:textColor="@color/white"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="12dp" />
+
+                    <TextView
+                        android:id="@+id/realtime_env_text_view1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="6dp"
+                        android:layout_marginBottom="6dp"
+                        android:background="@drawable/view_env_state"
+                        android:backgroundTint="@color/material_lightgreen200"
+                        android:textColor="@color/white"
+                        android:textSize="14sp"
+                        android:text="@string/realtime_env_content_1"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+
+            <!-- 카드 뷰 2 -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/realtime_env_layout2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="10dp"
+                app:cardBackgroundColor="@color/material_blue100"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="3dp"
+                app:cardUseCompatPadding="true"
+                app:layout_constraintTop_toBottomOf="@+id/realtime_env_layout1">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?android:attr/selectableItemBackgroundBorderless"
+                    android:clickable="true"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/realtime_env_title2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="6dp"
+                        android:layout_marginTop="6dp"
+                        android:background="@drawable/view_env_state"
+                        android:backgroundTint="@color/material_blue200"
+                        android:text="@string/realtime_env_title_2"
+                        android:textColor="@color/white"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="12dp" />
+
+                    <TextView
+                        android:id="@+id/realtime_env_text_view2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="6dp"
+                        android:layout_marginBottom="6dp"
+                        android:background="@drawable/view_env_state"
+                        android:backgroundTint="@color/material_blue200"
+                        android:textColor="@color/white"
+                        android:text="@string/realtime_env_content_2"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+
+            <!-- 카드 뷰 3 -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/realtime_env_layout3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="10dp"
+                app:cardBackgroundColor="@color/material_red100"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="3dp"
+                app:cardUseCompatPadding="true"
+                app:layout_constraintTop_toBottomOf="@+id/realtime_env_layout2">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?android:attr/selectableItemBackgroundBorderless"
+                    android:clickable="true"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/realtime_env_title3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="6dp"
+                        android:layout_marginTop="6dp"
+                        android:background="@drawable/view_env_state"
+                        android:backgroundTint="@color/material_red200"
+                        android:text="@string/realtime_env_title_3"
+                        android:textColor="@color/white"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="12dp" />
+
+                    <TextView
+                        android:id="@+id/realtime_env_text_view3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="6dp"
+                        android:layout_marginBottom="6dp"
+                        android:background="@drawable/view_env_state"
+                        android:backgroundTint="@color/material_red200"
+                        android:text="@string/realtime_env_content_3"
+                        android:textColor="@color/white"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+
+            <!-- 카드 뷰 4 -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/realtime_env_layout4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="10dp"
+                app:cardBackgroundColor="@color/material_deeporange100"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="3dp"
+                app:cardUseCompatPadding="true"
+                app:layout_constraintTop_toBottomOf="@+id/realtime_env_layout3">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?android:attr/selectableItemBackgroundBorderless"
+                    android:clickable="true"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/realtime_env_title4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="6dp"
+                        android:layout_marginTop="6dp"
+                        android:background="@drawable/view_env_state"
+                        android:backgroundTint="@color/material_deeporange200"
+                        android:text="@string/realtime_env_title_4"
+                        android:textColor="@color/white"
+                        android:textSize="16sp"
+
+                        android:textStyle="bold" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="12dp" />
+
+                    <TextView
+                        android:id="@+id/realtime_env_text_view4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="6dp"
+                        android:layout_marginBottom="6dp"
+                        android:background="@drawable/view_env_state"
+                        android:backgroundTint="@color/material_deeporange200"
+                        android:textColor="@color/white"
+                        android:text="@string/realtime_env_content_4"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+
+            <!-- 카드 뷰 5 -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/realtime_env_layout5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="10dp"
+                app:cardBackgroundColor="@color/material_orange100"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="3dp"
+                app:cardUseCompatPadding="true"
+                app:layout_constraintTop_toBottomOf="@+id/realtime_env_layout4">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?android:attr/selectableItemBackgroundBorderless"
+                    android:clickable="true"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/realtime_env_title5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="6dp"
+                        android:layout_marginTop="6dp"
+                        android:background="@drawable/view_env_state"
+                        android:backgroundTint="@color/material_orange200"
+                        android:text="@string/realtime_env_title_5"
+                        android:textColor="@color/white"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="12dp" />
+
+                    <TextView
+                        android:id="@+id/realtime_env_text_view5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="6dp"
+                        android:layout_marginBottom="6dp"
+                        android:text="@string/realtime_env_content_5"
+                        android:background="@drawable/view_env_state"
+                        android:backgroundTint="@color/material_orange200"
+                        android:textColor="@color/white"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>

@@ -114,8 +114,9 @@ class InitialActivity : AppCompatActivity() {
     fun moveMainPage(user: FirebaseUser?) {
 
         val sosock = PreferenceUtil.getString(this, "sosock", "")
+        val page = PreferenceUtil.getInt(this, "fragment_page", 0)
 
-        if (user != null && sosock != "" && Firebase.auth.currentUser != null) {
+        if (user != null && sosock != "" && page == -1 && Firebase.auth.currentUser != null) {
             startActivity(Intent(this, MainActivity::class.java), ActivityOptions.makeSceneTransitionAnimation(this).toBundle())
             finish()
         }
@@ -135,6 +136,13 @@ class InitialActivity : AppCompatActivity() {
             0, 1 -> replaceFragment(InitialFirstFragment()) // 위치 설정 이전 까지 진행한 경우
             2 -> replaceFragment(InitialThirdFragment()) // 로그인&회원가입 까지 진행한 경우
             3 -> replaceFragment(InitialFourthFragment()) // 소속 정하는 곳 까지 진행한 경우
+            -1 -> { // MainPage까지 이동한 경우는 -1
+                startActivity(
+                    Intent(this, MainActivity::class.java),
+                    ActivityOptions.makeSceneTransitionAnimation(this).toBundle()
+                )
+                finish()
+            }
             else -> replaceFragment(InitialFirstFragment()) // 그렇지 않은 경우 처음부터 시작
         }
     }
