@@ -162,6 +162,8 @@ class MainHomeFragment(val category: String = "all") : Fragment() {
         return super.onOptionsItemSelected(item)
     }
 
+    // Firebase로부터 keyword가 속한 게시글을 불러온다
+    // 또는 전체 게시글을 불러온다.
     private fun loadData() {
         // 키워드 검색을 한 경우
         if (keyword != null) {
@@ -179,10 +181,14 @@ class MainHomeFragment(val category: String = "all") : Fragment() {
                         binding?.noResultView?.visibility = View.GONE
                         binding?.productRecyclerView?.visibility = View.VISIBLE
 
-                        (binding?.productRecyclerView?.adapter as BoardRecyclerAdapter).updateData(
-                            data
-                        )
-                        vm?.productItems.value = (data)
+                        val boardList = ArrayList<BoardItem>().apply {
+                            // 나눔 현황 확인하는 뷰 맨 앞에 추가
+                            add(BoardItem())
+                            addAll(data)
+                        }
+
+                        (binding?.productRecyclerView?.adapter as BoardRecyclerAdapter).updateData(boardList)
+                        vm?.productItems.postValue(boardList)
 
                         // 새로고침을 하는 경우이면
                         if(binding?.swipeRefreshLayout?.isRefreshing!!) {
