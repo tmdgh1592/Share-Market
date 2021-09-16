@@ -289,8 +289,10 @@ class BoardActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
+        // MyBoardsActivity에서 실행한 경우 하트가 달라지면 좋아요 값을 갱신함.
+        val intent = Intent().putExtra("heart", vm.nowHeartState).putExtra("refresh", true)
         if(vm.isHeartStateChanged()) {
-            setResult(RESULT_OK)
+            setResult(RESULT_OK, intent)
         }
         finish()
     }

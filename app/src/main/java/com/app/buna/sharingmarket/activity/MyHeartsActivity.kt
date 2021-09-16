@@ -60,6 +60,8 @@ class MyHeartsActivity : AppCompatActivity() {
                 binding?.myHeartsRecyclerView.visibility = View.GONE
             }
         })
+
+        binding?.backBtn.setOnClickListener { finish() }
     }
 
     // 내가 쓴 글들 중 하나 클릭했을 때

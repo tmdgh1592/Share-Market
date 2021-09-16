@@ -72,15 +72,6 @@ class CheckShareActivity : AppCompatActivity() {
             binding?.realtimeEnvTitle5?.text = getString(R.string.realtime_env_title_5, decimalFormat.format(0.01f * boardTotalCount).toString())
         }
 
-        // 애니메이션 보여주기
-        CoroutineScope(Dispatchers.Main).launch {
-            binding?.mainLottieImage?.startAnimation(
-                AnimationUtils.loadAnimation(
-                    this@CheckShareActivity,
-                    R.anim.anim_lottie_fade_in
-                )
-            )
-        }
 
 
     }

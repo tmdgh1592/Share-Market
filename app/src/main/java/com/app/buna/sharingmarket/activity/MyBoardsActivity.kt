@@ -15,6 +15,8 @@ import com.app.buna.sharingmarket.callbacks.IFirebaseGetStoreDataCallback
 import com.app.buna.sharingmarket.databinding.ActivityMyBoardsBinding
 import com.app.buna.sharingmarket.model.items.BoardItem
 import com.app.buna.sharingmarket.viewmodel.MyBoardViewModel
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 
 class MyBoardsActivity : AppCompatActivity() {
 
@@ -61,6 +63,8 @@ class MyBoardsActivity : AppCompatActivity() {
                 binding?.myBoardRecyclerView.visibility = View.GONE
             }
         })
+
+        binding?.backBtn.setOnClickListener { finish() }
     }
 
     // 내가 쓴 글들 중 하나 클릭했을 때
@@ -69,6 +73,7 @@ class MyBoardsActivity : AppCompatActivity() {
         val intent = Intent(this, BoardActivity::class.java)
             .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
             .putExtra("product_item", vm.myBoardItems.value!![position])
+            .putExtra("from", "MyBoardsActivity")
         startActivityForResult(intent, REQUEST_CODE.DELETE_BOARD_CODE_FROM_MY_BOARD)
     }
 
@@ -79,8 +84,19 @@ class MyBoardsActivity : AppCompatActivity() {
             // 게시글을 삭제하면 view model의 데이터 리스트에서 삭제한 게시물 데이터를 제거하고
             // recycler view에 해당 게시물이 없어졌다고 알림.
             REQUEST_CODE.DELETE_BOARD_CODE_FROM_MY_BOARD -> {
-                vm.myBoardItems.value!!.removeAt(vm.selectedItemPosition)
-                vm.myBoardItems.postValue(vm.myBoardItems.value)
+                // 하트 상태를 갱신해야 하는 경우
+                // 바뀐 좋아요 상태
+                val heartState = data?.getBooleanExtra("heart", false)!!
+                if (data?.getBooleanExtra("refresh", false)) { // 새로고침을 해야하는 경우라면
+                    if(heartState) { // 바뀐 좋아요 상태가 true인 경우 추가
+                        vm.myBoardItems.value!![vm.selectedItemPosition].favorites[Firebase.auth.uid!!] = true
+                    } else { // 바뀐 좋아요 상태가 false인 경우 제거
+                        vm.myBoardItems.value!![vm.selectedItemPosition].favorites.remove(Firebase.auth.uid!!)
+                    }
+                }else {
+                    vm.myBoardItems.value!!.removeAt(vm.selectedItemPosition)
+                    vm.myBoardItems.postValue(vm.myBoardItems.value)
+                }
                 (binding?.myBoardRecyclerView?.adapter as MyBoardsRecyclerAdapter).updateData(vm.myBoardItems.value!!)
             }
         }
