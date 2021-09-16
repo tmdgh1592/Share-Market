@@ -77,8 +77,6 @@ class MainChatFragment : Fragment() {
                 }
             }
         })
-
-
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

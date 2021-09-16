@@ -13,9 +13,7 @@ import com.app.buna.sharingmarket.model.items.chat.ChatUserModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.*
-import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import java.io.File
@@ -69,8 +67,9 @@ class FirebaseRepository {
                     callback()
                 }
         } else { // 기타 사유인 경우 사유를 따로 보관하기 위해 'other'이라는 경로에 따로 추가
-            firebaseDatabaseInstance.getReference("unregister").child("other").child(cause).push()
-                .setValue(Firebase.auth.uid).addOnCompleteListener {
+            firebaseDatabaseInstance.getReference("unregister").child("other")
+                .child(Firebase.auth.uid!!).setValue(cause.replace("\n", ""))
+                .addOnCompleteListener {
                     callback()
                 }
         }
@@ -823,7 +822,8 @@ class FirebaseRepository {
                         val chatRoomUids = ArrayList<String>()
                         chatRoomSnapshot.children.forEach { item -> // 채팅방을 하나씩 돌아가면서 탐색
                             if (item.exists()) { // 데이터가 존재한다면
-                                val chatRoom = (item.getValue(ChatRoomModel::class.java)!!) // 채팅방 정보를 가져옴
+                                val chatRoom =
+                                    (item.getValue(ChatRoomModel::class.java)!!) // 채팅방 정보를 가져옴
                                 chatRoomUids.add(item.key!!)
                                 destUidArray.add(findDestUid(chatRoom.users)!!) // 내가 있는 채팅방의 상대방 uid를 추가함
 

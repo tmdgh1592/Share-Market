@@ -80,10 +80,10 @@ class ChatActivity : AppCompatActivity() {
                     binding?.submitBtn.isClickable = true*/
                 }, { success ->
                     if (!success) { // 토큰이 유효하지 않아 메세지 보내기에 실패했을 때 (채팅방을 삭제하기 위한 setResult)
-                        viewModel.removeChatRoom { // 해당 채팅방을 DB에서 제거
+                        /*viewModel.removeChatRoom { // 해당 채팅방을 DB에서 제거
                             setResult(RESULT_OK)
                             finish()
-                        }
+                        }*/
                     }
                 })
                 binding?.chatEditTextView.text.clear()
@@ -102,9 +102,10 @@ class ChatActivity : AppCompatActivity() {
 
 
         binding?.chatRecyclerView.apply {
-            adapter = ChatRecyclerAdatper(viewModel, viewModel.destChatModel!!, this@ChatActivity).apply {
-                setHasStableIds(true)
-            }
+            adapter =
+                ChatRecyclerAdatper(viewModel, viewModel.destChatModel!!, this@ChatActivity).apply {
+                    setHasStableIds(true)
+                }
             layoutManager = LinearLayoutManager(this@ChatActivity)
             setHasFixedSize(true)
         }
@@ -205,11 +206,11 @@ class ChatActivity : AppCompatActivity() {
     override fun onDestroy() {
         // 나갈 때 푸시 알림 상태 바꿈 (바로 서버에서 상태를 바꾸면 채팅방 내에서도 푸시알림이 전송됨.)
         if (viewModel.chatRoomUid != null && viewModel.myPushState != null)
-        viewModel.setPushState(
-            viewModel.myPushState.value!!,
-            viewModel.chatRoomUid!!,
-            viewModel.getUid()!!
-        )
+            viewModel.setPushState(
+                viewModel.myPushState.value!!,
+                viewModel.chatRoomUid!!,
+                viewModel.getUid()!!
+            )
 
         // 채팅방에서 나갈 때 채팅수신 승인 상태라면
         if (viewModel.myPushState.value == true && viewModel.chatRoomUid != null) {

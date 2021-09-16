@@ -85,17 +85,19 @@ class MainViewModel(application: Application, val context: Context) :
     }
 
     // 회원탈퇴
+    @SuppressLint("LongLogTag")
     fun unregister(cause: String, id: Int, activityFinishCallback: () -> Unit) {
         // DB에 탈퇴 사유 저장
         FirebaseRepository.instance.saveUnregisterCause(cause, id) { // DB에 저장을 완료하였다면
             // 파이어베이스에서 유저 delete
-            Firebase.auth.currentUser!!.delete().addOnSuccessListener {
+            Firebase.auth.currentUser!!.delete().addOnCompleteListener {
                 Log.d("MainViewModel", "User account deleted")
+                PreferenceUtil.putInt(context, "push", 0) // 토큰 값 0으로 설정
                 PreferenceUtil.putInt(context, "fragment_page", 0) // 현재까지 진행한 fragment_page를 초기화면으로 돌림
                 PreferenceUtil.putInt(context, "push", 0) // 푸시 값으로 초기화
                 activityFinishCallback() // 액티비티 종료 콜백
             }.addOnFailureListener { exception ->
-                print(exception.message)
+                Log.d("MainViewModel Unregister Error", exception.message)
             }
         }
     }

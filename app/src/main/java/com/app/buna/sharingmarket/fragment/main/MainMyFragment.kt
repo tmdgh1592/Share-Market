@@ -220,7 +220,7 @@ class MainMyFragment : Fragment() {
                             .setPositiveButton(
                                 android.R.string.ok,
                                 null
-                            ) //onClick오버라이딩할거니까 null로해줘요.
+                            )
                             .setNegativeButton(android.R.string.cancel) { dialog, _ ->
                                 dialog.dismiss()
                             }
