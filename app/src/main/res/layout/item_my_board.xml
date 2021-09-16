@@ -31,12 +31,11 @@
                 <!--제품 정보-->
                 <com.elyeproj.loaderviewlibrary.LoaderTextView
                     android:id="@+id/item_title_text"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="16dp"
                     android:layout_marginTop="4dp"
                     android:ellipsize="end"
-                    android:maxLength="14"
                     android:maxLines="1"
                     android:text="@{model.title}"
                     android:textColor="@color/black"
