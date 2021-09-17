@@ -781,19 +781,20 @@ class FirebaseRepository {
         firebaseDatabaseInstance.getReference("users/$uid")
             .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
-                    if (snapshot.exists()) {
-                        val userModel: UserModel? = snapshot.getValue(UserModel::class.java)
-                        if (userModel != null) {
-                            val destUserModel =
-                                ChatUserModel(userModel.nickname, userModel.profile_url, uid)
-                            complete(destUserModel)
-                        }
-
+                    val userModel: UserModel? = snapshot.getValue(UserModel::class.java)
+                    if (userModel != null) {
+                        val destUserModel =
+                            ChatUserModel(userModel.nickname, userModel.profile_url, uid)
+                        complete(destUserModel)
+                    } else {
+                        val nullDestUserModel = ChatUserModel("탈퇴한 사용자입니다.", null, uid)
+                        complete(nullDestUserModel)
                     }
+
                 }
 
                 override fun onCancelled(error: DatabaseError) {
-                    TODO("Not yet implemented")
+
                 }
             }
             )

@@ -186,7 +186,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@color/black_transparent"
-                app:layout_constraintTop_toBottomOf="@+id/title"
                 app:lottie_autoPlay="true"
                 app:lottie_loop="false"
                 app:lottie_rawRes="@raw/welcome" />

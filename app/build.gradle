@@ -18,6 +18,13 @@ allprojects {
     }
 }
 
+configurations {
+    all {
+        exclude module: 'httpclient'
+        exclude module: 'commons-logging'
+    }
+}
+
 android {
     compileSdkVersion 29
 
@@ -64,6 +71,7 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+
 }
 
 dependencies {

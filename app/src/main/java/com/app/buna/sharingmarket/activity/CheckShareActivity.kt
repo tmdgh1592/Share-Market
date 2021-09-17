@@ -65,14 +65,37 @@ class CheckShareActivity : AppCompatActivity() {
             // 나무 사용량 : 0.2배
             // 이산화탄소 배출량 : 폐기물 1kg당 120g -> 나눔 제품 대략 3.5kg로 잡고 계산
             // 플라스틱 배출량 : 플라스틱 1인당 년간 145,000g 사용 -> 365일로 나누어 8로 나눔.
-            binding?.realtimeEnvTitle1?.text = getString(R.string.realtime_env_title_1, decimalFormat.format(0.2f * boardTotalCount).toString())
-            binding?.realtimeEnvTitle2?.text = getString(R.string.realtime_env_title_2, decimalFormat.format(24.5f * boardTotalCount).toString())
-            binding?.realtimeEnvTitle3?.text = getString(R.string.realtime_env_title_3, decimalFormat.format(3.5f * boardTotalCount).toString())
-            binding?.realtimeEnvTitle4?.text = getString(R.string.realtime_env_title_4, decimalFormat.format(0.185f * boardTotalCount).toString())
-            binding?.realtimeEnvTitle5?.text = getString(R.string.realtime_env_title_5, decimalFormat.format(0.01f * boardTotalCount).toString())
+            binding?.realtimeEnvTitle1?.text = getString(
+                R.string.realtime_env_title_1,
+                decimalFormat.format(0.2f * boardTotalCount).toString()
+            )
+            binding?.realtimeEnvTitle2?.text = getString(
+                R.string.realtime_env_title_2,
+                decimalFormat.format(24.5f * boardTotalCount).toString()
+            )
+            binding?.realtimeEnvTitle3?.text = getString(
+                R.string.realtime_env_title_3,
+                decimalFormat.format(3.5f * boardTotalCount).toString()
+            )
+            binding?.realtimeEnvTitle4?.text = getString(
+                R.string.realtime_env_title_4,
+                decimalFormat.format(0.185f * boardTotalCount).toString()
+            )
+            binding?.realtimeEnvTitle5?.text = getString(
+                R.string.realtime_env_title_5,
+                decimalFormat.format(0.01f * boardTotalCount).toString()
+            )
         }
 
-
+        // 애니메이션 보여주기
+        CoroutineScope(Dispatchers.Main).launch {
+            binding?.mainLottieImage?.startAnimation(
+                AnimationUtils.loadAnimation(
+                    this@CheckShareActivity,
+                    R.anim.anim_lottie_fade_in
+                )
+            )
+        }
 
     }
 }

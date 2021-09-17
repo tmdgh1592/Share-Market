@@ -58,7 +58,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="?attr/actionBarSize"
-            app:layout_constraintTop_toBottomOf="@+id/search_now_location_btn"
+            app:layout_constraintTop_toBottomOf="@id/tool_bar"
             app:layout_constraintBottom_toBottomOf="parent"
             android:orientation="vertical"
             android:gravity="center">

@@ -21,6 +21,7 @@ import com.app.buna.sharingmarket.utils.LocationHelper
 import com.app.buna.sharingmarket.utils.NetworkStatus
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Dispatchers.Default
 import kotlinx.coroutines.launch
 
@@ -71,7 +72,7 @@ class InitialViewModel(application: Application) :
     }
 
     fun getLocationList(context: Context) {
-        CoroutineScope(Default).launch {
+        CoroutineScope(Dispatchers.Default).launch {
             Log.d("InitialViewModel", "Location Searching Button Clicked")
 
             locationList.clear() // 기존 항목 제거
