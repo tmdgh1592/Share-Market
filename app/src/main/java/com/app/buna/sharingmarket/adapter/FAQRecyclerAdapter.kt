@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.app.buna.sharingmarket.databinding.ItemFaqBinding
-import com.app.buna.sharingmarket.model.items.faq.FaqItem
+import com.app.buna.sharingmarket.model.faq.FaqItem
 import com.app.buna.sharingmarket.utils.ToggleAnimation
 
 class FAQRecyclerAdapter(var faqList: ArrayList<FaqItem>) : RecyclerView.Adapter<FAQRecyclerAdapter.FAQViewHolder>(){

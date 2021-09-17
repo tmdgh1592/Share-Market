@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 import com.app.buna.sharingmarket.databinding.CategoryItemBinding
-import com.app.buna.sharingmarket.model.items.CategoryItem
+import com.app.buna.sharingmarket.model.CategoryItem
 
 class CategoryGridAdapter(val context: Context, val categoryList: ArrayList<CategoryItem>) :
     BaseAdapter() {

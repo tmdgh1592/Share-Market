@@ -2,7 +2,6 @@ package com.app.buna.sharingmarket.adapter
 
 import android.content.Context
 import android.content.Intent
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,7 +12,7 @@ import com.app.buna.sharingmarket.R
 import com.app.buna.sharingmarket.activity.CheckShareActivity
 import com.app.buna.sharingmarket.databinding.BoardItemBinding
 import com.app.buna.sharingmarket.databinding.LayoutCheckShareBinding
-import com.app.buna.sharingmarket.model.items.BoardItem
+import com.app.buna.sharingmarket.model.BoardItem
 import com.app.buna.sharingmarket.viewmodel.MainViewModel
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy

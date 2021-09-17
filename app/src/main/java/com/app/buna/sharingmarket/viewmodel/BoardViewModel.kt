@@ -10,10 +10,13 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.app.buna.sharingmarket.Tags.Companion.TAG
-import com.app.buna.sharingmarket.model.items.BoardItem
-import com.app.buna.sharingmarket.model.items.SliderItem
+import com.app.buna.sharingmarket.model.BoardItem
+import com.app.buna.sharingmarket.model.SliderItem
+import com.app.buna.sharingmarket.model.tree.TreeItem
 import com.app.buna.sharingmarket.repository.Firebase.FirebaseRepository
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import com.kakao.sdk.link.LinkClient
 import com.kakao.sdk.template.model.*
 import kotlin.properties.Delegates
@@ -154,5 +157,27 @@ class BoardViewModel(application: Application, val context: Context) : AndroidVi
     // 나눔 완료로 상태표시
     fun shareDone(isDone: Boolean, callback: () -> Unit) {
         FirebaseRepository.instance.shareDone(isDone, item.documentId, callback)
+    }
+
+    // 사용자의 트리코인 정보를 가져옴
+    fun getTreeItem(callback: (TreeItem?) -> Unit) {
+        FirebaseRepository.instance.getMyTreeItem(Firebase.auth.uid!!, callback)
+    }
+
+    fun setTreeItem(treeItem: TreeItem, complete: () -> Unit) {
+        FirebaseRepository.instance.setMyTreeItem(Firebase.auth.uid!!, treeItem) {
+            complete
+        }
+    }
+    
+    // 사용자의 트리코인 개수를 가져옴
+    fun getTreeCoinCount(callback: (Int) -> Unit) {
+        FirebaseRepository.instance.getMyTreeItem(Firebase.auth.uid!!) { treeItem ->
+            callback(treeItem?.totalSeed!!)
+        }
+    }
+
+    fun setTreeCoinCount(totalTree: Int, complete: () -> Unit) {
+        FirebaseRepository.instance.setMyTreeCoin(Firebase.auth.uid!!, totalTree, complete)
     }
 }

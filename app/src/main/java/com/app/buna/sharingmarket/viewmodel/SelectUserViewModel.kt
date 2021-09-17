@@ -10,8 +10,8 @@ import com.app.buna.sharingmarket.CommentType
 import com.app.buna.sharingmarket.R
 import com.app.buna.sharingmarket.listners.FailType
 import com.app.buna.sharingmarket.listners.ViewModelListner
-import com.app.buna.sharingmarket.model.items.chat.ChatRoomModel
-import com.app.buna.sharingmarket.model.items.chat.ChatUserModel
+import com.app.buna.sharingmarket.model.chat.ChatRoomModel
+import com.app.buna.sharingmarket.model.chat.ChatUserModel
 import com.app.buna.sharingmarket.notification.notification.SendNotification
 import com.app.buna.sharingmarket.repository.Firebase.FirebaseRepository
 import com.app.buna.sharingmarket.utils.NetworkStatus

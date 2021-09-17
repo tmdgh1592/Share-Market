@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
 import com.app.buna.sharingmarket.databinding.LocationItemBinding
-import com.app.buna.sharingmarket.model.items.LocationItem
+import com.app.buna.sharingmarket.model.LocationItem
 import com.app.buna.sharingmarket.viewmodel.InitialViewModel
 
 class LocationRecyclerAdapter(

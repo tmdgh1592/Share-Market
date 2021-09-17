@@ -1,4 +1,4 @@
-package com.app.buna.sharingmarket.model.items
+package com.app.buna.sharingmarket.model
 
 data class UserModel(
     val board_uid: HashMap<String, String> = HashMap(),

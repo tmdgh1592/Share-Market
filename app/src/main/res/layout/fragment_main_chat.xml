@@ -12,7 +12,7 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".fragment.main.MainChatFragment"
+        tools:context=".fragment.main.ChatFragment"
         android:background="@color/gray_10">
 
         <androidx.appcompat.widget.Toolbar

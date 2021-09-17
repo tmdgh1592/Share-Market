@@ -16,8 +16,8 @@ import com.app.buna.sharingmarket.activity.BoardActivity
 import com.app.buna.sharingmarket.activity.MainActivity
 import com.app.buna.sharingmarket.callbacks.IFirebaseGetStoreDataCallback
 import com.app.buna.sharingmarket.callbacks.ILogoutCallback
-import com.app.buna.sharingmarket.model.items.CategoryItem
-import com.app.buna.sharingmarket.model.items.BoardItem
+import com.app.buna.sharingmarket.model.CategoryItem
+import com.app.buna.sharingmarket.model.BoardItem
 import com.app.buna.sharingmarket.repository.Firebase.FirebaseRepository
 import com.app.buna.sharingmarket.repository.Local.PreferenceUtil
 import com.app.buna.sharingmarket.utils.NetworkStatus

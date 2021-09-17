@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.app.buna.sharingmarket.databinding.LayoutSelectUserBinding
-import com.app.buna.sharingmarket.model.items.chat.ChatUserModel
+import com.app.buna.sharingmarket.model.chat.ChatUserModel
 import com.app.buna.sharingmarket.viewmodel.SelectUserViewModel
 
 class UserSelectRecyclerAdapter(val userViewModel: SelectUserViewModel) : RecyclerView.Adapter<UserSelectRecyclerAdapter.UserSelectViewHolder>() {

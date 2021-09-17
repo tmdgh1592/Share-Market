@@ -17,13 +17,13 @@ import com.app.buna.sharingmarket.activity.WriteActivity
 import com.app.buna.sharingmarket.adapter.BoardRecyclerAdapter
 import com.app.buna.sharingmarket.callbacks.IFirebaseGetStoreDataCallback
 import com.app.buna.sharingmarket.databinding.FragmentMainHomeBinding
-import com.app.buna.sharingmarket.model.items.BoardItem
+import com.app.buna.sharingmarket.model.BoardItem
 import com.app.buna.sharingmarket.viewmodel.MainViewModel
 import com.google.android.material.internal.NavigationMenu
 import io.github.yavski.fabspeeddial.FabSpeedDial
 import org.koin.android.ext.android.get
 
-class MainHomeFragment(val category: String = "all") : Fragment() {
+class HomeFragment(val category: String = "all") : Fragment() {
 
     private var keyword: String? = null
 
@@ -142,7 +142,7 @@ class MainHomeFragment(val category: String = "all") : Fragment() {
         when (item.itemId) {
             R.id.action_category -> { // Toolbar 카테고리 버튼 클릭
                 (requireActivity() as MainActivity).supportFragmentManager.beginTransaction()
-                    .replace(R.id.main_frame_layout, MainCategoryFragment.instance)
+                    .replace(R.id.main_frame_layout, CategoryFragment.instance)
                     .commit() // 카테고리 Fragment로 이동
                 (requireActivity() as MainActivity).tabLayout.getTabAt(1)
                     ?.select() // 탭도 같이 움직일 수 있도록 select() 호출
@@ -187,11 +187,13 @@ class MainHomeFragment(val category: String = "all") : Fragment() {
                             addAll(data)
                         }
 
-                        (binding?.productRecyclerView?.adapter as BoardRecyclerAdapter).updateData(boardList)
+                        (binding?.productRecyclerView?.adapter as BoardRecyclerAdapter).updateData(
+                            boardList
+                        )
                         vm?.productItems.postValue(boardList)
 
                         // 새로고침을 하는 경우이면
-                        if(binding?.swipeRefreshLayout?.isRefreshing!!) {
+                        if (binding?.swipeRefreshLayout?.isRefreshing!!) {
                             // Refresh 아이콘 사라지게 하기
                             binding?.swipeRefreshLayout?.isRefreshing = false
                         }
@@ -212,7 +214,7 @@ class MainHomeFragment(val category: String = "all") : Fragment() {
                     vm?.productItems.value = (boardList)
 
                     // 새로고침을 하는 경우이면
-                    if(binding?.swipeRefreshLayout?.isRefreshing!!) {
+                    if (binding?.swipeRefreshLayout?.isRefreshing!!) {
                         // Refresh 아이콘 사라지게 하기
                         binding?.swipeRefreshLayout?.isRefreshing = false
                     }
@@ -222,8 +224,8 @@ class MainHomeFragment(val category: String = "all") : Fragment() {
     }
 
     companion object {
-        fun instance() = MainHomeFragment()
-        fun instance(keyword: String?) = MainHomeFragment(keyword = keyword)
+        fun instance() = HomeFragment()
+        fun instance(keyword: String?) = HomeFragment(keyword = keyword)
     }
 
 

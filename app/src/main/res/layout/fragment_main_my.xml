@@ -13,7 +13,7 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".fragment.main.MainMyFragment">
+        tools:context=".fragment.main.MyFragment">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/tool_bar"

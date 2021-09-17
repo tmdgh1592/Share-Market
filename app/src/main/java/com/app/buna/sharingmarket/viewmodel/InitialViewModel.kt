@@ -13,7 +13,7 @@ import com.app.buna.sharingmarket.Sosock
 import com.app.buna.sharingmarket.activity.InitialActivity
 import com.app.buna.sharingmarket.fragment.dialog.LocationFragmentDialog
 import com.app.buna.sharingmarket.fragment.initial.InitialThirdFragment
-import com.app.buna.sharingmarket.model.items.LocationItem
+import com.app.buna.sharingmarket.model.LocationItem
 import com.app.buna.sharingmarket.repository.Firebase.FirebaseRepository
 import com.app.buna.sharingmarket.repository.Local.PreferenceUtil
 import com.app.buna.sharingmarket.utils.FancyChocoBar
@@ -22,7 +22,6 @@ import com.app.buna.sharingmarket.utils.NetworkStatus
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Dispatchers.Default
 import kotlinx.coroutines.launch
 
 

@@ -7,11 +7,11 @@
 
         <variable
             name="chatModel"
-            type="com.app.buna.sharingmarket.model.items.chat.ChatRoomModel" />
+            type="com.app.buna.sharingmarket.model.chat.ChatRoomModel" />
 
         <variable
             name="destUserModel"
-            type="com.app.buna.sharingmarket.model.items.chat.ChatUserModel" />
+            type="com.app.buna.sharingmarket.model.chat.ChatUserModel" />
 
         <variable
             name="viewModel"

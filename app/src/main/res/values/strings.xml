@@ -29,6 +29,7 @@
     <string name="write">게시글 작성</string>
     <string name="tab_home">홈</string>
     <string name="tab_category">카테고리</string>
+    <string name="tab_tree">캠페인</string>
     <string name="tab_chat">채팅</string>
     <string name="tab_my">My</string>
     <string name="my_information">내 정보</string>
@@ -36,6 +37,12 @@
     <string name="register_ok">가입 완료</string>
     <string name="sosock_check">회원님의 소속을 선택해주세요 :D</string>
     <string name="select_user_toolbar_title">거래 유저</string>
+
+    <!--campain-->
+    <string name="campain_header">나눔으로 나무심기</string>
+    <string name="campain_sub_header">현재까지 심어진 트리 코인이 무려 %s개!</string>
+    <string name="campain_click_me">나무를 클릭해보세요!</string>
+    <string name="plnat_tree_seed_text">나눔하고 얻은 나무 심기</string>
 
     <!--sosock-->
     <string name="personal">개인</string>
@@ -266,6 +273,8 @@
     <string name="exchange_not_done">교환 완료 해제</string>
     <string name="share_done_message">게시글 상태를 완료로 변경합니다.</string>
     <string name="share_not_done_message">게시글의 완료 상태를 해제합니다.</string>
+    <string name="get_tree_coin">트리 코인 2개가 지급되었습니다!</string>
+    <string name="tree_coin_not_enough">완료 해제를 위한 트리 코인이 부족합니다.</string>
 
     <!-- fragment : my -->
     <string name="edit_location">내 위치 수정</string>

@@ -8,7 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.app.buna.sharingmarket.Const
 import com.app.buna.sharingmarket.callbacks.IFirebaseRepositoryCallback
-import com.app.buna.sharingmarket.model.items.BoardItem
+import com.app.buna.sharingmarket.model.BoardItem
 import com.app.buna.sharingmarket.repository.Firebase.FirebaseRepository
 import com.google.firebase.auth.FirebaseAuth
 

@@ -20,7 +20,7 @@ import com.app.buna.sharingmarket.REQUEST_CODE
 import com.app.buna.sharingmarket.WriteType
 import com.app.buna.sharingmarket.callbacks.IFirebaseRepositoryCallback
 import com.app.buna.sharingmarket.databinding.ActivityWriteBinding
-import com.app.buna.sharingmarket.model.items.BoardItem
+import com.app.buna.sharingmarket.model.BoardItem
 import com.app.buna.sharingmarket.repository.Local.PreferenceUtil
 import com.app.buna.sharingmarket.utils.FancyToastUtil
 import com.app.buna.sharingmarket.utils.KeyboardUtil.Companion.hideKeyBoard

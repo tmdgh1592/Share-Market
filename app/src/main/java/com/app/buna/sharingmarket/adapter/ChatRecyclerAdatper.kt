@@ -11,8 +11,8 @@ import com.app.buna.sharingmarket.CommentType
 import com.app.buna.sharingmarket.R
 import com.app.buna.sharingmarket.activity.ChatActivity
 import com.app.buna.sharingmarket.databinding.*
-import com.app.buna.sharingmarket.model.items.chat.ChatRoomModel
-import com.app.buna.sharingmarket.model.items.chat.ChatUserModel
+import com.app.buna.sharingmarket.model.chat.ChatRoomModel
+import com.app.buna.sharingmarket.model.chat.ChatUserModel
 import com.app.buna.sharingmarket.utils.BaseDiffUtil
 import com.app.buna.sharingmarket.viewmodel.ChatViewModel
 import com.bumptech.glide.Glide

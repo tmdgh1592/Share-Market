@@ -7,7 +7,7 @@
 
         <variable
             name="faqModel"
-            type="com.app.buna.sharingmarket.model.items.faq.FaqItem" />
+            type="com.app.buna.sharingmarket.model.faq.FaqItem" />
     </data>
 
     <LinearLayout

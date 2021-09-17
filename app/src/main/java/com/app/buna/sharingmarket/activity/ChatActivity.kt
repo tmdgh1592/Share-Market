@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.app.buna.sharingmarket.R
 import com.app.buna.sharingmarket.adapter.ChatRecyclerAdatper
 import com.app.buna.sharingmarket.databinding.ActivityChatBinding
-import com.app.buna.sharingmarket.model.items.chat.ChatUserModel
+import com.app.buna.sharingmarket.model.chat.ChatUserModel
 import com.app.buna.sharingmarket.utils.FancyToastUtil
 import com.app.buna.sharingmarket.utils.NetworkStatus
 import com.app.buna.sharingmarket.viewmodel.ChatViewModel

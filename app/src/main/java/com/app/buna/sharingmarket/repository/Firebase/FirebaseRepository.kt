@@ -6,10 +6,11 @@ import android.util.Log
 import com.app.buna.sharingmarket.callbacks.IFirebaseGetChatRoomCallback
 import com.app.buna.sharingmarket.callbacks.IFirebaseGetStoreDataCallback
 import com.app.buna.sharingmarket.callbacks.IFirebaseRepositoryCallback
-import com.app.buna.sharingmarket.model.items.BoardItem
-import com.app.buna.sharingmarket.model.items.UserModel
-import com.app.buna.sharingmarket.model.items.chat.ChatRoomModel
-import com.app.buna.sharingmarket.model.items.chat.ChatUserModel
+import com.app.buna.sharingmarket.model.BoardItem
+import com.app.buna.sharingmarket.model.UserModel
+import com.app.buna.sharingmarket.model.chat.ChatRoomModel
+import com.app.buna.sharingmarket.model.chat.ChatUserModel
+import com.app.buna.sharingmarket.model.tree.TreeItem
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.*
@@ -924,6 +925,40 @@ class FirebaseRepository {
             .child(uid).get().addOnCompleteListener {
                 complete(it.result.value as Boolean)
             }
+    }
+
+    // DB에서 사용자의 트리 코인 정보를 가져옴
+    fun getMyTreeItem(uid: String, callback: (TreeItem?) -> Unit) {
+        firebaseDatabaseInstance.getReference("campain").child(uid).get()
+            .addOnSuccessListener { snapshot ->
+                if (snapshot.exists()) { // 코인 정보가 존재한다면
+                    val treeItem: TreeItem? = snapshot.getValue(TreeItem::class.java)
+                    callback(treeItem)
+                } else {
+                    callback(TreeItem())
+                }
+            }
+    }
+
+    fun setMyTreeItem(uid: String, treeItem: TreeItem, callback: () -> Unit) {
+        firebaseDatabaseInstance.getReference("campain").child(uid).setValue(treeItem)
+            .addOnCompleteListener {
+                callback()
+            }
+    }
+
+    // DB에서 사용자의 총 트리 코인 개수를 설정함
+    fun setMyTreeCoin(uid: String, totalTree: Int, complete: () -> Unit) {
+        firebaseDatabaseInstance.getReference("campain").child(uid).child("totalSeed")
+            .setValue(totalTree).addOnCompleteListener {
+                complete
+            }
+    }
+
+    fun setClicked(treeItem: TreeItem, complete: () -> Unit) {
+        firebaseDatabaseInstance.getReference("campain").child(Firebase.auth.uid!!).setValue(treeItem).addOnCompleteListener {
+            complete()
+        }
     }
 
 

@@ -3,7 +3,7 @@ package com.app.buna.sharingmarket.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.app.buna.sharingmarket.databinding.ImageSlideItemBinding
-import com.app.buna.sharingmarket.model.items.SliderItem
+import com.app.buna.sharingmarket.model.SliderItem
 import com.smarteist.autoimageslider.SliderViewAdapter
 
 

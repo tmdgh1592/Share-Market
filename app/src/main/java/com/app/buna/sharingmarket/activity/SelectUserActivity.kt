@@ -14,10 +14,9 @@ import com.app.buna.sharingmarket.adapter.UserSelectRecyclerAdapter
 import com.app.buna.sharingmarket.databinding.ActivitySelectUserBinding
 import com.app.buna.sharingmarket.listners.FailType
 import com.app.buna.sharingmarket.listners.ViewModelListner
-import com.app.buna.sharingmarket.model.items.chat.ChatUserModel
+import com.app.buna.sharingmarket.model.chat.ChatUserModel
 import com.app.buna.sharingmarket.utils.FancyToastUtil
 import com.app.buna.sharingmarket.viewmodel.SelectUserViewModel
-import org.koin.android.ext.android.get
 
 class SelectUserActivity : AppCompatActivity() {
     var binding: ActivitySelectUserBinding? = null

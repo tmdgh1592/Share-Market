@@ -1,4 +1,4 @@
-package com.app.buna.sharingmarket.model.items.chat
+package com.app.buna.sharingmarket.model.chat
 
 import com.app.buna.sharingmarket.CommentType
 import com.app.buna.sharingmarket.utils.ChatTimeStampUtil

@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.app.buna.sharingmarket.R
 import com.app.buna.sharingmarket.activity.MyHeartsActivity
 import com.app.buna.sharingmarket.databinding.ItemMyBoardBinding
-import com.app.buna.sharingmarket.model.items.BoardItem
+import com.app.buna.sharingmarket.model.BoardItem
 import com.app.buna.sharingmarket.viewmodel.MyBoardViewModel
 
 class MyHeartsRecyclerAdapter(val viewModel: MyBoardViewModel, val context : Context, val activity: Activity) :

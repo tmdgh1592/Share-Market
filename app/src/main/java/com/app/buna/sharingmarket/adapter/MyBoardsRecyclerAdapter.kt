@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.app.buna.sharingmarket.R
 import com.app.buna.sharingmarket.activity.MyBoardsActivity
 import com.app.buna.sharingmarket.databinding.ItemMyBoardBinding
-import com.app.buna.sharingmarket.model.items.BoardItem
+import com.app.buna.sharingmarket.model.BoardItem
 import com.app.buna.sharingmarket.viewmodel.MyBoardViewModel
 
 class MyBoardsRecyclerAdapter(val viewModel: MyBoardViewModel, val context : Context, val activity: Activity) :

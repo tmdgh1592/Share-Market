@@ -12,10 +12,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.app.buna.sharingmarket.R
 import com.app.buna.sharingmarket.REQUEST_CODE
 import com.app.buna.sharingmarket.databinding.ActivityMainBinding
-import com.app.buna.sharingmarket.fragment.main.MainCategoryFragment
-import com.app.buna.sharingmarket.fragment.main.MainChatFragment
-import com.app.buna.sharingmarket.fragment.main.MainHomeFragment
-import com.app.buna.sharingmarket.fragment.main.MainMyFragment
+import com.app.buna.sharingmarket.fragment.main.*
 import com.app.buna.sharingmarket.repository.Local.PreferenceUtil
 import com.app.buna.sharingmarket.utils.FancyToastUtil
 import com.app.buna.sharingmarket.utils.NetworkStatus
@@ -55,7 +52,7 @@ class MainActivity : AppCompatActivity() {
     /*view 초기화*/
     fun initView() {
         // 초기 실행 fragment
-        replaceFragment(MainHomeFragment.instance()) // Home Fragment
+        replaceFragment(HomeFragment.instance()) // Home Fragment
 
         // * 탭 레이아웃 관련
         tabLayout = binding?.mainTabLayout!!.apply {
@@ -63,13 +60,15 @@ class MainActivity : AppCompatActivity() {
                 override fun onTabSelected(tab: TabLayout.Tab?) {
                     when (tab?.position) {
                         // 0 : 홈
-                        0 -> replaceFragment(MainHomeFragment.instance())
+                        0 -> replaceFragment(HomeFragment.instance())
                         // 1 : 카테고리
-                        1 -> replaceFragment(MainCategoryFragment.instance)
-                        // 2 : 채팅
-                        2 -> replaceFragment(MainChatFragment.instance)
-                        // 3 : MY (개인 정보 설정)
-                        3 -> replaceFragment(MainMyFragment.instance)
+                        1 -> replaceFragment(CategoryFragment.instance)
+                        // 2 : 나무 심기 캠페인
+                        2 -> replaceFragment(TreeFragment.instance)
+                        // 3 : 채팅
+                        3 -> replaceFragment(ChatFragment.instance)
+                        // 4 : MY (개인 정보 설정)
+                        4 -> replaceFragment(MyFragment.instance)
                     }
                 }
 
@@ -80,13 +79,15 @@ class MainActivity : AppCompatActivity() {
                 override fun onTabReselected(tab: TabLayout.Tab?) {
                     when (tab?.position) {
                         // 0 : 홈
-                        0 -> replaceFragment(MainHomeFragment.instance())
+                        0 -> replaceFragment(HomeFragment.instance())
                         // 1 : 카테고리
-                        1 -> replaceFragment(MainCategoryFragment.instance)
-                        // 2 : 채팅
-                        2 -> replaceFragment(MainChatFragment.instance)
-                        // 3 : MY (개인 정보 설정)
-                        3 -> replaceFragment(MainMyFragment.instance)
+                        1 -> replaceFragment(CategoryFragment.instance)
+                        // 2 : 나무 심기 캠페인
+                        2 -> replaceFragment(TreeFragment.instance)
+                        // 3 : 채팅
+                        3 -> replaceFragment(ChatFragment.instance)
+                        // 4 : MY (개인 정보 설정)
+                        4 -> replaceFragment(MyFragment.instance)
                     }
                 }
             })
@@ -116,20 +117,24 @@ class MainActivity : AppCompatActivity() {
             REQUEST_CODE.SEARCH_BOARD_CODE -> {
                 val searchKeyword = data?.getStringExtra("keyword")
                 supportFragmentManager.beginTransaction()
-                    .replace(R.id.main_frame_layout, MainHomeFragment.instance(searchKeyword))
+                    .replace(R.id.main_frame_layout, HomeFragment.instance(searchKeyword))
                     .commit()
             }
             REQUEST_CODE.REFRESH_MAIN_HOME_FRAGMENT_CODE, REQUEST_CODE.UPDATE_BOARD_CODE -> { // 상품 정보 삭제, 수정, 나눔완료 등으로 인한 화면 갱신
                 supportFragmentManager.beginTransaction()
-                    .replace(R.id.main_frame_layout, MainHomeFragment.instance()).commit()
-                if (data != null && !data.getBooleanExtra("refresh", true)) { // SelectUserActivity에서부터 전달받은 상대방 데이터
+                    .replace(R.id.main_frame_layout, HomeFragment.instance()).commit()
+                if (data != null && !data.getBooleanExtra(
+                        "refresh",
+                        true
+                    )
+                ) { // SelectUserActivity에서부터 전달받은 상대방 데이터
                     startActivity(data) // 해당 데이터를 통해 ChatActivity로 이동
                 }
             }
             REQUEST_CODE.REFRESH_MAIN_CHAT_FRAGMENT_CODE -> { // 유효하지 않은 채팅방으로 이동하여 채팅방이 삭제될 시 refresh
                 FancyToastUtil(this).showRed(getString(R.string.dest_is_null))
                 supportFragmentManager.beginTransaction()
-                    .replace(R.id.main_frame_layout, MainChatFragment.instance).commit()
+                    .replace(R.id.main_frame_layout, ChatFragment.instance).commit()
             }
         }
 

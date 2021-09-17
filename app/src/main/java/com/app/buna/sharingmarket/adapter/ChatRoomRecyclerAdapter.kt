@@ -4,8 +4,8 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.app.buna.sharingmarket.databinding.LayoutChatRoomBinding
-import com.app.buna.sharingmarket.model.items.chat.ChatRoomModel
-import com.app.buna.sharingmarket.model.items.chat.ChatUserModel
+import com.app.buna.sharingmarket.model.chat.ChatRoomModel
+import com.app.buna.sharingmarket.model.chat.ChatUserModel
 import com.app.buna.sharingmarket.utils.ChatTimeStampUtil
 import com.app.buna.sharingmarket.viewmodel.ChatRoomsViewModel
 

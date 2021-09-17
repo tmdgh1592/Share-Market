@@ -28,7 +28,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import org.koin.android.ext.android.get
 
-class MainMyFragment : Fragment() {
+class MyFragment : Fragment() {
 
     private var binding: FragmentMainMyBinding? = null
     private val vm: MainViewModel by lazy {
@@ -306,7 +306,7 @@ class MainMyFragment : Fragment() {
 
 
     companion object {
-        val instance = MainMyFragment()
+        val instance = MyFragment()
     }
 
 

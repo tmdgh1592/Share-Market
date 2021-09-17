@@ -13,7 +13,7 @@ import com.app.buna.sharingmarket.databinding.FragmentMainCategoryBinding
 import com.app.buna.sharingmarket.viewmodel.MainViewModel
 import org.koin.android.ext.android.get
 
-class MainCategoryFragment : Fragment() {
+class CategoryFragment : Fragment() {
 
     private var binding: FragmentMainCategoryBinding? = null
     private val vm: MainViewModel by lazy {
@@ -55,7 +55,7 @@ class MainCategoryFragment : Fragment() {
 
                 // 메인 Fragment로 이동하면서 선택한 category 데이터만 가져올 수 있도록 값 전달
                 (requireActivity() as MainActivity).supportFragmentManager.beginTransaction().setCustomAnimations(R.anim.slide_in_up, R.anim.slide_out_up)
-                    .replace(R.id.main_frame_layout, MainHomeFragment(category)).commit()
+                    .replace(R.id.main_frame_layout, HomeFragment(category)).commit()
             }
         }
 
@@ -68,7 +68,7 @@ class MainCategoryFragment : Fragment() {
 
 
     companion object {
-        val instance = MainCategoryFragment()
+        val instance = CategoryFragment()
     }
 
 

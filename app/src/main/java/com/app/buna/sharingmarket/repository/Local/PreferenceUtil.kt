@@ -26,6 +26,14 @@ object PreferenceUtil {
         getPreference(context).edit().putInt(key, value).commit()
     }
 
+    fun getBoolean(context: Context, key: String, defValue: Boolean = false): Boolean {
+        return getPreference(context).getBoolean(key, defValue)
+    }
+
+    fun putBoolean(context: Context, key: String, value: Boolean) {
+        getPreference(context).edit().putBoolean(key, value).commit()
+    }
+
     fun clearAllValue(context: Context) {
         val editor = getPreference(context).edit()
         editor.clear()

@@ -4,7 +4,7 @@
     <data>
         <variable
             name="categoryModel"
-            type="com.app.buna.sharingmarket.model.items.CategoryItem" />
+            type="com.app.buna.sharingmarket.model.CategoryItem" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/category_item_layout"

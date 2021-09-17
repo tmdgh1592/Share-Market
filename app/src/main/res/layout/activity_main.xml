@@ -47,6 +47,12 @@
                 android:text="@string/tab_category"
                 android:icon="@drawable/tab_icon_category"/>
             <com.google.android.material.tabs.TabItem
+                android:id="@+id/tab_item_tree"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/tab_tree"
+                android:icon="@drawable/tab_icon_tree"/>
+            <com.google.android.material.tabs.TabItem
                 android:id="@+id/tab_item_chat"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

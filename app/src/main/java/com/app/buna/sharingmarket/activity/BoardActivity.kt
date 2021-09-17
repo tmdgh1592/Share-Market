@@ -4,6 +4,7 @@ import android.content.Intent
 import android.content.res.ColorStateList
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.util.TypedValue
 import android.view.*
 import android.widget.RelativeLayout
@@ -18,7 +19,7 @@ import com.app.buna.sharingmarket.REQUEST_CODE
 import com.app.buna.sharingmarket.REQUEST_CODE.Companion.UPDATE_BOARD_CODE
 import com.app.buna.sharingmarket.adapter.ImageSliderAdapter
 import com.app.buna.sharingmarket.databinding.ActivityBoardBinding
-import com.app.buna.sharingmarket.model.items.BoardItem
+import com.app.buna.sharingmarket.model.BoardItem
 import com.app.buna.sharingmarket.utils.FancyToastUtil
 import com.app.buna.sharingmarket.viewmodel.BoardViewModel
 import com.bumptech.glide.Glide
@@ -120,10 +121,18 @@ class BoardActivity : AppCompatActivity() {
                         AlertDialog.Builder(this@BoardActivity)
                             .setMessage(getString(R.string.share_not_done_message))
                             .setPositiveButton(getString(R.string.ok)) { _, _ ->
-                                FancyToastUtil(this@BoardActivity).showGreen(getString(R.string.share_not_done_message))
-                                vm?.shareDone(false) { // 나눔 완료로 상태 표시
-                                    setResult(RESULT_OK)
-                                    finish()
+                                vm.getTreeCoinCount { totalTreeCoin -> // 트리 코인이 2개 이상이면 완료 해제하면서 트리코인 2개 반납
+                                    if (totalTreeCoin >= 2) {
+                                        FancyToastUtil(this@BoardActivity).showGreen(getString(R.string.share_not_done_message))
+                                        vm?.setTreeCoinCount(totalTreeCoin-2) { // 트리코인 2개 반납
+                                        }
+                                        vm?.shareDone(false) { // 나눔 완료로 상태 표시
+                                            setResult(RESULT_OK)
+                                            finish()
+                                        }
+                                    } else { // 트리 코인이 2개 미만이면 완료 상태 해제 불가
+                                        FancyToastUtil(this@BoardActivity).showGreen(getString(R.string.tree_coin_not_enough))
+                                    }
                                 }
                             }.setNegativeButton(getString(R.string.cancel)) { dialog, id ->
                                 dialog.dismiss()
@@ -149,9 +158,14 @@ class BoardActivity : AppCompatActivity() {
                             .setMessage(getString(R.string.share_done_message))
                             .setPositiveButton(getString(R.string.ok)) { _, _ ->
                                 if (vm.item.isExchange) { // 단순 교환인 경우엔 기부금 영수증이 필요없으므로 메세지를 보내지 않음.
-                                    vm?.shareDone(true) { // 나눔 완료로 상태 표시
-                                        setResult(RESULT_OK)
-                                        finish()
+                                    vm?.getTreeItem { treeItem -> // 게시글을 완료했으므로 트리 코인 개수를 2개 증가시킴
+                                        treeItem?.totalSeed = treeItem?.totalSeed?.plus(2)!!
+                                        vm?.setTreeItem(treeItem!!) {
+                                        }
+                                        vm?.shareDone(true) { // 나눔 완료로 상태 표시
+                                            setResult(RESULT_OK)
+                                            finish()
+                                        }
                                     }
                                 }else { // 나눔 또는 필요인 경우 기부금 영수증 요청을 보낼 대상을 선택하는 Activity로 이동
                                     val selectUserIntent = Intent(
@@ -307,7 +321,11 @@ class BoardActivity : AppCompatActivity() {
             setResult(RESULT_OK) // 화면을 새로 불러오기 위함.
             finish() // 액티비티 종료
         } else if (requestCode == REQUEST_CODE.SELECT_USER_CODE) {
-            FancyToastUtil(this@BoardActivity).showGreen(getString(R.string.share_done_message))
+            vm?.getTreeItem { treeItem ->
+                treeItem?.totalSeed = treeItem?.totalSeed?.plus(2)!!
+                vm?.setTreeItem(treeItem){}
+            }
+            FancyToastUtil(this@BoardActivity).showGreen(getString(R.string.get_tree_coin))
             vm?.shareDone(true) { // DB데이터를 나눔 완료 상태로 변경
                 // 데이터 변화에 따라 화면을 새로 불러오고, SelectUserActivity에서 선택한 data(상대방 정보)를 담은 intent를 전달
                 setResult(RESULT_OK, data)

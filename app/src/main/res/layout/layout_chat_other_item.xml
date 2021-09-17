@@ -6,11 +6,11 @@
 
         <variable
             name="comment"
-            type="com.app.buna.sharingmarket.model.items.chat.ChatRoomModel.Comment" />
+            type="com.app.buna.sharingmarket.model.chat.ChatRoomModel.Comment" />
 
         <variable
             name="destModel"
-            type="com.app.buna.sharingmarket.model.items.chat.ChatUserModel" />
+            type="com.app.buna.sharingmarket.model.chat.ChatUserModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

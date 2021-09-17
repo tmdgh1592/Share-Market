@@ -3,7 +3,7 @@
     <data>
         <variable
             name="model"
-            type="com.app.buna.sharingmarket.model.items.SliderItem" />
+            type="com.app.buna.sharingmarket.model.SliderItem" />
     </data>
     <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"

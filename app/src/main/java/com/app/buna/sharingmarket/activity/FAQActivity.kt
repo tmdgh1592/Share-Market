@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.app.buna.sharingmarket.R
 import com.app.buna.sharingmarket.adapter.FAQRecyclerAdapter
 import com.app.buna.sharingmarket.databinding.ActivityFaqBinding
-import com.app.buna.sharingmarket.model.items.faq.FaqItem
+import com.app.buna.sharingmarket.model.faq.FaqItem
 
 class FAQActivity : AppCompatActivity() {
     private var binding: ActivityFaqBinding? = null

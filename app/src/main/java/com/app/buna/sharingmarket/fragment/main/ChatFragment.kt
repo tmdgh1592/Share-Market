@@ -1,7 +1,6 @@
 package com.app.buna.sharingmarket.fragment.main
 
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import android.widget.LinearLayout.VERTICAL
 import androidx.appcompat.widget.Toolbar
@@ -14,11 +13,11 @@ import com.app.buna.sharingmarket.activity.MainActivity
 import com.app.buna.sharingmarket.adapter.ChatRoomRecyclerAdapter
 import com.app.buna.sharingmarket.callbacks.IFirebaseGetChatRoomCallback
 import com.app.buna.sharingmarket.databinding.FragmentMainChatBinding
-import com.app.buna.sharingmarket.model.items.chat.ChatRoomModel
+import com.app.buna.sharingmarket.model.chat.ChatRoomModel
 import com.app.buna.sharingmarket.viewmodel.ChatRoomsViewModel
 import org.koin.android.ext.android.get
 
-class MainChatFragment : Fragment() {
+class ChatFragment : Fragment() {
 
     private var binding: FragmentMainChatBinding? = null
     private val vm: ChatRoomsViewModel by lazy {
@@ -86,7 +85,7 @@ class MainChatFragment : Fragment() {
 
 
     companion object {
-        val instance = MainChatFragment()
+        val instance = ChatFragment()
     }
 
 
