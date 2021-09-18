@@ -173,11 +173,11 @@ class BoardViewModel(application: Application, val context: Context) : AndroidVi
     // 사용자의 트리코인 개수를 가져옴
     fun getTreeCoinCount(callback: (Int) -> Unit) {
         FirebaseRepository.instance.getMyTreeItem(Firebase.auth.uid!!) { treeItem ->
-            callback(treeItem?.totalSeed!!)
+            callback(treeItem?.hasCoinCount!!)
         }
     }
 
-    fun setTreeCoinCount(totalTree: Int, complete: () -> Unit) {
-        FirebaseRepository.instance.setMyTreeCoin(Firebase.auth.uid!!, totalTree, complete)
+    fun setTreeCoinCount(hasCoinCount: Int, complete: () -> Unit) {
+        FirebaseRepository.instance.setMyTreeCoin(Firebase.auth.uid!!, hasCoinCount, complete)
     }
 }

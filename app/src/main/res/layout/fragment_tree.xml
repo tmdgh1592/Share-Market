@@ -20,7 +20,7 @@
             android:layout_height="match_parent">
 
             <ImageView
-                android:id="@+id/question_image_view"
+                android:id="@+id/question_mark"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
                 android:layout_margin="12dp"
@@ -161,6 +161,14 @@
                     android:textStyle="bold" />
 
             </LinearLayout>
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/celebrate_animation_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:lottie_autoPlay="false"
+                app:lottie_loop="false"
+                app:lottie_rawRes="@raw/celebrate" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

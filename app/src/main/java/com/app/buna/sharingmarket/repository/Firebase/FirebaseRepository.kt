@@ -303,7 +303,7 @@ class FirebaseRepository {
     }
 
     fun registerToken(uid: String?, tokenMap: Map<String, Any>) {
-        if (uid != null && tokenMap != null) {
+        if (uid != null) {
             firebaseStoreInstance.collection("pushToken").document(uid).set(tokenMap)
         }
     }
@@ -948,17 +948,63 @@ class FirebaseRepository {
     }
 
     // DB에서 사용자의 총 트리 코인 개수를 설정함
-    fun setMyTreeCoin(uid: String, totalTree: Int, complete: () -> Unit) {
-        firebaseDatabaseInstance.getReference("campain").child(uid).child("totalSeed")
-            .setValue(totalTree).addOnCompleteListener {
+    fun setMyTreeCoin(uid: String, hasCoinCount: Int, complete: () -> Unit) {
+        firebaseDatabaseInstance.getReference("campain").child(uid).child("hasCoinCount")
+            .setValue(hasCoinCount).addOnCompleteListener {
                 complete
             }
     }
 
+    // 트리코인 최초 지급받기를 한 경우
     fun setClicked(treeItem: TreeItem, complete: () -> Unit) {
         firebaseDatabaseInstance.getReference("campain").child(Firebase.auth.uid!!).setValue(treeItem).addOnCompleteListener {
             complete()
         }
+    }
+
+    // 트리코인으로 나무 심기 참여하기 위해 코인 기부
+    fun giveCoin(treeItem: TreeItem, complete: (Int) -> Unit) {
+        if (treeItem.hasCoinCount != null) {
+            val coinCount = treeItem.hasCoinCount // 내가 가지고 있는 코인 개수
+            
+            treeItem.giveSeedCount += treeItem.hasCoinCount // 가지고 있는 트리 코인을 모두 giveCount에 더함
+            treeItem.hasCoinCount = 0
+            
+            // DB 트리 코인 데이터 갱신
+            firebaseDatabaseInstance.getReference("campain").child(Firebase.auth.uid!!).setValue(treeItem).addOnCompleteListener { 
+                complete(coinCount) // 기부한 코인 개수를 반환함
+            }
+        }
+    }
+
+    // 씨앗을 많이 기부한 상위 5명의 프로필 Url 가져오기
+    fun getTopGiveUserProfile(callback: (ArrayList<String?>) -> Unit) {
+        firebaseDatabaseInstance.getReference("campain").orderByChild("giveSeedCount").limitToLast(5).addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val profileList = ArrayList<String?>(5) // 프로필 Url을 담을 리스트
+                
+                for(item in snapshot.children) {
+                    val uid = item.key // Uid 가져오기
+                    getProfile(uid!!) { profileUrl -> // Uid를 통해 프로필 Url을 가져오기
+                        profileList.add(profileUrl)
+                        
+                        // 데이터를 모두 가져왔다면 콜백!
+                        if (profileList.size == snapshot.childrenCount.toInt()) {
+                            if (profileList.size < 5) { // 데이터가 5개보다 작으면 남은 값을 null값으로 채운다.
+                                for (i in 0 until (5 - profileList.size)) {
+                                    profileList.add(null)
+                                }
+                                callback(profileList)
+                            }
+                        }
+                    }
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+
+            }
+        })
     }
 
 

@@ -4,7 +4,6 @@ import android.content.Intent
 import android.content.res.ColorStateList
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.util.TypedValue
 import android.view.*
 import android.widget.RelativeLayout
@@ -38,9 +37,9 @@ class BoardActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        vm?.item =
-            intent.getParcelableExtra<BoardItem>("product_item") // MainHomeFragment에서 전달받은 데이터
-        vm.originHeartState = vm?.item.favorites.containsKey(vm.getUid())
+        vm.item =
+            intent.getParcelableExtra("product_item") // MainHomeFragment에서 전달받은 데이터
+        vm.originHeartState = vm.item.favorites.containsKey(vm.getUid())
         vm.nowHeartState = vm.originHeartState
 
         initBinding()
@@ -65,17 +64,17 @@ class BoardActivity : AppCompatActivity() {
         }
 
         // 이미지 슬라이더 adapter 초기화
-        if (vm?.item.imgPath.size > 1) { // 개수가 2개 이상이면 Image Slider 사용
+        if (vm.item.imgPath.size > 1) { // 개수가 2개 이상이면 Image Slider 사용
             binding?.imageView?.visibility = View.GONE // Image View는 사라지게
             binding?.imageHolderView?.visibility = View.GONE // Image View를 감싸고 있는 Holder도 사라지게
             binding?.imageSlider?.apply {
                 visibility = View.VISIBLE
-                setSliderAdapter(ImageSliderAdapter(vm?.getSlideItem()))
+                setSliderAdapter(ImageSliderAdapter(vm.getSlideItem()))
                 setIndicatorAnimation(IndicatorAnimationType.DROP)
             }
         } else { // 개수가 1개보다 적으면 Image View 사용
             // xml에서와 java에서의 value를 계산하는 방식이 다르므로 아래 로직 수행
-            if (vm?.item.imgPath.size == 1) { // 이미지가 1개인 경우
+            if (vm.item.imgPath.size == 1) { // 이미지가 1개인 경우
                 // ImageView의 크기 조정을 위한 디멘션
                 val height = TypedValue.applyDimension(
                     TypedValue.COMPLEX_UNIT_DIP,
@@ -89,7 +88,7 @@ class BoardActivity : AppCompatActivity() {
                     imageView.layoutParams.width = RelativeLayout.LayoutParams.MATCH_PARENT
                     imageView.requestLayout()
 
-                    Glide.with(this).load(vm?.item.imgPath.values.first()).error(R.drawable.default_item).centerCrop()
+                    Glide.with(this).load(vm.item.imgPath.values.first()).error(R.drawable.default_item).centerCrop()
                         .into(imageView)
                 }
             }
@@ -97,8 +96,8 @@ class BoardActivity : AppCompatActivity() {
 
         // ''1:1 채팅하기 버튼'' or ''거래 완료''
         // 거래 완료
-        if (vm?.getUid() == vm?.item.uid) { // 본인인 경우에 ''거래 완료''로 표시
-            if (vm?.item.isComplete) { // 거래가 완료된 게시물인 경우
+        if (vm.getUid() == vm.item.uid) { // 본인인 경우에 ''거래 완료''로 표시
+            if (vm.item.isComplete) { // 거래가 완료된 게시물인 경우
                 binding?.chatBtn?.apply {
                     backgroundTintList = ColorStateList.valueOf(
                         ContextCompat.getColor(
@@ -106,10 +105,10 @@ class BoardActivity : AppCompatActivity() {
                             R.color.gray_50
                         )
                     )
-                    text = if (vm?.item.isExchange) { // 교환이면
+                    text = if (vm.item.isExchange) { // 교환이면
                         getString(R.string.exchange_not_done)
                     }else{
-                        if(vm?.item.isGive) { // 나눔이면
+                        if(vm.item.isGive) { // 나눔이면
                             getString(R.string.share_not_done)
                         }else{ // 받는 것이면
                             getString(R.string.take_not_done)
@@ -124,9 +123,9 @@ class BoardActivity : AppCompatActivity() {
                                 vm.getTreeCoinCount { totalTreeCoin -> // 트리 코인이 2개 이상이면 완료 해제하면서 트리코인 2개 반납
                                     if (totalTreeCoin >= 2) {
                                         FancyToastUtil(this@BoardActivity).showGreen(getString(R.string.share_not_done_message))
-                                        vm?.setTreeCoinCount(totalTreeCoin-2) { // 트리코인 2개 반납
+                                        vm.setTreeCoinCount(totalTreeCoin-2) { // 트리코인 2개 반납
                                         }
-                                        vm?.shareDone(false) { // 나눔 완료로 상태 표시
+                                        vm.shareDone(false) { // 나눔 완료로 상태 표시
                                             setResult(RESULT_OK)
                                             finish()
                                         }
@@ -134,7 +133,7 @@ class BoardActivity : AppCompatActivity() {
                                         FancyToastUtil(this@BoardActivity).showGreen(getString(R.string.tree_coin_not_enough))
                                     }
                                 }
-                            }.setNegativeButton(getString(R.string.cancel)) { dialog, id ->
+                            }.setNegativeButton(getString(R.string.cancel)) { dialog, _ ->
                                 dialog.dismiss()
                             }.create().show()
                     }
@@ -142,10 +141,10 @@ class BoardActivity : AppCompatActivity() {
             } else { // 거래가 완료된 게시물이 아니면 완료로 변경할건지 물어봄
                 binding?.chatBtn?.apply {
                     // 게시글을 나눔 완료 상태로 변경할지 물어봄
-                    text = if (vm?.item.isExchange) { // 교환이면
+                    text = if (vm.item.isExchange) { // 교환이면
                         getString(R.string.exchange_done)
                     }else{
-                        if(vm?.item.isGive) { // 나눔이면
+                        if(vm.item.isGive) { // 나눔이면
                             getString(R.string.share_done)
                         }else{ // 받는 것이면
                             getString(R.string.take_done)
@@ -158,11 +157,11 @@ class BoardActivity : AppCompatActivity() {
                             .setMessage(getString(R.string.share_done_message))
                             .setPositiveButton(getString(R.string.ok)) { _, _ ->
                                 if (vm.item.isExchange) { // 단순 교환인 경우엔 기부금 영수증이 필요없으므로 메세지를 보내지 않음.
-                                    vm?.getTreeItem { treeItem -> // 게시글을 완료했으므로 트리 코인 개수를 2개 증가시킴
-                                        treeItem?.totalSeed = treeItem?.totalSeed?.plus(2)!!
-                                        vm?.setTreeItem(treeItem!!) {
+                                    vm.getTreeItem { treeItem -> // 게시글을 완료했으므로 트리 코인 개수를 2개 증가시킴
+                                        treeItem?.hasCoinCount = treeItem?.hasCoinCount?.plus(2)!!
+                                        vm.setTreeItem(treeItem) {
                                         }
-                                        vm?.shareDone(true) { // 나눔 완료로 상태 표시
+                                        vm.shareDone(true) { // 나눔 완료로 상태 표시
                                             setResult(RESULT_OK)
                                             finish()
                                         }
@@ -179,7 +178,7 @@ class BoardActivity : AppCompatActivity() {
                                         REQUEST_CODE.SELECT_USER_CODE
                                     )
                                 }
-                            }.setNegativeButton(getString(R.string.cancel)) { dialog, id ->
+                            }.setNegativeButton(getString(R.string.cancel)) { dialog, _ ->
                                 dialog.dismiss()
                             }.create().show()
                     }
@@ -187,7 +186,7 @@ class BoardActivity : AppCompatActivity() {
             }
         } else { // 1:1 채팅하기 = 본인이 아닌 경우에는 채팅 버튼으로 전환
             binding?.chatBtn?.text = getString(R.string.one_to_one_chat)
-            if (vm?.item.isComplete) { // 거래 완료된 게시물이면 클릭 못하게 변경
+            if (vm.item.isComplete) { // 거래 완료된 게시물이면 클릭 못하게 변경
                 binding?.chatBtn?.isEnabled = false
                 binding?.chatBtn?.isClickable = false
             } else { // 거래 완료된 게시물이 아니면 채팅 가능
@@ -322,7 +321,7 @@ class BoardActivity : AppCompatActivity() {
             finish() // 액티비티 종료
         } else if (requestCode == REQUEST_CODE.SELECT_USER_CODE) {
             vm?.getTreeItem { treeItem ->
-                treeItem?.totalSeed = treeItem?.totalSeed?.plus(2)!!
+                treeItem?.hasCoinCount = treeItem?.hasCoinCount?.plus(2)!!
                 vm?.setTreeItem(treeItem){}
             }
             FancyToastUtil(this@BoardActivity).showGreen(getString(R.string.get_tree_coin))

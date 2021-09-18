@@ -82,6 +82,10 @@ dependencies {
 
     /* Refresh RecyclerView */
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.0.0'
+
+    /*  */
+    implementation 'com.github.Shashank02051997:FancyGifDialog-Android:1.1'
+
     /* Image Alert Dialog */
     implementation 'com.github.chathuralakmal:AndroidImagePopup:1.2.2'
 

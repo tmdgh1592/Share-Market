@@ -43,6 +43,22 @@
     <string name="campain_sub_header">현재까지 심어진 트리 코인이 무려 %s개!</string>
     <string name="campain_click_me">나무를 클릭해보세요!</string>
     <string name="plnat_tree_seed_text">나눔하고 얻은 나무 심기</string>
+    <string name="giving_tree_coin_not_enough">트리 코인이 부족해요!\n나눔을 완료하면 코인을 얻을 수 있어요 :D</string>
+    <string name="success_give_tree_coin">%s님의 씨앗을 성공적으로 기부했어요!\n나누면 나눌수록 환경이 개선될거에요 :D</string>
+    <string name="campain_dialog_title">나눔 &amp; 나무 캠페인</string>
+    <string name="campain_dialog_content">
+        축하드려요 %s님! 😀\n\n
+        나눔 &amp; 나무 캠페인에서 사용할 수 있는 트리코인 2개를 획득하셨어요🎈\n
+        트리 코인은 나눔활동 완료시 자동으로 지급됩니다.\n\n
+        %s님의 나눔으로 환경을 개선하고, 나무도 심어보세요🌳
+    </string>
+    <string name="campain_dialog_question_title">나눔 &amp; 나무 캠페인이란?</string>
+    <string name="campain_dialog_question_content">
+        안녕하세요 %s님! 😀\n
+        해당 캠페인에서는 나눔을 완료하면 지급되는 \'트리 코인\'으로 온라인 상에서도 실제 나무를 심을 수 있는 서비스를 제공해드리고 있습니다.\n\n
+        나무 심기를 가장 많이 참여한 Top5 나눔꾼들은 나눔나무에 프로필 열매가 자라납니다!\n\n
+        나눔을 하면 할수록 버리는 물건도 줄어들고, 나무도 심을 수 있으니 환경 개선을 위해 많은 참여 부탁드립니다🌳
+    </string>
 
     <!--sosock-->
     <string name="personal">개인</string>

@@ -64,9 +64,7 @@ object BindingAdapters {
     @BindingAdapter("background_res")
     @JvmStatic
     fun bindImage(imageView: ImageView, res: Int) {
-        if (res != null) {
-            Glide.with(imageView.context).load(res).fitCenter().into(imageView)
-        }
+        Glide.with(imageView.context).load(res).fitCenter().into(imageView)
     }
 
     @BindingAdapter("chat_profile_img")

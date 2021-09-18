@@ -18,6 +18,8 @@ import com.app.buna.sharingmarket.adapter.BoardRecyclerAdapter
 import com.app.buna.sharingmarket.callbacks.IFirebaseGetStoreDataCallback
 import com.app.buna.sharingmarket.databinding.FragmentMainHomeBinding
 import com.app.buna.sharingmarket.model.BoardItem
+import com.app.buna.sharingmarket.utils.FancyToastUtil
+import com.app.buna.sharingmarket.utils.NetworkStatus
 import com.app.buna.sharingmarket.viewmodel.MainViewModel
 import com.google.android.material.internal.NavigationMenu
 import io.github.yavski.fabspeeddial.FabSpeedDial
@@ -53,6 +55,11 @@ class HomeFragment(val category: String = "all") : Fragment() {
     }
 
     fun initView() {
+        // 인터넷에 연결되어 있지 않으면 연결해달라는 문구 출력
+        if(!NetworkStatus.isConnectedInternet(requireContext())) {
+            FancyToastUtil(requireContext()).showRed(getString(R.string.internet_check))
+        }
+
         with(binding) {
             val boardRecyclerAdapter = BoardRecyclerAdapter(vm, requireContext())
             boardRecyclerAdapter.setHasStableIds(true)
@@ -74,8 +81,13 @@ class HomeFragment(val category: String = "all") : Fragment() {
 
             // 새로고침을 하는 경우
             setOnRefreshListener {
-                // 데이터 새로 불러오기
-                loadData()
+                // 인터넷에 연결되어 있다면
+                if (NetworkStatus.isConnectedInternet(requireContext())) {
+                    // 데이터 새로 불러오기
+                    loadData()
+                } else {
+                    FancyToastUtil(requireContext()).showRed(getString(R.string.internet_check))
+                }
             }
         }
 
