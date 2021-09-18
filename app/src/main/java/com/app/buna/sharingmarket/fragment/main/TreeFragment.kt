@@ -55,12 +55,6 @@ class TreeFragment : Fragment() {
             if (!vm.isClickedTree()) {
                 binding?.campainClickMe?.run {
                     visibility = View.VISIBLE
-                    startAnimation(
-                        AnimationUtils.loadAnimation(
-                            requireContext(),
-                            R.anim.anim_click_tree
-                        )
-                    )
                     setOnClickListener {
                         // 클릭해주세요 버튼 사라지게 하고 비활성화 하기
                         startAnimation(
