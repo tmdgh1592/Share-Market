@@ -871,8 +871,11 @@ class FirebaseRepository {
                         complete(token)
                         success(true)
                     } else {
+                        complete(null)
                         success(false) // push token이 존재하지 않을 때, ex)상대방이 탈퇴한 경우
                     }
+                } else {
+                    complete(null)
                 }
             }
 

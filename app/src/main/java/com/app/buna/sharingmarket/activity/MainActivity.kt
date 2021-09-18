@@ -37,9 +37,14 @@ class MainActivity : AppCompatActivity() {
         initView()
 
 
-        if (NetworkStatus.isConnectedInternet(this) && PreferenceUtil.getInt(this, "push") == 0) {
-            vm.registerPushToken()
+        vm?.getPushToken { token ->
+            if (token == null) { // 사용자의 토큰이 등록되있지 않다면
+                if (NetworkStatus.isConnectedInternet(this)) {
+                    vm.registerPushToken() // 새로운 토큰 등록
+                }
+            }
         }
+
     }
 
     /*Binding 초기화*/

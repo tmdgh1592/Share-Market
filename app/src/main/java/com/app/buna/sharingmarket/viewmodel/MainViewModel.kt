@@ -102,6 +102,12 @@ class MainViewModel(application: Application, val context: Context) :
         }
     }
 
+    fun getPushToken(callback: (String?) -> Unit) {
+        FirebaseRepository.instance.getPushToken(Firebase.auth.uid!!, callback) { isSuccess ->
+
+        }
+    }
+
     fun saveProfile(imgUri: Uri, callback: () -> Unit) {
         FirebaseRepository.instance.saveProfile(imgUri, callback)
     }
