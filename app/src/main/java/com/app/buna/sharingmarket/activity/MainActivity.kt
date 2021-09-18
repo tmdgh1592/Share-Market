@@ -64,7 +64,7 @@ class MainActivity : AppCompatActivity() {
                         // 1 : 카테고리
                         1 -> replaceFragment(CategoryFragment.instance)
                         // 2 : 나무 심기 캠페인
-                        2 -> replaceFragment(TreeFragment.instance)
+                        2 -> replaceFragment(TreeFragment())
                         // 3 : 채팅
                         3 -> replaceFragment(ChatFragment.instance)
                         // 4 : MY (개인 정보 설정)
@@ -83,7 +83,7 @@ class MainActivity : AppCompatActivity() {
                         // 1 : 카테고리
                         1 -> replaceFragment(CategoryFragment.instance)
                         // 2 : 나무 심기 캠페인
-                        2 -> replaceFragment(TreeFragment.instance)
+                        2 -> replaceFragment(TreeFragment())
                         // 3 : 채팅
                         3 -> replaceFragment(ChatFragment.instance)
                         // 4 : MY (개인 정보 설정)

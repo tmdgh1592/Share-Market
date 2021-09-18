@@ -16,6 +16,7 @@ import com.app.buna.sharingmarket.R
 import com.app.buna.sharingmarket.databinding.FragmentTreeBinding
 import com.app.buna.sharingmarket.viewmodel.TreeViewModel
 import com.bumptech.glide.Glide
+import com.ceylonlabs.imageviewpopup.ImagePopup
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.shashank.sony.fancygifdialoglib.FancyGifDialog
@@ -55,6 +56,12 @@ class TreeFragment : Fragment() {
             if (!vm.isClickedTree()) {
                 binding?.campainClickMe?.run {
                     visibility = View.VISIBLE
+                    startAnimation(
+                        AnimationUtils.loadAnimation(
+                            requireContext(),
+                            R.anim.anim_click_tree
+                        )
+                    )
                     setOnClickListener {
                         // 클릭해주세요 버튼 사라지게 하고 비활성화 하기
                         startAnimation(
@@ -94,25 +101,54 @@ class TreeFragment : Fragment() {
         }
 
         vm?.getTreeProfile { profileUrlList ->
-            if (profileUrlList[0] != null) {
-                Glide.with(requireContext()).load(Uri.parse(profileUrlList[0]))
-                    .into(binding?.plantTop1ImageView!!)
-            }
-            if (profileUrlList[1] != null) {
-                Glide.with(requireContext()).load(Uri.parse(profileUrlList[1]))
-                    .into(binding?.plantTop2ImageView!!)
-            }
-            if (profileUrlList[2] != null) {
-                Glide.with(requireContext()).load(Uri.parse(profileUrlList[2]))
-                    .into(binding?.plantTop3ImageView!!)
-            }
-            if (profileUrlList[3] != null) {
-                Glide.with(requireContext()).load(Uri.parse(profileUrlList[3]))
-                    .into(binding?.plantTop4ImageView!!)
-            }
-            if (profileUrlList[4] != null) {
-                Glide.with(requireContext()).load(Uri.parse(profileUrlList[4]))
-                    .into(binding?.plantTop5ImageView!!)
+            try {
+                if (profileUrlList[0] != null) {
+                    binding?.plantTop1ImageView?.let {
+                        Glide.with(requireContext()).load(Uri.parse(profileUrlList[0]))
+                            .into(it)
+                        it.setOnClickListener {
+                            showProfile(profileUrlList[0])
+                        }
+                    }
+                }
+                if (profileUrlList[1] != null) {
+                    binding?.plantTop2ImageView?.let {
+                        Glide.with(requireContext()).load(Uri.parse(profileUrlList[1]))
+                            .into(it)
+                        it.setOnClickListener {
+                            showProfile(profileUrlList[1])
+                        }
+                    }
+                }
+                if (profileUrlList[2] != null) {
+                    binding?.plantTop3ImageView?.let {
+                        Glide.with(requireContext()).load(Uri.parse(profileUrlList[2]))
+                            .into(it)
+                        it.setOnClickListener {
+                            showProfile(profileUrlList[2])
+                        }
+                    }
+                }
+                if (profileUrlList[3] != null) {
+                    binding?.plantTop4ImageView?.let {
+                        Glide.with(requireContext()).load(Uri.parse(profileUrlList[3]))
+                            .into(it)
+                        it.setOnClickListener {
+                            showProfile(profileUrlList[3])
+                        }
+                    }
+                }
+                if (profileUrlList[4] != null) {
+                    binding?.plantTop5ImageView?.let {
+                        Glide.with(requireContext()).load(Uri.parse(profileUrlList[4]))
+                            .into(it)
+                        it.setOnClickListener {
+                            showProfile(profileUrlList[4])
+                        }
+                    }
+                }
+            } catch (e: IllegalStateException) {
+                print(e.message)
             }
         }
 
@@ -177,7 +213,18 @@ class TreeFragment : Fragment() {
             .isCancellable(false).build()
     }
 
-    companion object {
-        val instance = TreeFragment()
+    fun showProfile(profileUrl: String?) {
+        if (profileUrl != null) {
+            val profileUri = Uri.parse(profileUrl)
+            val profilePopup = ImagePopup(requireContext()).apply {
+                windowWidth = 800
+                windowHeight = 800
+                isHideCloseIcon = true
+                isImageOnClickClose = true
+                initiatePopupWithPicasso(profileUri)
+            }
+            profilePopup.viewPopup()
+        }
     }
+
 }
