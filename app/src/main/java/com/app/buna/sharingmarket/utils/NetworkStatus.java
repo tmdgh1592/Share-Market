@@ -32,9 +32,7 @@ public class NetworkStatus {
         NetworkInfo networkInfo = manager.getActiveNetworkInfo();
         if (networkInfo != null) {
             int type = networkInfo.getType();
-            if (type == ConnectivityManager.TYPE_MOBILE) {//쓰리지나 LTE로 연결된것(모바일을 뜻한다.)
-                return true;
-            } else if (type == ConnectivityManager.TYPE_WIFI) {//와이파이 연결된것
+            if (type == ConnectivityManager.TYPE_MOBILE || type == ConnectivityManager.TYPE_WIFI) {
                 return true;
             }
         }

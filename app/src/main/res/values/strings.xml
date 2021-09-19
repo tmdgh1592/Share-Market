@@ -48,14 +48,14 @@
     <string name="campain_dialog_title">나눔 &amp; 나무 캠페인</string>
     <string name="campain_dialog_content">
         축하드려요 %s님! 😀\n\n
-        나눔 &amp; 나무 캠페인에서 사용할 수 있는 트리코인 2개를 획득하셨어요🎈\n
+        나눔 &amp; 나무 캠페인에서 사용할 수 있는 트리코인 2개를 획득하셨어요🎈\<n></n>
         트리 코인은 나눔활동 완료시 자동으로 지급됩니다.\n\n
         %s님의 나눔으로 환경을 개선하고, 나무도 심어보세요🌳
     </string>
     <string name="campain_dialog_question_title">나눔 &amp; 나무 캠페인이란?</string>
     <string name="campain_dialog_question_content">
         안녕하세요 %s님! 😀\n
-        해당 캠페인에서는 나눔을 완료하면 지급되는 \'트리 코인\'으로 온라인 상에서도 실제 나무를 심을 수 있는 서비스를 제공해드리고 있습니다.\n\n
+        나눔을 완료하면 지급되는 \'트리 코인\'으로 Covid-19로 단체 활동이 제한되는 환경에서도 온라인상에서 유저들이 다 같이 실제 나무를 심을 수 있도록 도와드립니다.\n\n
         나무 심기를 가장 많이 참여한 Top5 나눔꾼들은 나눔나무에 프로필 열매가 자라납니다!\n\n
         나눔을 하면 할수록 버리는 물건도 줄어들고, 나무도 심을 수 있으니 환경 개선을 위해 많은 참여 부탁드립니다🌳
     </string>
@@ -109,7 +109,7 @@
     <string name="exchange">교환해요!</string>
 
     <string name="give_text">나눔</string>
-    <string name="need_text">필요</string>
+    <string name="need_text">요청</string>
     <string name="exchange_text">물물교환</string>
 
     <!--  \&quot -> "  //  \&#160 -> white_space  -->
@@ -179,6 +179,7 @@
         <item>Q. 기부금 영수증이 무엇인가요?</item>
         <item>Q. 기부금 영수증은 어떤 기관이나 발급해줄 수 있는건가요?</item>
         <item>Q. 나눔을 하고 나서 기부금 영수증을 어떻게 신청할 수 있나요?</item>
+        <item>Q. 나눔으로 나무심기 캠페인이 궁금해요!🌳</item>
         <item>Q. 제 나눔으로 개선되는 환경을 수치로 보고 싶어요!</item>
         <item>Q. 게시글을 작성할 때 해서는 안되는 부분이 있나요?</item>
         <item>Q. 장난식으로 채팅을 보내는 사용자가 있어요!</item>
@@ -205,6 +206,14 @@
             나눔을 마친 후에, 게시글의 \'나눔 완료\' 버튼을 누르면 대상을 선택하실 수 있습니다.\n
             선택을 마치고 확인을 누르면 상대방에게 자동으로 나눔 완료 및 기부금 영수증 신청을 요청하는 알리는 메세지가 전달됩니다.\n\n
             나눔을 받으신 분께서는 해당 메세지가 도착하면 메세지의 \'기부금 영수증 신청하기\' 버튼을 눌러 홈택스의 전자 기부금 영수증 발급 신청을 진행해주시면 됩니다.
+        </item>
+        <item>
+            Q. 나눔으로 나무심기 캠페인이 궁금해요!\n\n
+            나눔으로 나무심기란, 나눔을 완료하면 지급되는 \'트리 코인\'으로 남녀노소 누구나 나무 심기에 참여할 수 있는 캠페인입니다.\n\n
+            Covid-19로 인해 오프라인에서 다 같이 활동하는 것이 제한되기 때문에, 사용자들이 온라인상에서 나눔과 환경 개선 활동을 동시에 어울러 할 수 있도록 준비하였습니다.\n\n
+            코인 1개당 100원 상당의 가치가 있으며, 유저들의 성원으로 모인 코인만큼 \'생명의숲\' 단체 측에 후원이 진행됩니다.🌳\n
+            최초 가입시 트리 코인 2개가 지급되며, 게시 활동을 완료하면 추가로 코인 2개가 지급됩니다.\n\n
+            나눔과 나무심기로 환경을 배로 개선해봅시다! 😊
         </item>
         <item>Q. 제 나눔으로 개선되는 환경 변화를 직접 눈으로 확인하고 싶어요!\n\n
             나눔을 통해 변화되는 환경을 보고 싶으시군요.\n
@@ -283,8 +292,8 @@
     <string name="one_to_one_chat">1:1 채팅하기</string>
     <string name="share_done">나눔 완료</string>
     <string name="share_not_done">나눔 완료 해제</string>
-    <string name="take_done">수령 완료</string>
-    <string name="take_not_done">수령 완료 해제</string>
+    <string name="take_done">요청 완료</string>
+    <string name="take_not_done">요청 완료 해제</string>
     <string name="exchange_done">교환 완료</string>
     <string name="exchange_not_done">교환 완료 해제</string>
     <string name="share_done_message">게시글 상태를 완료로 변경합니다.</string>

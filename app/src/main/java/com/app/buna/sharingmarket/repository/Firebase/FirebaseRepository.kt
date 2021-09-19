@@ -990,22 +990,21 @@ class FirebaseRepository {
                     val uid = item.key // Uid 가져오기
                     getProfile(uid!!) { profileUrl -> // Uid를 통해 프로필 Url을 가져오기
                         profileList.add(profileUrl)
-                        
                         // 데이터를 모두 가져왔다면 콜백!
                         if (profileList.size == snapshot.childrenCount.toInt()) {
                             if (profileList.size < 5) { // 데이터가 5개보다 작으면 남은 값을 null값으로 채운다.
                                 for (i in 0 until (5 - profileList.size)) {
                                     profileList.add(null)
                                 }
-                                callback(profileList)
                             }
+                            callback(profileList) // 콜백을 통해 프로필 사진 url 전달
                         }
                     }
                 }
             }
 
             override fun onCancelled(error: DatabaseError) {
-
+                Log.d("FirebaseRepository", "Failure for Getting Tree Top 5 Profile")
             }
         })
     }

@@ -14,6 +14,8 @@ import com.app.buna.sharingmarket.adapter.ChatRoomRecyclerAdapter
 import com.app.buna.sharingmarket.callbacks.IFirebaseGetChatRoomCallback
 import com.app.buna.sharingmarket.databinding.FragmentMainChatBinding
 import com.app.buna.sharingmarket.model.chat.ChatRoomModel
+import com.app.buna.sharingmarket.utils.FancyToastUtil
+import com.app.buna.sharingmarket.utils.NetworkStatus
 import com.app.buna.sharingmarket.viewmodel.ChatRoomsViewModel
 import org.koin.android.ext.android.get
 
@@ -41,6 +43,11 @@ class ChatFragment : Fragment() {
 
 
     fun initView() {
+        // 인터넷에 연결되어 있지 않으면 연결해달라는 문구 출력
+        if(!NetworkStatus.isConnectedInternet(requireContext())) {
+            FancyToastUtil(requireContext()).showRed(getString(R.string.internet_check))
+        }
+
         // * 툴바 관련
         toolbar =
             binding?.toolBar!!.also { (requireActivity() as MainActivity).setSupportActionBar(it) } // 액션바 지정

@@ -3,6 +3,7 @@ package com.app.buna.sharingmarket.fragment.main
 import android.graphics.Typeface
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -169,11 +170,24 @@ class TreeFragment : Fragment() {
         }
 
         // 나눔&나무 캠페인에 대한 설명
-        binding?.questionMark?.setOnClickListener {
-            showDialog(
-                getString(R.string.campain_dialog_question_title),
-                getString(R.string.campain_dialog_question_content, vm.getNickname())
-            )
+        binding?.questionMark?.let { view ->
+            try {
+                view.startAnimation(
+                    AnimationUtils.loadAnimation(
+                        requireContext(),
+                        R.anim.anim_fade_in_fade_out
+                    )
+                )
+            } catch (e: java.lang.IllegalStateException) {
+                print(e.message)
+            }
+            view.setOnClickListener {
+                view.clearAnimation()
+                showDialog(
+                    getString(R.string.campain_dialog_question_title),
+                    getString(R.string.campain_dialog_question_content, vm.getNickname())
+                )
+            }
         }
     }
 

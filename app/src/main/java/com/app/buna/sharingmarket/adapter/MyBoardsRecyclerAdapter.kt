@@ -47,7 +47,7 @@ class MyBoardsRecyclerAdapter(val viewModel: MyBoardViewModel, val context : Con
                     )
                 )
             } else { // 필요
-                holder.typeTextView.setText("필요")
+                holder.typeTextView.setText("요청")
                 holder.typeTextView.background.setTint(
                     ContextCompat.getColor(
                         context,
