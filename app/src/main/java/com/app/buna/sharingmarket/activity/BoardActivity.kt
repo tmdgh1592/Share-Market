@@ -18,7 +18,6 @@ import com.app.buna.sharingmarket.REQUEST_CODE
 import com.app.buna.sharingmarket.REQUEST_CODE.Companion.UPDATE_BOARD_CODE
 import com.app.buna.sharingmarket.adapter.ImageSliderAdapter
 import com.app.buna.sharingmarket.databinding.ActivityBoardBinding
-import com.app.buna.sharingmarket.model.BoardItem
 import com.app.buna.sharingmarket.utils.FancyToastUtil
 import com.app.buna.sharingmarket.viewmodel.BoardViewModel
 import com.bumptech.glide.Glide

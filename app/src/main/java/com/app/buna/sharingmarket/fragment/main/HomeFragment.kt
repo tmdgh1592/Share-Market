@@ -15,9 +15,10 @@ import com.app.buna.sharingmarket.activity.MainActivity
 import com.app.buna.sharingmarket.activity.SearchActivity
 import com.app.buna.sharingmarket.activity.WriteActivity
 import com.app.buna.sharingmarket.adapter.BoardRecyclerAdapter
+import com.app.buna.sharingmarket.adapter.PopularSliderAdapter
 import com.app.buna.sharingmarket.callbacks.IFirebaseGetStoreDataCallback
 import com.app.buna.sharingmarket.databinding.FragmentMainHomeBinding
-import com.app.buna.sharingmarket.model.BoardItem
+import com.app.buna.sharingmarket.model.main.BoardItem
 import com.app.buna.sharingmarket.utils.FancyToastUtil
 import com.app.buna.sharingmarket.utils.NetworkStatus
 import com.app.buna.sharingmarket.viewmodel.MainViewModel
@@ -29,6 +30,7 @@ class HomeFragment(val category: String = "all") : Fragment() {
 
     private var keyword: String? = null
 
+    // 카테고리를 입력받는 생성자
     constructor(category: String = "all", keyword: String?) : this(category) {
         this.keyword = keyword
     }
@@ -61,6 +63,7 @@ class HomeFragment(val category: String = "all") : Fragment() {
         }
 
         with(binding) {
+            // 게시글 RecyclerView 세팅
             val boardRecyclerAdapter = BoardRecyclerAdapter(vm, requireContext())
             boardRecyclerAdapter.setHasStableIds(true)
             this?.productRecyclerView?.apply {
@@ -69,9 +72,18 @@ class HomeFragment(val category: String = "all") : Fragment() {
                 setHasFixedSize(true)
             }
 
-            // RecyclerView에 사용할 데이터를 불러온다.
-            loadData()
+            // 게시글 RecyclerView에 사용할 데이터를 불러온다.
+            loadBoardData()
 
+            // 최상단에 위치한 관심 많은 게시글 슬라이더
+            /*val sliderAdapter = PopularSliderAdapter()
+            sliderAdapter.setHasStableIds(true)
+            this?.popularItemSlider?.apply{
+                adapter = sliderAdapter
+            }
+
+            // 관심 많은 데이터를 불러온다.
+            loadPopularItemData()*/
         }
 
         // 새로고침
@@ -84,7 +96,7 @@ class HomeFragment(val category: String = "all") : Fragment() {
                 // 인터넷에 연결되어 있다면
                 if (NetworkStatus.isConnectedInternet(requireContext())) {
                     // 데이터 새로 불러오기
-                    loadData()
+                    loadBoardData()
                 } else {
                     FancyToastUtil(requireContext()).showRed(getString(R.string.internet_check))
                 }
@@ -176,7 +188,7 @@ class HomeFragment(val category: String = "all") : Fragment() {
 
     // Firebase로부터 keyword가 속한 게시글을 불러온다
     // 또는 전체 게시글을 불러온다.
-    private fun loadData() {
+    private fun loadBoardData() {
         // 키워드 검색을 한 경우
         if (keyword != null) {
             Log.d("search keyword", keyword)
@@ -234,6 +246,15 @@ class HomeFragment(val category: String = "all") : Fragment() {
             })
         }
     }
+
+    // 최상단에 위치한 관심있는 데이터 가져오기
+    /*fun loadPopularItemData() {
+        vm?.getPopularItems(5, object: IFirebaseGetStoreDataCallback {
+            override fun complete(data: ArrayList<BoardItem>) {
+                (binding?.popularItemSlider?.adapter as PopularSliderAdapter).update(data)
+            }
+        })
+    }*/
 
     companion object {
         fun instance() = HomeFragment()

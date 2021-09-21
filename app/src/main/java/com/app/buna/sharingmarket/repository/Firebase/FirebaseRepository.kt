@@ -6,10 +6,10 @@ import android.util.Log
 import com.app.buna.sharingmarket.callbacks.IFirebaseGetChatRoomCallback
 import com.app.buna.sharingmarket.callbacks.IFirebaseGetStoreDataCallback
 import com.app.buna.sharingmarket.callbacks.IFirebaseRepositoryCallback
-import com.app.buna.sharingmarket.model.BoardItem
 import com.app.buna.sharingmarket.model.UserModel
 import com.app.buna.sharingmarket.model.chat.ChatRoomModel
 import com.app.buna.sharingmarket.model.chat.ChatUserModel
+import com.app.buna.sharingmarket.model.main.BoardItem
 import com.app.buna.sharingmarket.model.tree.TreeItem
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -504,510 +504,555 @@ class FirebaseRepository {
         getData()
     }
 
-    // 실시간으로 전체 게시글 개수를 가져와줌
-    // CheckShareActivity에서 사용함.
-    fun getBoardTotalCount(callback: (Int) -> Unit) {
-        firebaseStoreInstance.collection("Boards").addSnapshotListener { snapshot, e ->
-            if (e != null) {
-                return@addSnapshotListener
+    fun getPopularItems(count: Long, callback: IFirebaseGetStoreDataCallback) {
+        val itemList = ArrayList<BoardItem>()
+        var idx = 0
+
+        firebaseStoreInstance.collection("Boards").orderBy("favorites").limit(count).get()
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    task.result.forEach { document ->
+                        val item = document.toObject(BoardItem::class.java)
+
+                        firebaseDatabaseInstance.getReference("products").child("img_path")
+                            .child(document.id).get().addOnSuccessListener {
+                                var urlMap: HashMap<String, String>? =
+                                    if (it.value == null) { // 가져온 이미지가 없으면, 또는 이미지가 저장된게 없으면
+                                        HashMap() // Empty hashmap 생성
+                                    } else { // 이미지가 한개라도 있으면
+                                        it.value as HashMap<String, String> // DataSnapshot에서 이미지 Url들을 HashMap 형태로 캐스팅해서 가져옴
+                                    } // 이미지 url을 가져올 해시맵
+
+                                item.imgPath = urlMap!!
+                                item.documentId = document.id // Document Id는 따로 받아옴
+
+                                itemList.add(item)
+                                if (++idx == task.result.size()) {
+                                    callback.complete(itemList)
+                                }
+                            }
+                    }
+
+
+                }
             }
 
-            if (snapshot != null) {
-                callback(snapshot.size())
-            }
-        }
     }
 
-    // 내가 좋아요 누른 게시글 목록들 가져오는 함수
-    fun getLikeProductData(callback: IFirebaseGetStoreDataCallback) {
-        productList.clear()
+        // 실시간으로 전체 게시글 개수를 가져와줌
+        // CheckShareActivity에서 사용함.
+        fun getBoardTotalCount(callback: (Int) -> Unit) {
+            firebaseStoreInstance.collection("Boards").addSnapshotListener { snapshot, e ->
+                if (e != null) {
+                    return@addSnapshotListener
+                }
 
-        // FireStore에서 Board 데이터 및 FireDB에서 이미지 경로 가져오는 메소드
-        // category 값이 "all"이거나 선택한 category값인 경우에 가져옴
-        fun getData() {
-            var boardCount = 0 // 지금까지 가져온 게시글 개수를 파악하기 위한 변수!!
-            val uid = Firebase.auth.uid
-
-            firebaseStoreInstance.collection("Boards").get().addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    for (document in task.result) { // 게시글 개수만큼 반복
-                        if ((document.get("favorites") as MutableMap<String, String>).containsKey(
-                                uid
-                            )
-                        ) {
-                            val item =
-                                document.toObject(BoardItem::class.java) // 가져온 Document를 ProductItem으로 캐스팅
-                            firebaseDatabaseInstance
-                                .getReference("products")
-                                .child("img_path")
-                                .child(document.id)
-                                .get()
-                                .addOnSuccessListener {
-                                    var urlMap: HashMap<String, String>? // 이미지 url을 가져올 해시맵
-                                    urlMap =
-                                        if (it.value == null) { // 가져온 이미지가 없으면, 또는 이미지가 저장된게 없으면
-                                            HashMap() // Empty hashmap 생성
-                                        } else { // 이미지가 한개라도 있으면
-                                            it.value as HashMap<String, String> // DataSnapshot에서 이미지 Url들을 HashMap 형태로 캐스팅해서 가져옴
-                                        }
-
-                                    item.imgPath = urlMap!!
-                                    item.documentId = document.id // Document Id는 따로 받아옴
-
-                                    productList.add(item)
-
-                                    // 이미지를 모두 가져왔다면 callback 함수로 list 전달
-                                    if (boardCount == task.result.size()) {
-                                        callback.complete(productList)
-                                    }
-                                }
-                        }
-                        boardCount += 1 // position 1 증가시키기
-                    }
+                if (snapshot != null) {
+                    callback(snapshot.size())
                 }
             }
         }
 
-        // uid를 바탕으로 데이터를 가져옴 (해당 사용자가 작성한 글만 가져옴)
-        getData()
-    }
+        // 내가 좋아요 누른 게시글 목록들 가져오는 함수
+        fun getLikeProductData(callback: IFirebaseGetStoreDataCallback) {
+            productList.clear()
 
+            // FireStore에서 Board 데이터 및 FireDB에서 이미지 경로 가져오는 메소드
+            // category 값이 "all"이거나 선택한 category값인 경우에 가져옴
+            fun getData() {
+                var boardCount = 0 // 지금까지 가져온 게시글 개수를 파악하기 위한 변수!!
+                val uid = Firebase.auth.uid
 
-    // 게시글 삭제
-    @SuppressLint("LongLogTag")
-    fun removeProductData(item: BoardItem, callback: (Boolean) -> Unit) {
-        // 우선 FireStore에서 게시글에 대한 정보부터 지움
-        firebaseStoreInstance.collection("Boards").document(item.documentId).delete()
-            .addOnSuccessListener { // 게시글 지우기에 성공했다면 Realtime Database에 기록된 정보들 제거
-                callback(true)
+                firebaseStoreInstance.collection("Boards").get().addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        for (document in task.result) { // 게시글 개수만큼 반복
+                            if ((document.get("favorites") as MutableMap<String, String>).containsKey(
+                                    uid
+                                )
+                            ) {
+                                val item =
+                                    document.toObject(BoardItem::class.java) // 가져온 Document를 ProductItem으로 캐스팅
+                                firebaseDatabaseInstance
+                                    .getReference("products")
+                                    .child("img_path")
+                                    .child(document.id)
+                                    .get()
+                                    .addOnSuccessListener {
+                                        var urlMap: HashMap<String, String>? // 이미지 url을 가져올 해시맵
+                                        urlMap =
+                                            if (it.value == null) { // 가져온 이미지가 없으면, 또는 이미지가 저장된게 없으면
+                                                HashMap() // Empty hashmap 생성
+                                            } else { // 이미지가 한개라도 있으면
+                                                it.value as HashMap<String, String> // DataSnapshot에서 이미지 Url들을 HashMap 형태로 캐스팅해서 가져옴
+                                            }
+
+                                        item.imgPath = urlMap!!
+                                        item.documentId = document.id // Document Id는 따로 받아옴
+
+                                        productList.add(item)
+
+                                        // 이미지를 모두 가져왔다면 callback 함수로 list 전달
+                                        if (boardCount == task.result.size()) {
+                                            callback.complete(productList)
+                                        }
+                                    }
+                            }
+                            boardCount += 1 // position 1 증가시키기
+                        }
+                    }
+                }
             }
-            .addOnFailureListener {
-                Log.d(
-                    "FirebaseRepository -> removeProductData() -> firebaseStoreInstance",
-                    "Failure"
+
+            // uid를 바탕으로 데이터를 가져옴 (해당 사용자가 작성한 글만 가져옴)
+            getData()
+        }
+
+
+        // 게시글 삭제
+        @SuppressLint("LongLogTag")
+        fun removeProductData(item: BoardItem, callback: (Boolean) -> Unit) {
+            // 우선 FireStore에서 게시글에 대한 정보부터 지움
+            firebaseStoreInstance.collection("Boards").document(item.documentId).delete()
+                .addOnSuccessListener { // 게시글 지우기에 성공했다면 Realtime Database에 기록된 정보들 제거
+                    callback(true)
+                }
+                .addOnFailureListener {
+                    Log.d(
+                        "FirebaseRepository -> removeProductData() -> firebaseStoreInstance",
+                        "Failure"
+                    )
+                }
+
+
+            // DB에 속한 데이터 제거
+            // 'users' -> 'board_uid'의 child를 순회하면서 document id를 찾아서 사용자가 지우려는 게시물 제거
+            firebaseDatabaseInstance.getReference("users").child(item.uid)
+                .child("board_uid").addListenerForSingleValueEvent(
+                    object : ValueEventListener {
+                        override fun onDataChange(snapshot: DataSnapshot) {
+                            for (snap in snapshot.children) {
+                                if (snap.value == item.documentId) {
+                                    snap.ref.setValue(null)
+                                }
+                            }
+                        }
+
+                        override fun onCancelled(error: DatabaseError) {}
+                    }
                 )
+
+
+            // 이미지가 있을땐 DB의 이미지 경로들도 제거
+            firebaseDatabaseInstance.getReference("products")
+                .child("img_path") // 'products' -> documentId 찾아서 제거
+                .child(item.documentId).removeValue().addOnSuccessListener {
+                    Log.d("", "Remove Successful")
+                }.addOnFailureListener {
+                    Log.d(
+                        "FirebaseRepository -> removeProductData() -> firebaseDatabaseinstance.products",
+                        "Failure"
+                    )
+                }
+
+            /*
+            * Storage는 Directory를 지우거나, 모든 파일을 지우는 메소드가 없으므로.
+            * url 개수만큼 반복하면서 Image file 제거
+            * */
+            for (fileName in item.fileNamesForDelete) {
+                firebaseStorage.getReferenceFromUrl("gs://sharing-market.appspot.com")
+                    .child("product_images").child("${item.documentId}").child(fileName)
+                    .delete()
+                    .addOnCompleteListener {
+
+                    }
             }
+        }
+
+        fun shareDone(isDone: Boolean, documentId: String, callback: () -> Unit) {
+            val doc = firebaseStoreInstance.collection("Boards").document(documentId)
+            firebaseStoreInstance.runTransaction { transaction ->
+                val board = transaction.get(doc).toObject(BoardItem::class.java)
+                board?.isComplete = isDone
+                transaction.set(doc, board!!)
+            }.addOnSuccessListener {
+                callback() // 트랜잭션이 끝나면 액티비티를 종료하기 위한 callback을 호출
+            }
+        }
+
+        // 채팅방을 삭제하는 함수
+        fun removeChatRoom(roomUid: String?, complete: () -> Unit) {
+            if (roomUid != null) {
+                firebaseDatabaseInstance.getReference("chatrooms").child(roomUid!!).removeValue()
+                    .addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            complete()
+                        }
+                    }
+            }
+        }
+
+        // 채팅을 보내는 메소드
+        fun sendMessage(
+            chatRoomUid: String?,
+            users: HashMap<String, Boolean>,
+            comment: ChatRoomModel.Comment,
+            complete: (String?) -> Unit = {}
+        ) {
+            if (chatRoomUid == null) { // 채팅방이 없다면 새로운 채팅방 생성
+                // 새로운 채팅 맵 생성
+                var roomUid: String? =
+                    firebaseDatabaseInstance.reference.child("chatrooms").push().key
+                val commentMap = HashMap<String, ChatRoomModel.Comment>().apply {
+                    put(roomUid!!, comment)
+                }
+                val pushStateMap = HashMap<String, Boolean>().apply { // 유저 푸시 상태
+                    users.keys.forEach { userName ->
+                        put(userName, true)
+                    }
+                }
+
+                firebaseDatabaseInstance.reference.child("chatrooms").child(roomUid!!)
+                    .child("comments")
+                    .setValue(commentMap).addOnCompleteListener {
+                        firebaseDatabaseInstance.reference.child("chatrooms").child(roomUid!!)
+                            .child("users")
+                            .setValue(users).addOnSuccessListener {
+                                // 메세지 전송 완료시 chatRoomUid를 저장하기 위해 complete 콜백
+                                complete(roomUid)
+                                firebaseDatabaseInstance.reference.child("chatrooms").child(roomUid)
+                                    .child("pushState").setValue(pushStateMap)
+                                // 마지막 메세지와 시간 저장
+                                firebaseDatabaseInstance.reference.child("chatrooms").child(roomUid)
+                                    .child("lastMessage").setValue(comment.message)
+                                firebaseDatabaseInstance.reference.child("chatrooms").child(roomUid)
+                                    .child("lastTimestamp").setValue(comment.timeStamp)
+                            }
+                    }
+            } else { // 채팅방이 있다면 기존 채팅방에 채팅기록 추가
+                firebaseDatabaseInstance.reference.child("chatrooms").child(chatRoomUid)
+                    .child("comments").push().setValue(comment).addOnCompleteListener {
+                        // 마지막 메세지와 시간 저장
+                        firebaseDatabaseInstance.reference.child("chatrooms").child(chatRoomUid)
+                            .child("lastMessage").setValue(comment.message).addOnCompleteListener {
+                                firebaseDatabaseInstance.reference.child("chatrooms")
+                                    .child(chatRoomUid)
+                                    .child("lastTimestamp").setValue(comment.timeStamp)
+                                    .addOnCompleteListener {
+                                        // 메세지 전송 완료시 complete 콜백
+                                        complete(null)
+                                    }
+                            }
+                    }
 
 
-        // DB에 속한 데이터 제거
-        // 'users' -> 'board_uid'의 child를 순회하면서 document id를 찾아서 사용자가 지우려는 게시물 제거
-        firebaseDatabaseInstance.getReference("users").child(item.uid)
-            .child("board_uid").addListenerForSingleValueEvent(
-                object : ValueEventListener {
+            }
+        }
+
+        fun getComments(
+            chatRoomUid: String?,
+            complete: (ArrayList<ChatRoomModel.Comment>) -> Unit
+        ) {
+            if (chatRoomUid != null) {
+                firebaseDatabaseInstance.getReference("chatrooms").child(chatRoomUid)
+                    .child("comments")
+                    .addValueEventListener(object : ValueEventListener {
+                        override fun onDataChange(snapshot: DataSnapshot) {
+                            val chatList = ArrayList<ChatRoomModel.Comment>() // 채팅 기록 리스트
+                            // 채팅방 채팅 내역들을 가져와서 chatList에 추가
+                            snapshot.children.forEach { item ->
+                                val comment = item.getValue(ChatRoomModel.Comment::class.java)
+                                comment?.let { chatList.add(it) }
+                            }
+                            complete(chatList)
+                        }
+
+                        override fun onCancelled(error: DatabaseError) {
+                            Log.d("FirebaseRepository", "getComments is Canceled.")
+                        }
+                    })
+            }
+        }
+
+
+        // 본인이 들어가 있는 채팅방을 돌면서 상대방이 있는지 확인하고, 있다면 채팅방의 Uid를 가져옴
+        fun checkChatRoom(destUid: String, callback: (String?) -> Unit) {
+            firebaseDatabaseInstance.getReference("chatrooms")
+                .orderByChild("users/" + Firebase.auth.uid!!).equalTo(true)
+                .addListenerForSingleValueEvent(object : ValueEventListener {
                     override fun onDataChange(snapshot: DataSnapshot) {
-                        for (snap in snapshot.children) {
-                            if (snap.value == item.documentId) {
-                                snap.ref.setValue(null)
+                        snapshot.children.forEach { item ->
+                            val chatModel = item.getValue(ChatRoomModel::class.java)
+                            if (chatModel?.users?.containsKey(destUid)!!) {
+                                Log.d("FirebaseRepository", "checkChatRoom Callback Called")
+                                callback(item.key) // 채팅방 Uid 전달
+                                return@forEach
                             }
                         }
                     }
 
-                    override fun onCancelled(error: DatabaseError) {}
-                }
-            )
-
-
-        // 이미지가 있을땐 DB의 이미지 경로들도 제거
-        firebaseDatabaseInstance.getReference("products")
-            .child("img_path") // 'products' -> documentId 찾아서 제거
-            .child(item.documentId).removeValue().addOnSuccessListener {
-                Log.d("", "Remove Successful")
-            }.addOnFailureListener {
-                Log.d(
-                    "FirebaseRepository -> removeProductData() -> firebaseDatabaseinstance.products",
-                    "Failure"
-                )
-            }
-
-        /*
-        * Storage는 Directory를 지우거나, 모든 파일을 지우는 메소드가 없으므로.
-        * url 개수만큼 반복하면서 Image file 제거
-        * */
-        for (fileName in item.fileNamesForDelete) {
-            firebaseStorage.getReferenceFromUrl("gs://sharing-market.appspot.com")
-                .child("product_images").child("${item.documentId}").child(fileName)
-                .delete()
-                .addOnCompleteListener {
-
-                }
-        }
-    }
-
-    fun shareDone(isDone: Boolean, documentId: String, callback: () -> Unit) {
-        val doc = firebaseStoreInstance.collection("Boards").document(documentId)
-        firebaseStoreInstance.runTransaction { transaction ->
-            val board = transaction.get(doc).toObject(BoardItem::class.java)
-            board?.isComplete = isDone
-            transaction.set(doc, board!!)
-        }.addOnSuccessListener {
-            callback() // 트랜잭션이 끝나면 액티비티를 종료하기 위한 callback을 호출
-        }
-    }
-
-    // 채팅방을 삭제하는 함수
-    fun removeChatRoom(roomUid: String?, complete: () -> Unit) {
-        if (roomUid != null) {
-            firebaseDatabaseInstance.getReference("chatrooms").child(roomUid!!).removeValue()
-                .addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
-                        complete()
+                    override fun onCancelled(error: DatabaseError) {
+                        TODO("Not yet implemented")
                     }
                 }
+                )
         }
-    }
 
-    // 채팅을 보내는 메소드
-    fun sendMessage(
-        chatRoomUid: String?,
-        users: HashMap<String, Boolean>,
-        comment: ChatRoomModel.Comment,
-        complete: (String?) -> Unit = {}
-    ) {
-        if (chatRoomUid == null) { // 채팅방이 없다면 새로운 채팅방 생성
-            // 새로운 채팅 맵 생성
-            var roomUid: String? = firebaseDatabaseInstance.reference.child("chatrooms").push().key
-            val commentMap = HashMap<String, ChatRoomModel.Comment>().apply {
-                put(roomUid!!, comment)
-            }
-            val pushStateMap = HashMap<String, Boolean>().apply { // 유저 푸시 상태
-                users.keys.forEach { userName ->
-                    put(userName, true)
-                }
-            }
-
-            firebaseDatabaseInstance.reference.child("chatrooms").child(roomUid!!).child("comments")
-                .setValue(commentMap).addOnCompleteListener {
-                    firebaseDatabaseInstance.reference.child("chatrooms").child(roomUid!!)
-                        .child("users")
-                        .setValue(users).addOnSuccessListener {
-                            // 메세지 전송 완료시 chatRoomUid를 저장하기 위해 complete 콜백
-                            complete(roomUid)
-                            firebaseDatabaseInstance.reference.child("chatrooms").child(roomUid)
-                                .child("pushState").setValue(pushStateMap)
-                            // 마지막 메세지와 시간 저장
-                            firebaseDatabaseInstance.reference.child("chatrooms").child(roomUid)
-                                .child("lastMessage").setValue(comment.message)
-                            firebaseDatabaseInstance.reference.child("chatrooms").child(roomUid)
-                                .child("lastTimestamp").setValue(comment.timeStamp)
-                        }
-                }
-        } else { // 채팅방이 있다면 기존 채팅방에 채팅기록 추가
-            firebaseDatabaseInstance.reference.child("chatrooms").child(chatRoomUid)
-                .child("comments").push().setValue(comment).addOnCompleteListener {
-                    // 마지막 메세지와 시간 저장
-                    firebaseDatabaseInstance.reference.child("chatrooms").child(chatRoomUid)
-                        .child("lastMessage").setValue(comment.message).addOnCompleteListener {
-                            firebaseDatabaseInstance.reference.child("chatrooms").child(chatRoomUid)
-                                .child("lastTimestamp").setValue(comment.timeStamp)
-                                .addOnCompleteListener {
-                                    // 메세지 전송 완료시 complete 콜백
-                                    complete(null)
-                                }
-                        }
-                }
-
-
-        }
-    }
-
-    fun getComments(chatRoomUid: String?, complete: (ArrayList<ChatRoomModel.Comment>) -> Unit) {
-        if (chatRoomUid != null) {
-            firebaseDatabaseInstance.getReference("chatrooms").child(chatRoomUid).child("comments")
+        // 채팅방 리스트를 보여주기 위한 ChatModel 리스트를 콜백으로 전달하는 함수
+        fun getChatModelList(callback: IFirebaseGetChatRoomCallback) {
+            firebaseDatabaseInstance.getReference("chatrooms")
+                .orderByChild("users/${Firebase.auth.uid}")
+                .equalTo(true)
                 .addValueEventListener(object : ValueEventListener {
                     override fun onDataChange(snapshot: DataSnapshot) {
-                        val chatList = ArrayList<ChatRoomModel.Comment>() // 채팅 기록 리스트
-                        // 채팅방 채팅 내역들을 가져와서 chatList에 추가
+                        val chatModels = ArrayList<ChatRoomModel>()
                         snapshot.children.forEach { item ->
-                            val comment = item.getValue(ChatRoomModel.Comment::class.java)
-                            comment?.let { chatList.add(it) }
+                            if (item.exists()) { // 데이터가 존재한다면
+                                chatModels.add(item.getValue(ChatRoomModel::class.java)!!) // Chat Model 리스트에 추가
+                            }
                         }
-                        complete(chatList)
+                        callback.complete(chatModels) // 콜백을 통해 채팅 모델 리스트 전달
                     }
 
                     override fun onCancelled(error: DatabaseError) {
-                        Log.d("FirebaseRepository", "getComments is Canceled.")
+                        TODO("Not yet implemented")
                     }
                 })
         }
-    }
 
-
-    // 본인이 들어가 있는 채팅방을 돌면서 상대방이 있는지 확인하고, 있다면 채팅방의 Uid를 가져옴
-    fun checkChatRoom(destUid: String, callback: (String?) -> Unit) {
-        firebaseDatabaseInstance.getReference("chatrooms")
-            .orderByChild("users/" + Firebase.auth.uid!!).equalTo(true)
-            .addListenerForSingleValueEvent(object : ValueEventListener {
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    snapshot.children.forEach { item ->
-                        val chatModel = item.getValue(ChatRoomModel::class.java)
-                        if (chatModel?.users?.containsKey(destUid)!!) {
-                            Log.d("FirebaseRepository", "checkChatRoom Callback Called")
-                            callback(item.key) // 채팅방 Uid 전달
-                            return@forEach
+        // 유저의 정보를 가져옴
+        fun getUserModel(uid: String, complete: (ChatUserModel) -> Unit) {
+            firebaseDatabaseInstance.getReference("users/$uid")
+                .addListenerForSingleValueEvent(object : ValueEventListener {
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        val userModel: UserModel? = snapshot.getValue(UserModel::class.java)
+                        if (userModel != null) {
+                            val destUserModel =
+                                ChatUserModel(userModel.nickname, userModel.profile_url, uid)
+                            complete(destUserModel)
+                        } else {
+                            val nullDestUserModel = ChatUserModel("탈퇴한 사용자입니다.", null, uid)
+                            complete(nullDestUserModel)
                         }
-                    }
-                }
 
-                override fun onCancelled(error: DatabaseError) {
-                    TODO("Not yet implemented")
-                }
-            }
-            )
-    }
-
-    // 채팅방 리스트를 보여주기 위한 ChatModel 리스트를 콜백으로 전달하는 함수
-    fun getChatModelList(callback: IFirebaseGetChatRoomCallback) {
-        firebaseDatabaseInstance.getReference("chatrooms")
-            .orderByChild("users/${Firebase.auth.uid}")
-            .equalTo(true)
-            .addValueEventListener(object : ValueEventListener {
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    val chatModels = ArrayList<ChatRoomModel>()
-                    snapshot.children.forEach { item ->
-                        if (item.exists()) { // 데이터가 존재한다면
-                            chatModels.add(item.getValue(ChatRoomModel::class.java)!!) // Chat Model 리스트에 추가
-                        }
-                    }
-                    callback.complete(chatModels) // 콜백을 통해 채팅 모델 리스트 전달
-                }
-
-                override fun onCancelled(error: DatabaseError) {
-                    TODO("Not yet implemented")
-                }
-            })
-    }
-
-    // 유저의 정보를 가져옴
-    fun getUserModel(uid: String, complete: (ChatUserModel) -> Unit) {
-        firebaseDatabaseInstance.getReference("users/$uid")
-            .addListenerForSingleValueEvent(object : ValueEventListener {
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    val userModel: UserModel? = snapshot.getValue(UserModel::class.java)
-                    if (userModel != null) {
-                        val destUserModel =
-                            ChatUserModel(userModel.nickname, userModel.profile_url, uid)
-                        complete(destUserModel)
-                    } else {
-                        val nullDestUserModel = ChatUserModel("탈퇴한 사용자입니다.", null, uid)
-                        complete(nullDestUserModel)
                     }
 
+                    override fun onCancelled(error: DatabaseError) {
+
+                    }
                 }
-
-                override fun onCancelled(error: DatabaseError) {
-
-                }
-            }
-            )
-    }
-
-    // 나와 채팅 상대인 유저의 정보(ChatUserModel)를 가져옴
-    fun getChatDestUsers(complete: (ArrayList<ChatUserModel>, ArrayList<String>) -> Unit) {
-        val myUid = Firebase.auth.uid // 본인 계정 uid
-        var destUserCount = 0 // 상대방 데이터를 다 가져왔느지 확인하기 위한 카운터 변수
-
-        // 상대방 uid를 가져오는 함수
-        fun findDestUid(users: HashMap<String, Boolean>): String? {
-            // haspmap에서 본인 uid가 아닌 key값을 가져옴
-            val filteredMap = users.filterKeys { !it.contains(myUid!!) }
-            return filteredMap.keys.first() // 상대방 uid를 return함.
+                )
         }
 
-        // 내가 속해있는 채팅방 데이터를 가져옴
-        firebaseDatabaseInstance.getReference("chatrooms")
-            .orderByChild("users/${myUid}")
-            .equalTo(true)
-            .addListenerForSingleValueEvent(object : ValueEventListener {
-                override fun onDataChange(chatRoomSnapshot: DataSnapshot) {
-                    if (chatRoomSnapshot.childrenCount.toInt() != 0) {
-                        val destUidArray = ArrayList<String>() // 채팅 상대 uid를 담기 위한 배열
-                        val chatRoomUids = ArrayList<String>()
-                        chatRoomSnapshot.children.forEach { item -> // 채팅방을 하나씩 돌아가면서 탐색
-                            if (item.exists()) { // 데이터가 존재한다면
-                                val chatRoom =
-                                    (item.getValue(ChatRoomModel::class.java)!!) // 채팅방 정보를 가져옴
-                                chatRoomUids.add(item.key!!)
-                                destUidArray.add(findDestUid(chatRoom.users)!!) // 내가 있는 채팅방의 상대방 uid를 추가함
+        // 나와 채팅 상대인 유저의 정보(ChatUserModel)를 가져옴
+        fun getChatDestUsers(complete: (ArrayList<ChatUserModel>, ArrayList<String>) -> Unit) {
+            val myUid = Firebase.auth.uid // 본인 계정 uid
+            var destUserCount = 0 // 상대방 데이터를 다 가져왔느지 확인하기 위한 카운터 변수
 
-                                // 채팅방 데이터를 모두 가져왔으면
-                                if (destUidArray.size == chatRoomSnapshot.childrenCount.toInt()) {
+            // 상대방 uid를 가져오는 함수
+            fun findDestUid(users: HashMap<String, Boolean>): String? {
+                // haspmap에서 본인 uid가 아닌 key값을 가져옴
+                val filteredMap = users.filterKeys { !it.contains(myUid!!) }
+                return filteredMap.keys.first() // 상대방 uid를 return함.
+            }
 
-                                    val chatDestUsers =
-                                        ArrayList<ChatUserModel>() // 채팅 상대방에 대한 Array List
+            // 내가 속해있는 채팅방 데이터를 가져옴
+            firebaseDatabaseInstance.getReference("chatrooms")
+                .orderByChild("users/${myUid}")
+                .equalTo(true)
+                .addListenerForSingleValueEvent(object : ValueEventListener {
+                    override fun onDataChange(chatRoomSnapshot: DataSnapshot) {
+                        if (chatRoomSnapshot.childrenCount.toInt() != 0) {
+                            val destUidArray = ArrayList<String>() // 채팅 상대 uid를 담기 위한 배열
+                            val chatRoomUids = ArrayList<String>()
+                            chatRoomSnapshot.children.forEach { item -> // 채팅방을 하나씩 돌아가면서 탐색
+                                if (item.exists()) { // 데이터가 존재한다면
+                                    val chatRoom =
+                                        (item.getValue(ChatRoomModel::class.java)!!) // 채팅방 정보를 가져옴
+                                    chatRoomUids.add(item.key!!)
+                                    destUidArray.add(findDestUid(chatRoom.users)!!) // 내가 있는 채팅방의 상대방 uid를 추가함
 
-                                    destUidArray.forEach { destUid -> // 상대방 uid를 대상으로 반복하면서
-                                        destUserCount++ // 상대방 uid 개수 1 더해줌
-                                        getUserModel(destUid) { destUserModel -> // 상대방에 대한 정보를 가져와서 추가한다.
-                                            chatDestUsers.add(destUserModel)
+                                    // 채팅방 데이터를 모두 가져왔으면
+                                    if (destUidArray.size == chatRoomSnapshot.childrenCount.toInt()) {
 
-                                            // (상대방 정보를 모두 가져왔으면)
-                                            if (destUserCount == destUidArray.size) {
-                                                complete(chatDestUsers, chatRoomUids) // 콜백 호출
+                                        val chatDestUsers =
+                                            ArrayList<ChatUserModel>() // 채팅 상대방에 대한 Array List
+
+                                        destUidArray.forEach { destUid -> // 상대방 uid를 대상으로 반복하면서
+                                            destUserCount++ // 상대방 uid 개수 1 더해줌
+                                            getUserModel(destUid) { destUserModel -> // 상대방에 대한 정보를 가져와서 추가한다.
+                                                chatDestUsers.add(destUserModel)
+
+                                                // (상대방 정보를 모두 가져왔으면)
+                                                if (destUserCount == destUidArray.size) {
+                                                    complete(chatDestUsers, chatRoomUids) // 콜백 호출
+                                                }
                                             }
                                         }
                                     }
                                 }
                             }
+                        } else {
+                            complete(ArrayList(), ArrayList())
                         }
-                    } else {
-                        complete(ArrayList(), ArrayList())
                     }
-                }
 
-                override fun onCancelled(error: DatabaseError) {
-                    Log.d("FirebaseRepository", error.message)
-                }
-            })
-    }
+                    override fun onCancelled(error: DatabaseError) {
+                        Log.d("FirebaseRepository", error.message)
+                    }
+                })
+        }
 
-    // 채팅을 보내면 푸시를 보내기 위해 Token을 얻기 위한 콜백 함수
-    // uid: push를 보낼 사용자의 Uid
-    fun getPushToken(uid: String, complete: (String?) -> Unit, success: (Boolean) -> Unit) {
-        firebaseStoreInstance.collection("pushToken").document(uid).get()
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    if (task.result.get("pushtoken") != null) {
-                        val token = task.result.get("pushtoken") as String
-                        complete(token)
-                        success(true)
+        // 채팅을 보내면 푸시를 보내기 위해 Token을 얻기 위한 콜백 함수
+        // uid: push를 보낼 사용자의 Uid
+        fun getPushToken(uid: String, complete: (String?) -> Unit, success: (Boolean) -> Unit) {
+            firebaseStoreInstance.collection("pushToken").document(uid).get()
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        if (task.result.get("pushtoken") != null) {
+                            val token = task.result.get("pushtoken") as String
+                            complete(token)
+                            success(true)
+                        } else {
+                            complete(null)
+                            success(false) // push token이 존재하지 않을 때, ex)상대방이 탈퇴한 경우
+                        }
                     } else {
                         complete(null)
-                        success(false) // push token이 존재하지 않을 때, ex)상대방이 탈퇴한 경우
                     }
-                } else {
-                    complete(null)
                 }
-            }
 
-    }
+        }
 
-    // 상대방이 푸시알림을 받을 수 있는 상태인지 체크하는 함수
-    fun canReceivePush(roomUid: String, destUid: String, callback: (Boolean) -> Unit) {
-        firebaseDatabaseInstance.getReference("chatrooms").child(roomUid).child("pushState")
-            .addValueEventListener(object : ValueEventListener {
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    snapshot.children.forEach { snapshot ->
-                        if (snapshot.key.equals(destUid)) { // 상대방이라면
-                            val canReceive = snapshot.value as Boolean
-                            callback(canReceive)
-                            return@forEach
+        // 상대방이 푸시알림을 받을 수 있는 상태인지 체크하는 함수
+        fun canReceivePush(roomUid: String, destUid: String, callback: (Boolean) -> Unit) {
+            firebaseDatabaseInstance.getReference("chatrooms").child(roomUid).child("pushState")
+                .addValueEventListener(object : ValueEventListener {
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        snapshot.children.forEach { snapshot ->
+                            if (snapshot.key.equals(destUid)) { // 상대방이라면
+                                val canReceive = snapshot.value as Boolean
+                                callback(canReceive)
+                                return@forEach
+                            }
                         }
                     }
-                }
 
-                override fun onCancelled(error: DatabaseError) {
-                    TODO("Not yet implemented")
-                }
-            })
-    }
-
-    // 푸시 알림 상태 toggle
-    fun togglePushState(
-        nowState: Boolean,
-        roomUid: String,
-        uid: String,
-        callback: (Boolean) -> Unit
-    ) {
-        firebaseDatabaseInstance.getReference("chatrooms").child(roomUid).child("pushState")
-            .child(uid).setValue(!nowState).addOnCompleteListener {
-                if (it.isSuccessful) {
-                    callback(!nowState)
-                }
-            }
-    }
-
-    // 푸시 알림 상태 설정
-    fun setPushState(state: Boolean, roomUid: String, uid: String) {
-        firebaseDatabaseInstance.getReference("chatrooms").child(roomUid).child("pushState")
-            .child(uid).setValue(state)
-    }
-
-    // 푸시 알림 상태 가져오기
-    fun getPushState(roomUid: String, uid: String, complete: (Boolean) -> Unit) {
-        firebaseDatabaseInstance.getReference("chatrooms").child(roomUid).child("pushState")
-            .child(uid).get().addOnCompleteListener {
-                complete(it.result.value as Boolean)
-            }
-    }
-
-    // DB에서 사용자의 트리 코인 정보를 가져옴
-    fun getMyTreeItem(uid: String, callback: (TreeItem?) -> Unit) {
-        firebaseDatabaseInstance.getReference("campain").child(uid).get()
-            .addOnSuccessListener { snapshot ->
-                if (snapshot.exists()) { // 코인 정보가 존재한다면
-                    val treeItem: TreeItem? = snapshot.getValue(TreeItem::class.java)
-                    callback(treeItem)
-                } else {
-                    callback(TreeItem())
-                }
-            }
-    }
-
-    fun setMyTreeItem(uid: String, treeItem: TreeItem, callback: () -> Unit) {
-        firebaseDatabaseInstance.getReference("campain").child(uid).setValue(treeItem)
-            .addOnCompleteListener {
-                callback()
-            }
-    }
-
-    // DB에서 사용자의 총 트리 코인 개수를 설정함
-    fun setMyTreeCoin(uid: String, hasCoinCount: Int, complete: () -> Unit) {
-        firebaseDatabaseInstance.getReference("campain").child(uid).child("hasCoinCount")
-            .setValue(hasCoinCount).addOnCompleteListener {
-                complete
-            }
-    }
-
-    // 트리코인 최초 지급받기를 한 경우
-    fun setClicked(treeItem: TreeItem, complete: () -> Unit) {
-        firebaseDatabaseInstance.getReference("campain").child(Firebase.auth.uid!!).setValue(treeItem).addOnCompleteListener {
-            complete()
+                    override fun onCancelled(error: DatabaseError) {
+                        TODO("Not yet implemented")
+                    }
+                })
         }
-    }
 
-    // 트리코인으로 나무 심기 참여하기 위해 코인 기부
-    fun giveCoin(treeItem: TreeItem, complete: (Int) -> Unit) {
-        if (treeItem.hasCoinCount != null) {
-            val coinCount = treeItem.hasCoinCount // 내가 가지고 있는 코인 개수
-            
-            treeItem.giveSeedCount += treeItem.hasCoinCount // 가지고 있는 트리 코인을 모두 giveCount에 더함
-            treeItem.hasCoinCount = 0
-            
-            // DB 트리 코인 데이터 갱신
-            firebaseDatabaseInstance.getReference("campain").child(Firebase.auth.uid!!).setValue(treeItem).addOnCompleteListener { 
-                complete(coinCount) // 기부한 코인 개수를 반환함
+        // 푸시 알림 상태 toggle
+        fun togglePushState(
+            nowState: Boolean,
+            roomUid: String,
+            uid: String,
+            callback: (Boolean) -> Unit
+        ) {
+            firebaseDatabaseInstance.getReference("chatrooms").child(roomUid).child("pushState")
+                .child(uid).setValue(!nowState).addOnCompleteListener {
+                    if (it.isSuccessful) {
+                        callback(!nowState)
+                    }
+                }
+        }
+
+        // 푸시 알림 상태 설정
+        fun setPushState(state: Boolean, roomUid: String, uid: String) {
+            firebaseDatabaseInstance.getReference("chatrooms").child(roomUid).child("pushState")
+                .child(uid).setValue(state)
+        }
+
+        // 푸시 알림 상태 가져오기
+        fun getPushState(roomUid: String, uid: String, complete: (Boolean) -> Unit) {
+            firebaseDatabaseInstance.getReference("chatrooms").child(roomUid).child("pushState")
+                .child(uid).get().addOnCompleteListener {
+                    complete(it.result.value as Boolean)
+                }
+        }
+
+        // DB에서 사용자의 트리 코인 정보를 가져옴
+        fun getMyTreeItem(uid: String, callback: (TreeItem?) -> Unit) {
+            firebaseDatabaseInstance.getReference("campain").child(uid).get()
+                .addOnSuccessListener { snapshot ->
+                    if (snapshot.exists()) { // 코인 정보가 존재한다면
+                        val treeItem: TreeItem? = snapshot.getValue(TreeItem::class.java)
+                        callback(treeItem)
+                    } else {
+                        callback(TreeItem())
+                    }
+                }
+        }
+
+        fun setMyTreeItem(uid: String, treeItem: TreeItem, callback: () -> Unit) {
+            firebaseDatabaseInstance.getReference("campain").child(uid).setValue(treeItem)
+                .addOnCompleteListener {
+                    callback()
+                }
+        }
+
+        // DB에서 사용자의 총 트리 코인 개수를 설정함
+        fun setMyTreeCoin(uid: String, hasCoinCount: Int, complete: () -> Unit) {
+            firebaseDatabaseInstance.getReference("campain").child(uid).child("hasCoinCount")
+                .setValue(hasCoinCount).addOnCompleteListener {
+                    complete
+                }
+        }
+
+        // 트리코인 최초 지급받기를 한 경우
+        fun setClicked(treeItem: TreeItem, complete: () -> Unit) {
+            firebaseDatabaseInstance.getReference("campain").child(Firebase.auth.uid!!)
+                .setValue(treeItem).addOnCompleteListener {
+                    complete()
+                }
+        }
+
+        // 트리코인으로 나무 심기 참여하기 위해 코인 기부
+        fun giveCoin(treeItem: TreeItem, complete: (Int) -> Unit) {
+            if (treeItem.hasCoinCount != null) {
+                val coinCount = treeItem.hasCoinCount // 내가 가지고 있는 코인 개수
+
+                treeItem.giveSeedCount += treeItem.hasCoinCount // 가지고 있는 트리 코인을 모두 giveCount에 더함
+                treeItem.hasCoinCount = 0
+
+                // DB 트리 코인 데이터 갱신
+                firebaseDatabaseInstance.getReference("campain").child(Firebase.auth.uid!!)
+                    .setValue(treeItem).addOnCompleteListener {
+                        complete(coinCount) // 기부한 코인 개수를 반환함
+                    }
             }
         }
-    }
 
-    // 씨앗을 많이 기부한 상위 5명의 프로필 Url 가져오기
-    fun getTopGiveUserProfile(callback: (ArrayList<String?>) -> Unit) {
-        firebaseDatabaseInstance.getReference("campain").orderByChild("giveSeedCount").limitToLast(5).addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                val profileList = ArrayList<String?>(5) // 프로필 Url을 담을 리스트
-                
-                for(item in snapshot.children) {
-                    val uid = item.key // Uid 가져오기
-                    getProfile(uid!!) { profileUrl -> // Uid를 통해 프로필 Url을 가져오기
-                        profileList.add(profileUrl)
-                        // 데이터를 모두 가져왔다면 콜백!
-                        if (profileList.size == snapshot.childrenCount.toInt()) {
-                            if (profileList.size < 5) { // 데이터가 5개보다 작으면 남은 값을 null값으로 채운다.
-                                for (i in 0 until (5 - profileList.size)) {
-                                    profileList.add(null)
+        // 씨앗을 많이 기부한 상위 5명의 프로필 Url 가져오기
+        fun getTopGiveUserProfile(callback: (ArrayList<String?>) -> Unit) {
+            firebaseDatabaseInstance.getReference("campain").orderByChild("giveSeedCount")
+                .limitToLast(5).addListenerForSingleValueEvent(object : ValueEventListener {
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        val profileList = ArrayList<String?>(5) // 프로필 Url을 담을 리스트
+
+                        for (item in snapshot.children) {
+                            val uid = item.key // Uid 가져오기
+                            getProfile(uid!!) { profileUrl -> // Uid를 통해 프로필 Url을 가져오기
+                                profileList.add(profileUrl)
+                                // 데이터를 모두 가져왔다면 콜백!
+                                if (profileList.size == snapshot.childrenCount.toInt()) {
+                                    if (profileList.size < 5) { // 데이터가 5개보다 작으면 남은 값을 null값으로 채운다.
+                                        for (i in 0 until (5 - profileList.size)) {
+                                            profileList.add(null)
+                                        }
+                                    }
+                                    callback(profileList) // 콜백을 통해 프로필 사진 url 전달
                                 }
                             }
-                            callback(profileList) // 콜백을 통해 프로필 사진 url 전달
                         }
                     }
-                }
-            }
 
-            override fun onCancelled(error: DatabaseError) {
-                Log.d("FirebaseRepository", "Failure for Getting Tree Top 5 Profile")
-            }
-        })
+                    override fun onCancelled(error: DatabaseError) {
+                        Log.d("FirebaseRepository", "Failure for Getting Tree Top 5 Profile")
+                    }
+                })
+        }
+
+
     }
-
-
-}

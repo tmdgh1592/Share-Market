@@ -6,7 +6,7 @@
 
         <variable
             name="model"
-            type="com.app.buna.sharingmarket.model.BoardItem" />
+            type="com.app.buna.sharingmarket.model.main.BoardItem" />
     </data>
 
     <!-- 현재 나눔 현황 확인하기 -->

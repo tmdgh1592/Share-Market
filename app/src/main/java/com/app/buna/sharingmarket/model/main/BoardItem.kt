@@ -1,4 +1,4 @@
-package com.app.buna.sharingmarket.model
+package com.app.buna.sharingmarket.model.main
 
 import android.os.Parcelable
 import com.app.buna.sharingmarket.utils.TimeUtil

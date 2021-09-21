@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="model"
+            type="com.app.buna.sharingmarket.model.main.BoardItem" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <!--imageview를 round하게 만들기 위한 cardview-->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/card_background_view"
+            android:layout_width="0dp"
+            android:layout_height="150dp"
+            android:layout_gravity="center|left"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="0dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.elyeproj.loaderviewlibrary.LoaderImageView
+                android:id="@+id/product_image_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/radius12_shape"
+                android:scaleType="fitXY"
+                android:src="@drawable/default_item" />
+        </androidx.cardview.widget.CardView>
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingVertical="6dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:background="#99FFFFFF">
+
+            <com.elyeproj.loaderviewlibrary.LoaderTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textStyle="bold"
+                android:textColor="@color/black_70"
+                android:text="@{model.title}"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:layout_marginLeft="12dp"/>
+
+            <ImageView
+                android:id="@+id/heart_btn"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_marginRight="3dp"
+                android:layout_marginBottom="5dp"
+                android:clickable="true"
+                android:heart_visible="@{model.likeCount}"
+                android:src="@drawable/like_heart"
+                app:tint="@color/heart_color"
+                android:visibility="gone"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintRight_toLeftOf="@+id/like_count"/>
+
+            <com.elyeproj.loaderviewlibrary.LoaderTextView
+                android:id="@+id/like_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:gravity="center"
+                android:heart_count="@{model.likeCount}"
+                android:textColor="@color/gray_70"
+                android:textSize="15sp"
+                android:visibility="gone"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                android:layout_marginRight="12dp"/>
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
+

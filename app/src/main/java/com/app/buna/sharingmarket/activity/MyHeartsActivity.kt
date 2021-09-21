@@ -13,7 +13,7 @@ import com.app.buna.sharingmarket.REQUEST_CODE
 import com.app.buna.sharingmarket.adapter.MyHeartsRecyclerAdapter
 import com.app.buna.sharingmarket.callbacks.IFirebaseGetStoreDataCallback
 import com.app.buna.sharingmarket.databinding.ActivityMyHeartsBinding
-import com.app.buna.sharingmarket.model.BoardItem
+import com.app.buna.sharingmarket.model.main.BoardItem
 import com.app.buna.sharingmarket.viewmodel.MyBoardViewModel
 
 class MyHeartsActivity : AppCompatActivity() {

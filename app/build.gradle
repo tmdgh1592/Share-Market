@@ -135,6 +135,9 @@ dependencies {
     implementation 'com.google.firebase:firebase-firestore:23.0.3'
     implementation 'com.google.firebase:firebase-storage:20.0.0'
 
+    /* card slider */
+    implementation 'com.github.IslamKhSh:CardSlider:1.0.1'
+
     /* Room library */
     def room_version = "2.3.0"
     // Room DB

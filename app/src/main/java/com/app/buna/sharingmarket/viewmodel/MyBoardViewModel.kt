@@ -7,7 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.app.buna.sharingmarket.callbacks.IFirebaseGetStoreDataCallback
-import com.app.buna.sharingmarket.model.BoardItem
+import com.app.buna.sharingmarket.model.main.BoardItem
 import com.app.buna.sharingmarket.repository.Firebase.FirebaseRepository
 
 class MyBoardViewModel(application: Application, val context: Context) : AndroidViewModel(application){

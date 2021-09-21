@@ -13,7 +13,7 @@ import com.app.buna.sharingmarket.REQUEST_CODE
 import com.app.buna.sharingmarket.adapter.MyBoardsRecyclerAdapter
 import com.app.buna.sharingmarket.callbacks.IFirebaseGetStoreDataCallback
 import com.app.buna.sharingmarket.databinding.ActivityMyBoardsBinding
-import com.app.buna.sharingmarket.model.BoardItem
+import com.app.buna.sharingmarket.model.main.BoardItem
 import com.app.buna.sharingmarket.viewmodel.MyBoardViewModel
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase

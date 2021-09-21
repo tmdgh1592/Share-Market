@@ -10,7 +10,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.app.buna.sharingmarket.Tags.Companion.TAG
-import com.app.buna.sharingmarket.model.BoardItem
+import com.app.buna.sharingmarket.model.main.BoardItem
 import com.app.buna.sharingmarket.model.SliderItem
 import com.app.buna.sharingmarket.model.tree.TreeItem
 import com.app.buna.sharingmarket.repository.Firebase.FirebaseRepository

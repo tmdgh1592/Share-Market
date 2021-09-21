@@ -17,7 +17,7 @@ import com.app.buna.sharingmarket.activity.MainActivity
 import com.app.buna.sharingmarket.callbacks.IFirebaseGetStoreDataCallback
 import com.app.buna.sharingmarket.callbacks.ILogoutCallback
 import com.app.buna.sharingmarket.model.CategoryItem
-import com.app.buna.sharingmarket.model.BoardItem
+import com.app.buna.sharingmarket.model.main.BoardItem
 import com.app.buna.sharingmarket.repository.Firebase.FirebaseRepository
 import com.app.buna.sharingmarket.repository.Local.PreferenceUtil
 import com.app.buna.sharingmarket.utils.NetworkStatus
@@ -47,6 +47,10 @@ class MainViewModel(application: Application, val context: Context) :
 
     fun getBoardByKeyword(keyword: String, callback: IFirebaseGetStoreDataCallback) {
         FirebaseRepository.instance.getBoardByKeyword(keyword, callback)
+    }
+
+    fun getPopularItems(count: Long, callback: IFirebaseGetStoreDataCallback) {
+        FirebaseRepository.instance.getPopularItems(count, callback)
     }
 
     fun clickProduct(position: Int) {

@@ -44,13 +44,35 @@
                 android:id="@+id/swipe_refresh_layout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:layout_constraintTop_toBottomOf="@+id/tool_bar"
-                android:layout_marginTop="?actionBarSize">
+                android:layout_marginTop="?actionBarSize"
+                app:layout_constraintTop_toBottomOf="@+id/tool_bar">
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/product_recycler_view"
+                <androidx.core.widget.NestedScrollView
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"/>
+                    android:layout_height="match_parent"
+                    android:scrollbars="none">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <!--<com.github.islamkhsh.CardSliderViewPager
+                            android:id="@+id/popular_item_slider"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="24dp"
+                            app:auto_slide_time="3"
+                            app:cardSlider_otherPagesWidth="24dp"
+                            app:cardSlider_smallScaleFactor="0.9" />-->
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/product_recycler_view"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:nestedScrollingEnabled="false"/>
+                    </LinearLayout>
+                </androidx.core.widget.NestedScrollView>
             </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
             <LinearLayout
