@@ -86,14 +86,14 @@ class MyBoardsActivity : AppCompatActivity() {
             REQUEST_CODE.DELETE_BOARD_CODE_FROM_MY_BOARD -> {
                 // 하트 상태를 갱신해야 하는 경우
                 // 바뀐 좋아요 상태
-                val heartState = data?.getBooleanExtra("heart", false)!!
-                if (data?.getBooleanExtra("refresh", false)) { // 새로고침을 해야하는 경우라면
+                if (data?.getBooleanExtra("refresh", false)?:false) { // 새로고침을 해야하는 경우라면
+                    val heartState = data?.getBooleanExtra("heart", false)?:false
                     if(heartState) { // 바뀐 좋아요 상태가 true인 경우 추가
                         vm.myBoardItems.value!![vm.selectedItemPosition].favorites[Firebase.auth.uid!!] = true
                     } else { // 바뀐 좋아요 상태가 false인 경우 제거
                         vm.myBoardItems.value!![vm.selectedItemPosition].favorites.remove(Firebase.auth.uid!!)
                     }
-                }else {
+                }else { // 게시글을 삭제한 경우
                     vm.myBoardItems.value!!.removeAt(vm.selectedItemPosition)
                     vm.myBoardItems.postValue(vm.myBoardItems.value)
                 }

@@ -77,6 +77,7 @@ class SelectUserActivity : AppCompatActivity() {
                         // destModelIntent : 상대방 정보를 담은 인텐트
                         // setResult()를 통해 메인 액티비티까지 종료하면서 데이터를 가져가고, 메인액티비티에서 화면 갱신 후 ChatActivity로 이동
                         val destModelIntent = Intent(this@SelectUserActivity, ChatActivity::class.java).apply {
+                                putExtra("refresh", false)
                                 putExtra("userName", data.userName) // 채팅할 상대방 닉네임 전달 받음
                                 putExtra(
                                     "profileImageUrl",

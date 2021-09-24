@@ -132,7 +132,7 @@ class MainActivity : AppCompatActivity() {
                         "refresh",
                         true
                     )
-                ) { // SelectUserActivity에서부터 전달받은 상대방 데이터
+                ) { // SelectUserActivity에서부터 전달받은 상대방 데이터(data)
                     startActivity(data) // 해당 데이터를 통해 ChatActivity로 이동
                 }
             }

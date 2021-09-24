@@ -247,6 +247,7 @@ class BoardActivity : AppCompatActivity() {
                         vm?.removeBoard { isSuccessful ->
                             if (isSuccessful) { // 성공적으로 삭제했다면 
                                 dialog.dismiss() // Dialog 닫고
+
                                 // 내 게시글 보기 액티비티에서 실행한 경우
                                 setResult(RESULT_OK)
                                 finish() // 해당 게시글에서 나가기
