@@ -7,7 +7,7 @@
 # 쉐어마켓
 
 
-![app_icon](https://user-images.githubusercontent.com/56534241/140684675-b2e92e40-3465-42ab-9eb7-0fea5a519781.png)
+![쉐어마켓_배너](https://user-images.githubusercontent.com/56534241/166484942-bdcec1e2-fcd2-4b3c-abda-4761b8db9add.png)
 
 
 <br/>
